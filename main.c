@@ -30,9 +30,9 @@ int ft_strlen(const char *s)
 	return (i);
 }
 
-char	*ft_substr(char *s, unsigned int start, size_t len)
+char	*ft_substr(char *s, int start, int len)
 {
-	size_t	i;
+	int	i;
 	char	*res;
 
 	i = 0;
@@ -123,7 +123,7 @@ char	*ft_strdup(const char *s1)
 
 	res = (char *)malloc(sizeof(char) * (ft_strlen(s1) + 1));
 	if (!res)
-		return (0);
+		ft_free();
 	ft_strlcpy (res, s1, ft_strlen(s1) + 1);
 	return (res);
 }
@@ -191,6 +191,8 @@ int ft_pwd()
 	while (s[i])
 		i++;
 	res = malloc(sizeof(char) * i + 1);
+	if (!res)
+		ft_free();
 	i = -1;
 	while (s[++i])
 		res[i] = s[i];
@@ -213,6 +215,8 @@ char *get_path()
 	while (s[i])
 		i++;
 	res = malloc(sizeof(char) * i + 1);
+	if (!res)
+		ft_free();
 	i = -1;
 	while (s[++i])
 		res[i] = s[i];
@@ -271,7 +275,8 @@ int ft_env(t_list *d)
 	//1printf("%d\n", d->num_env);
 	while (i < d->num_env)
 	{
-		printf("%s\n", d->ent_var[i]);
+		if (d->ent_var[i] != NULL)
+			printf("%s\n", d->ent_var[i]);
 		i++;
 	}
 	return (0);
@@ -279,7 +284,7 @@ int ft_env(t_list *d)
 
 ///////////////////////////////////---EXPORT ⬇️---///////////////////////////////////
 
-int parse_equal(t_list *d, char *s)
+int parse_equal(char *s)
 {
 	int i;
 	int correct;
@@ -297,10 +302,8 @@ int parse_equal(t_list *d, char *s)
 			correct++;
 		i++;
 	}
-	if (correct > 2 || correct == 0 || i == 1 || (i == 2 && correct == 2))
-	{
+	if (correct == 0 || i == 1 || (i == 2 && correct == 2))
 		return (-1);
-	}
 	return (0);
 }
 
@@ -313,9 +316,10 @@ int export_parse(t_list *d, char *array)
 	i = 1;
 	j = 0;
 	control = 0;
+	printf("hola-1\n");
 	while (d->argu[i])
 	{
-		if (parse_equal(d, d->argu[i]) == -1)
+		if (parse_equal(d->argu[i]) == -1)
 			array[i - 1] = '0';
 		else
 		{
@@ -324,7 +328,8 @@ int export_parse(t_list *d, char *array)
 		}
 		i++;
 	}
-	printf("%s\n", array);
+	//printf("%s\n", array);
+	printf("hola0\n");
 	array[i - 1] = '\0';
 	if (control == 0)
 		return(-1);
@@ -343,7 +348,7 @@ void	print_export_var(t_list *d)
 	}
 }
 
-int add_new_vars(t_list *d, char *array)
+int add_new_vars(t_list *d, char *binary_array)
 {
 	char **aux;
 	int i;
@@ -352,11 +357,13 @@ int add_new_vars(t_list *d, char *array)
 
 	i = -1;
 	guarrada = 0;
-	while (array[++i])
+	printf("hola1\n");
+	while (binary_array[++i])
 	{
-		if (array[i] == '1')
+		if (binary_array[i] == '1')
 			guarrada++;
 	}
+	printf("hola2\n");
 	aux = malloc(sizeof(char *) * (d->num_env + guarrada));
 	if (!aux)
 		ft_free();
@@ -366,41 +373,37 @@ int add_new_vars(t_list *d, char *array)
 		aux[i] = d->ent_var[i];
 		i++;
 	}
-	printf("i: %d\n", i);
-	printf("total: %d\n", d->num_env + guarrada);
+	printf("hola3\n");
+	//printf("i: %d\n", i);
+	//printf("total: %d\n", d->num_env + guarrada);
 	free(d->ent_var);
 	d->num_env = d->num_env + guarrada;
-	j = 0;
-	while (array[j])
+	j = -1;
+	while (binary_array[++j])
 	{
-		if (array[j] == '1')
+		if (binary_array[j] == '1')
 		{
-			printf("i: %d\n", i);
-			printf("hola1\n");
-			printf("argu: %s\n", d->argu[j + 1]);
-			printf("hola2\n");
 			aux[i] = d->argu[j + 1];
 			i++;
-			printf("aux[i]: %s\n", aux[i]);
-			printf("hola3\n");
 		}
-		j++;
 	}
-	printf("a %s\n", aux[i - 1]);
+	printf("hola4\n");
+	//printf("a %s\n", aux[i - 1]);
 	d->ent_var = (char **)malloc(sizeof(char *) * d->num_env);
 	if (d->ent_var == NULL)
 		ft_free();
 	i = -1;
 	while (++i < d->num_env)
 		d->ent_var[i] = aux[i];
-	printf("l %s\n", d->ent_var[0]);
+	//printf("l %s\n", d->ent_var[0]);
+	printf("hola5\n");
 	return (0);
 }
 
 int ft_export(t_list *d)
 {
 	int i;
-	char *array;
+	char *binary_array;
 
 	i = 0;
 
@@ -409,16 +412,74 @@ int ft_export(t_list *d)
 		print_export_var(d);
 		return (0);
 	}
-	array = malloc(sizeof(char) * d->num_args);
-	if (!array)
+	binary_array = malloc(sizeof(char) * d->num_args);
+	if (!binary_array)
 		ft_free();
-	if (export_parse(d, array) == -1)
+	if (export_parse(d, binary_array) == -1)
 		return (0);
-	add_new_vars(d, array);
+	add_new_vars(d, binary_array);
 	return (0);
 }
 
 ///////////////////////////////////---EXPORT ⬆️---///////////////////////////////////
+
+
+///////////////////////////////////---UNSET ⬇️---///////////////////////////////////
+
+/*int 	ft_delete_var(t_list *d)
+{
+
+}*/
+
+int	ft_special_strcmp(char *s1, char *s2)
+{
+	size_t	i;
+
+	i = 0;
+	while (s2[i + 1] != '=' && s1[i] && s2[i] && s1[i] == s2[i])
+	{
+		i++;
+	}
+	return (((unsigned char *)s1)[i] - ((unsigned char *)s2)[i]);
+}
+
+int ft_unset_strcmp(char *s, t_list *d)
+{
+	int i;
+
+	i = -1;
+	if (!s[0] || s[0] == '=')
+	{
+		printf("bash: unset: `%s': not a valid identifier\n", s);
+		return (0);
+	}
+	while (++i < d->num_env)
+	{
+		if (ft_special_strcmp(s, d->ent_var[i]) == 0)
+		{
+			printf("entro al if \n");
+			d->ent_var[i] = NULL;
+			break ;
+		}
+	}
+	return (0);
+}
+
+int 	ft_unset(t_list *d)
+{
+	int i;
+
+	i = 1;
+	while (i < d->num_args)
+	{
+		if (ft_unset_strcmp(d->argu[i], d) == 0)
+			;
+		i++;
+	}
+	return (0);
+}
+
+///////////////////////////////////---UNSET ⬆️---///////////////////////////////////
 
 int ft_try_to_exec(t_list *d)
 {
@@ -444,6 +505,8 @@ int check_fst_arg(t_list *d)
 		return (ft_env(d));
 	else if (ft_strcmp(d->argu[0], "export") == 0)
 		return (ft_export(d));
+	else if (ft_strcmp(d->argu[0], "unset") == 0)
+		return (ft_unset(d));
 	//else if (ft_strcmp(d->argu[0], "exit") == 0)
 	//	ft_free(d);
 	else
@@ -467,7 +530,7 @@ int count_args(char *s)
 	while (s[++i])
 	{
 		if ((s[i] != 32 && s[i] != 34 && s[i] != 39) && (s[i + 1] == 32 || s[i + 1] == '\0'
-			|| s[i + 1] == 34) || s[i + 1] == 39)
+			|| s[i + 1] == 34 || s[i + 1] == 39))
 			res++;
 		if (s[i] == 34)
 		{
@@ -537,10 +600,10 @@ int choose_arg(char *s, t_list *d)
 			}
 			pos++;
 		}
-		if (s[i] == ' ' || s[i] == 34 || s[i] == 39 && s[i + 1] != ' ')
+		if ((s[i] == ' ' || s[i] == 34 || s[i] == 39) && s[i + 1] != ' ')
 			start = i + 1;
 		if ((s[i] != ' ' && s[i] != 34 && s[i] != 39) && (s[i + 1] == ' ' || s[i + 1] == '\0'
-			|| s[i + 1] == 34) || s[i + 1] == 39)
+			|| s[i + 1] == 34 || s[i + 1] == 39))
 		{
 			d->argu[pos] = ft_substr(s, start, i - start + 1);
 			if (d->argu[pos] == NULL)
@@ -595,10 +658,22 @@ int parsing(char *s, t_list *d)
 
 /////////////////////////////////////---Parse ⬆️---/////////////////////////////////////////////////
 
-void init_prompt(t_list *d)
+/*void init_prompt(t_list *d)
 {
 }
+*/
 //funcion para checkear el numero de tokens que hay
+
+void	many_args(char **argv)
+{
+	if (ft_strcmp(argv[0], argv[1]) == 0)
+		{
+			printf("%s: %s: cannot execute binary file\n", argv[0], argv[1]);
+			exit(0);
+		}
+		printf("%s: %s: No such file or directory\n", argv[0], argv[1]);
+		exit(0);
+}
 
 int init_env(t_list *d, char **envp)
 {
@@ -617,23 +692,21 @@ int init_env(t_list *d, char **envp)
 		d->ent_var[i] = ft_substr(envp[i], 0, ft_strlen(envp[i]));
 		i++;
 	}
-	//d->ent_var[i] = NULL;
 	return (0);
 }
 
 int main(int argc, char **argv, char **envp)
 {
-	int i;
 	t_list d;
 
 	if (argc != 1)
-		return (0);
+		many_args(argv);
 	if (init_env(&d, envp) == -1)
 		return (-1); //ft_free()
 	while (1)
 	{
 		d.quotes = 0;
-		init_prompt(&d);
+		//init_prompt(&d);
 		d.read_line = readline("Minishell 🥵🇪🇸 ->");
 		if (d.read_line == NULL)
 			break ;
