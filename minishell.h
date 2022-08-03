@@ -36,6 +36,7 @@ typedef struct s_list
 	char	**ent_var;	
 	char	*read_line;
 	char	*prompt;
+	char	*result;
 }	t_list;
 
 int main(int argc, char **argv, char **envp);
