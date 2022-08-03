@@ -164,6 +164,23 @@ int print_echo(char *s, t_list *d, int n)
 	return (0);
 }
 
+int check_dash_n(char *s)
+{
+	int i;
+
+	i = 0;
+	if (s[0] != '-')
+		return (-1);
+	while (s[i])
+	{
+		if (s[i] == 'n')
+			i++;
+		else
+			return (-1);
+	}
+	return (0);
+}
+
 // arreglar cuando mandas esto ';' que haga el comportamiento original
 int ft_echo(t_list *d)
 {
@@ -173,9 +190,12 @@ int ft_echo(t_list *d)
 	//	printf("arg %d: %s\n", i, d->argu[i]);
 	if (d->num_args == 1)
 		return (write(1, "\n", 1) - 1);
-	else if (ft_strcmp(d->argu[1], "-n") == 0)
+	else if (ft_strcmp(d->argu[++i]) == 0)
 	{
 		i = 1;
+		while (check_dash_n(d->argu[++i], "-n") == 0 && i < d->num_args)
+			;
+		i = i - 1;
 		while (++i < d->num_args)
 			if (print_echo(d->argu[i], d, i) != 0)
 				return (-1);
@@ -190,6 +210,21 @@ int ft_echo(t_list *d)
 				return (-1);
 	}
 	//printf("llego hasta aqui \n");
+	return (0);
+}
+
+int check_echo_word(char *s)
+{
+	if (s[0] != 'E' && s[0] != 'e')
+		return (-1);
+	if (s[1] != 'C' && s[1] != 'c')
+		return (-1);
+	if (s[2] != 'H' && s[2] != 'h')
+		return (-1);
+	if (s[3] != 'O' && s[3] != 'o')
+		return (-1);
+	if (s[4])
+		return (-1);
 	return (0);
 }
 
@@ -509,8 +544,10 @@ int ft_try_to_exec(t_list *d)
 int check_fst_arg(t_list *d)
 {
 
-	if (ft_strcmp(d->argu[0], "echo") == 0)
+	if (check_echo_word(d->argu[0]) == 0)
 		return (ft_echo(d));
+	//if (ft_strcmp(d->argu[0], "echo") == 0)
+	//	return (ft_echo(d));
 	else if (ft_strcmp(d->argu[0], "pwd") == 0)
 		return (ft_pwd());
 	else if (ft_strcmp(d->argu[0], "cd") == 0)

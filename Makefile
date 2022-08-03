@@ -7,7 +7,9 @@ INCLUDE = minishell.h \
 CC = gcc
 RM = rm -f
 AR = ar rcs
-CFLAGS = -Wall -Wextra -Werror -MMD -lreadline -L${HOME}/.brew/opt/readline/lib
+CFLAGS = -Wall -Wextra -Werror -MMD
+COMFLAGS = -I${HOME}/.brew/opt/readline/include
+LINKFLAGS = -lreadline -L${HOME}/.brew/opt/readline/lib
 #-g3 -fsanitize=address
 
 .c.o:
@@ -20,7 +22,7 @@ all:	${NAME}
 
 -include $(DEPS)
 ${NAME}:	${OBJS}
-			$(CC) $(OBJS) $(CFLAGS) -o $(NAME)
+			$(CC) $(CFLGS) $(COMFLAGS) $(LINKFLAGS) $(OBJS) -o $(NAME)
 
 clean:
 			${RM} ${OBJS} ${DEPS}
