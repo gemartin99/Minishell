@@ -142,91 +142,21 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	return (((unsigned char *)s1)[i] - ((unsigned char *)s2)[i]);
 }
 
-///////////////////////////////////---LIBFT ⬆️---///////////////////////////////////
-
-int print_echo(char *s, t_list *d, int n)
+char	*ft_strtrim(char *s1, char set)
 {
-	int i;
+	size_t	len;
 
-	i = 0;
-	if (!s)
+	if (!s1 || !set)
 		return (0);
-	while (s[i])
-		i++;
-	if (write(1, &s[0], i) != i)
-		return (-1);
-	if (n != d->num_args -1)
-	{
-		if (write(1, " ", 1) != 1)
-			return (-1);
-	}
-	//printf("salgo\n");
-	return (0);
+	while (*s1 && *s1 != set)
+		s1++;
+	len = ft_strlen(s1);
+	while (s1[len] != set && len)
+		len--;
+	return (ft_substr(s1, 0, len + 1));
 }
 
-int check_dash_n(char *s)
-{
-	int i;
-
-	i = 0;
-	if (s[0] != '-')
-		return (-1);
-	while (s[i])
-	{
-		if (s[i] == 'n')
-			i++;
-		else
-			return (-1);
-	}
-	return (0);
-}
-
-// arreglar cuando mandas esto ';' que haga el comportamiento original
-int ft_echo(t_list *d)
-{
-	int i;
-
-	//while (++i < d->num_args)
-	//	printf("arg %d: %s\n", i, d->argu[i]);
-	if (d->num_args == 1)
-		return (write(1, "\n", 1) - 1);
-	else if (ft_strcmp(d->argu[++i]) == 0)
-	{
-		i = 1;
-		while (check_dash_n(d->argu[++i], "-n") == 0 && i < d->num_args)
-			;
-		i = i - 1;
-		while (++i < d->num_args)
-			if (print_echo(d->argu[i], d, i) != 0)
-				return (-1);
-	}
-	else
-	{
-		i = 0;
-		while (++i < d->num_args)
-			if (print_echo(d->argu[i], d, i) != 0)
-				return (-1);
-			if (write(1, "\n", 1) != 1)
-				return (-1);
-	}
-	//printf("llego hasta aqui \n");
-	return (0);
-}
-
-int check_echo_word(char *s)
-{
-	if (s[0] != 'E' && s[0] != 'e')
-		return (-1);
-	if (s[1] != 'C' && s[1] != 'c')
-		return (-1);
-	if (s[2] != 'H' && s[2] != 'h')
-		return (-1);
-	if (s[3] != 'O' && s[3] != 'o')
-		return (-1);
-	if (s[4])
-		return (-1);
-	return (0);
-}
+///////////////////////////////////---LIBFT ⬆️---///////////////////////////////////
 
 int ft_pwd()
 {
@@ -365,7 +295,7 @@ int export_parse(t_list *d, char *array)
 	i = 1;
 	j = 0;
 	control = 0;
-	printf("hola-1\n");
+	//printf("hola-1\n");
 	while (d->argu[i])
 	{
 		if (parse_equal(d->argu[i]) == -1)
@@ -378,7 +308,7 @@ int export_parse(t_list *d, char *array)
 		i++;
 	}
 	//printf("%s\n", array);
-	printf("hola0\n");
+	//printf("hola0\n");
 	array[i - 1] = '\0';
 	if (control == 0)
 		return(-1);
@@ -406,13 +336,13 @@ int add_new_vars(t_list *d, char *binary_array)
 
 	i = -1;
 	guarrada = 0;
-	printf("hola1\n");
+	//printf("hola1\n");
 	while (binary_array[++i])
 	{
 		if (binary_array[i] == '1')
 			guarrada++;
 	}
-	printf("hola2\n");
+	//printf("hola2\n");
 	aux = malloc(sizeof(char *) * (d->num_env + guarrada));
 	if (!aux)
 		ft_free();
@@ -422,7 +352,7 @@ int add_new_vars(t_list *d, char *binary_array)
 		aux[i] = d->ent_var[i];
 		i++;
 	}
-	printf("hola3\n");
+	//printf("hola3\n");
 	//printf("i: %d\n", i);
 	//printf("total: %d\n", d->num_env + guarrada);
 	free(d->ent_var);
@@ -436,7 +366,7 @@ int add_new_vars(t_list *d, char *binary_array)
 			i++;
 		}
 	}
-	printf("hola4\n");
+	//printf("hola4\n");
 	//printf("a %s\n", aux[i - 1]);
 	d->ent_var = (char **)malloc(sizeof(char *) * d->num_env);
 	if (d->ent_var == NULL)
@@ -445,7 +375,7 @@ int add_new_vars(t_list *d, char *binary_array)
 	while (++i < d->num_env)
 		d->ent_var[i] = aux[i];
 	//printf("l %s\n", d->ent_var[0]);
-	printf("hola5\n");
+	//printf("hola5\n");
 	return (0);
 }
 
@@ -543,7 +473,7 @@ int ft_try_to_exec(t_list *d)
 
 int check_fst_arg(t_list *d)
 {
-
+	//printf("linea %s\n", d->read_line);
 	if (check_echo_word(d->argu[0]) == 0)
 		return (ft_echo(d));
 	//if (ft_strcmp(d->argu[0], "echo") == 0)
@@ -786,10 +716,10 @@ int main(int argc, char **argv, char **envp)
 		d.read_line = readline("Minishell 🥵🇪🇸 ->");
 		if (d.read_line == NULL)
 			break ;
-		if (parsing(d.read_line, &d) == -1)
+		if (d.read_line && parsing(d.read_line, &d) == -1)
 			return (printf("ERROR EN EL PARSING\n"));
 		add_history(d.read_line);
-		if (d.quotes == 0 && check_fst_arg(&d) == -1)
+		if (d.read_line && d.quotes == 0 && check_fst_arg(&d) == -1)
 			return (printf("ERROR DE RETORNO \n"));
 	}
 	return (0);

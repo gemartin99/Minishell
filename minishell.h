@@ -32,6 +32,7 @@ typedef struct s_list
 	int		quotes;
 	int		num_args;
 	int 	num_env;
+	int 	control;
 	char	**argu;
 	char	**ent_var;	
 	char	*read_line;
@@ -40,5 +41,8 @@ typedef struct s_list
 }	t_list;
 
 int main(int argc, char **argv, char **envp);
+int ft_echo(t_list *d);
+int check_echo_word(char *s);
+int ft_strlen(const char *s);
 
 #endif
