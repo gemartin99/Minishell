@@ -245,7 +245,7 @@ int choose_arg(char *s, t_list *d)
 	int start;
 
 	d->num_args = count_args(s);
-	d->argu = malloc(sizeof(char *) * (d->num_args + 1));
+	d->argu = malloc(sizeof(char *) * (d->num_args));
 	if (d->argu == NULL)
 		return (-1);
 	i = -1;

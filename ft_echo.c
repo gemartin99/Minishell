@@ -174,7 +174,7 @@ int ft_echo(t_list *d)
 		return (write(1, "\n", 1) - 1);
 	if (check_quotation_mark(d->read_line) == 1 && check_dash_n(d->argu[1]) == 0)
 	{
-		printf("entro aqui \n");
+		//printf("entro aqui \n");
 		special_echo_n(d->read_line, d);
 		return (0);
 	}

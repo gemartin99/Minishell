@@ -7,6 +7,7 @@ int parse_equal(char *s)
 
 	i = 0;
 	correct = 0;
+	printf("aqui0.2.1\n");
 	while (s[i])
 	{
 		if (s[0] == '=')
@@ -18,8 +19,13 @@ int parse_equal(char *s)
 			correct++;
 		i++;
 	}
+	printf("aqui0.2.2\n");
 	if (correct == 0 || i == 1 || (i == 2 && correct == 2))
+	{
+		printf("aqui0.2.3\n");
 		return (-1);
+	}
+	printf("aqui0.3\n");
 	return (0);
 }
 
@@ -33,8 +39,10 @@ int export_parse(t_list *d, char *array)
 	j = 0;
 	control = 0;
 	//printf("hola-1\n");
-	while (d->argu[i])
+	printf("aqui0.1\n");
+	while (d->num_args - 1 > i - 1) 
 	{
+		printf("argu[i]: |%s|\n", d->argu[i]);
 		if (parse_equal(d->argu[i]) == -1)
 			array[i - 1] = '0';
 		else
@@ -44,11 +52,13 @@ int export_parse(t_list *d, char *array)
 		}
 		i++;
 	}
+	printf("aqui0.4\n");
 	//printf("%s\n", array);
 	//printf("hola0\n");
 	array[i - 1] = '\0';
 	if (control == 0)
 		return(-1);
+	printf("aqui0.5\n");
 	return (0);
 }
 
@@ -73,13 +83,13 @@ int add_new_vars(t_list *d, char *binary_array)
 
 	i = -1;
 	guarrada = 0;
-	//printf("hola1\n");
+	printf("aqui\n");
 	while (binary_array[++i])
 	{
 		if (binary_array[i] == '1')
 			guarrada++;
 	}
-	//printf("hola2\n");
+	printf("aqui1\n");
 	aux = malloc(sizeof(char *) * (d->num_env + guarrada));
 	if (!aux)
 		ft_free();
@@ -89,6 +99,7 @@ int add_new_vars(t_list *d, char *binary_array)
 		aux[i] = d->ent_var[i];
 		i++;
 	}
+	printf("aqui2\n");
 	//printf("hola3\n");
 	//printf("i: %d\n", i);
 	//printf("total: %d\n", d->num_env + guarrada);
@@ -103,6 +114,7 @@ int add_new_vars(t_list *d, char *binary_array)
 			i++;
 		}
 	}
+	printf("aqui3\n");
 	//printf("hola4\n");
 	//printf("a %s\n", aux[i - 1]);
 	d->ent_var = (char **)malloc(sizeof(char *) * d->num_env);
@@ -111,6 +123,7 @@ int add_new_vars(t_list *d, char *binary_array)
 	i = -1;
 	while (++i < d->num_env)
 		d->ent_var[i] = aux[i];
+	printf("aqui4\n");
 	//printf("l %s\n", d->ent_var[0]);
 	//printf("hola5\n");
 	return (0);
@@ -123,6 +136,7 @@ int ft_export(t_list *d)
 
 	i = 0;
 
+	printf("aqui0\n");
 	if (d->num_args == 1)
 	{
 		print_export_var(d);
@@ -133,6 +147,8 @@ int ft_export(t_list *d)
 		ft_free();
 	if (export_parse(d, binary_array) == -1)
 		return (0);
+	printf("aqui0.6\n");
 	add_new_vars(d, binary_array);
+	printf("aqui0.7\n");
 	return (0);
 }
