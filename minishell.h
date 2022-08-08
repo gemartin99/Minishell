@@ -44,7 +44,7 @@ int main(int argc, char **argv, char **envp);
 int ft_echo(t_list *d);
 int check_echo_word(char *s);
 int ft_strlen(const char *s);
-int 	ft_unset(t_list *d);
+int ft_unset(t_list *d);
 int ft_export(t_list *d);
 int ft_env(t_list *d);
 int ft_pwd();

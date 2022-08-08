@@ -104,7 +104,8 @@ int check_finish_dash_n(char *line, int i, t_list *d)
 		if (line[i + 1] != ' ')
 		{
 			d->control = 1;
-			write(1, "-", 1);
+			if (line[i - 1] == 'n')
+				write(1, "-", 1);
 			while (j < num_of_n)
 			{
 				write(1, "n", 1);
@@ -160,19 +161,84 @@ void echo_with_quotes(char *line)
 	write (1, "\n", 1);
 }
 
+int check_dolar(char *line)
+{
+	int i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == '$')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+/*
+char *delete_null_args2(char *line, char *result)
+{
+	int i;
+
+	i = 0;
+	while (line[i])
+	{
+		if ((line[i] == 34 && line[i + 1] == 34) || (line[i] == 39 && line[i + 1] == 39))
+			i = i + 2;
+		if (line[i])
+		{
+			result[i] = line[i]; 
+			i++;
+		}
+	}
+	result[i] = '\0';
+	return(result);
+}
+
+char *delete_null_args(char *line)
+{
+	int i;
+	int len;
+	char *result;
+
+	result = NULL;
+	i = 0;
+	while (line[i])
+		i++;
+	len = i;
+	i = 0;
+	while (line[i])
+	{
+		if ((line[i] == 34 && line[i + 1] == 34) || (line[i] == 39 && line[i + 1] == 39))
+		{
+			if (result)
+				free(result);
+			len = len - 2;
+			result = malloc(sizeof(char) * (len + 1));
+			if (!result)
+				ft_free();
+		}
+		i++;
+	}
+	result = delete_null_args2(line, result);
+	printf("result: |%s|\n", result);
+	return(line);
+}
+*/
+
 int ft_echo(t_list *d)
 {
 	int i;
 
 	i = 0;
-	//while (++i < d->num_args)
-	//	printf("arg %d: %s\n", i, d->argu[i]);
-/////////////////////////quitar esta funcion, es solo para que funcione el tester////////
-	//ft_strtrim(d->read_line, 34); de mpmento no va
-/////////////////////////quitar esta funcion, es solo para que funcione el tester////////
+	//d->read_line = delete_null_args(d->read_line);
+	if (check_dolar(d->read_line) == 1)
+	{
+		printf("hay un dolar en la readline\n");
+	}
 	if (d->num_args == 1 && check_echo_word(d->argu[0]) == 0)
 		return (write(1, "\n", 1) - 1);
-	if (check_quotation_mark(d->read_line) == 1 && check_dash_n(d->argu[1]) == 0)
+	/*if (check_quotation_mark(d->read_line) == 1 && check_dash_n(d->argu[1]) == 0)
 	{
 		//printf("entro aqui \n");
 		special_echo_n(d->read_line, d);
@@ -182,7 +248,7 @@ int ft_echo(t_list *d)
 	{
 		echo_with_quotes(d->read_line);
 		return (0);
-	}
+	}*/
 	else
 	{
 		if (check_dash_n(d->argu[++i]) == 0)
