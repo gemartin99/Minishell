@@ -29,6 +29,45 @@ int parse_equal(char *s)
 	return (0);
 }
 
+void del_exist_variable(char *full_var, t_list *d)
+{
+	int i;
+	char *var;
+	int len;
+	int j;
+
+	i = 0;
+	len = 0;
+	printf("aqui0.1.0\n");
+	while (full_var[len] != '=')
+		len++;
+	printf("aqui0.1.1\n");
+	while (i < d->num_env)
+	{
+		//mirar cuando llega una variable de entorno nula;
+		while (d->ent_var[i] == NULL && i < d->num_env)
+			i++;
+		if (i >= d->num_env)
+			break;
+		printf("vueltas al bucle %d\nnumero variables %d\n", i, d->num_env);
+		printf("hola\n");
+		var = d->ent_var[i];
+		j = -1;
+		printf("hola1\n");
+		while (++j != len)
+			if (full_var[j] != var[j])
+				break ;
+		if (j == len)
+		{
+			printf("entro en el if del while \n");
+			d->ent_var[i] = NULL;
+		}
+		printf("hola2\n");
+		i++;
+	}
+	printf("aqui0.1.3\n");
+}
+
 int export_parse(t_list *d, char *array)
 {
 	int i;
@@ -42,6 +81,7 @@ int export_parse(t_list *d, char *array)
 	printf("aqui0.1\n");
 	while (d->num_args - 1 > i - 1) 
 	{
+		del_exist_variable(d->argu[i], d);
 		printf("argu[i]: |%s|\n", d->argu[i]);
 		if (parse_equal(d->argu[i]) == -1)
 			array[i - 1] = '0';

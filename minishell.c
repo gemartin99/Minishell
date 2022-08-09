@@ -169,6 +169,9 @@ int ft_try_to_exec(t_list *d)
 	return (0);
 }
 
+//cuando se hagan pipes y redirecciones cambiar esto y que en vez de ser
+//argumento 0 sea el numero de una variable que se inicializara en 0 y 
+//cada vez que haya un pipe valdra el arg del pipe + 1;
 int check_fst_arg(t_list *d)
 {
 	//printf("linea %s\n", d->read_line);
