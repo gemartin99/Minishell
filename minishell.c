@@ -330,14 +330,13 @@ int parsing(char *s, t_list *d)
 	if (doble % 2 != 0 || simple % 2 != 0)
 	{
 		d->quotes = 1;
-		printf("Error , deben haber 2 comillas\n");
+		printf("dquote>\n");
 		return (0);
 	}
 	if (choose_arg(s, d) == -1)
 		return (-1);
 	return (0);
 }
-
 /////////////////////////////////////---Parse ⬆️---/////////////////////////////////////////////////
 
 /*void init_prompt(t_list *d)

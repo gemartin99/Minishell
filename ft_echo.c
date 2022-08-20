@@ -40,15 +40,11 @@ int check_dash_n(char *s)
 	int i;
 
 	i = 0;
-	//printf("prueba %s\n", s);
 	if (s[0] != '-')
-	{
-		//printf("taamal");
 		return (-1);
-	}
 	while (s[++i])
 	{
-		//printf("letra: %c", s[i]);
+		//printf("char: %c\n", s[i]);
 		if (s[i] == 'n')
 			;
 		else
@@ -77,6 +73,13 @@ int ft_echo(t_list *d)
 
 	i = 0;
 	//d->read_line = delete_null_args(d->read_line);
+	//while (d->argu[++i])
+	//	printf("arg %s\n", d->argu[i]);
+	//if (check_dash_n(d->argu[1]) == 0)
+	//{
+	//	printf("hola\n");
+	//	exit (0);
+	//}
 	if (check_dolar(d->read_line) == 1)
 	{
 		printf("hay un dolar en la readline\n");

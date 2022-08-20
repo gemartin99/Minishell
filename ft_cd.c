@@ -22,34 +22,6 @@ char *get_path()
 	return (res);
 }
 
-/*
-char *quit_url_extension(char *path, char *res)
-{
-	int i;
-
-	i = 0;
-	while (path[i])
-		i++;
-	while (path[--i])
-	{
-		if (path[i] == '/')
-		{
-			//path[i] = '/';
-			path[i] = '\0';
-			break ;
-		}
-	}
-	i = 0;
-	res = malloc(sizeof(char) * i + 1);
-	i = -1;
-	while (path[++i])
-		res[i] = path[i];
-	res[i] = '\0';
-	free(path);
-	return (res);
-}
-*/
-
 int ft_cd(t_list *d)
 {
 	char *path;

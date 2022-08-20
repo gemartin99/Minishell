@@ -109,7 +109,8 @@ void	print_export_var(t_list *d)
 	i = 0;
 	while (i < d->num_env)
 	{
-		printf("declare -x %s\n", d->ent_var[i]);
+		if (d->ent_var[i] != NULL)
+			printf("declare -x %s\n", d->ent_var[i]);
 		i++;
 	}
 }
