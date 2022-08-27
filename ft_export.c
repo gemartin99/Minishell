@@ -7,7 +7,6 @@ int parse_equal(char *s)
 
 	i = 0;
 	correct = 0;
-	printf("aqui0.2.1\n");
 	while (s[i])
 	{
 		if (s[0] == '=')
@@ -19,13 +18,8 @@ int parse_equal(char *s)
 			correct++;
 		i++;
 	}
-	printf("aqui0.2.2\n");
 	if (correct == 0 || i == 1 || (i == 2 && correct == 2))
-	{
-		printf("aqui0.2.3\n");
 		return (-1);
-	}
-	printf("aqui0.3\n");
 	return (0);
 }
 
@@ -38,35 +32,26 @@ void del_exist_variable(char *full_var, t_list *d)
 
 	i = 0;
 	len = 0;
-	printf("aqui0.1.0\n");
 	while (full_var[len] != '=')
 		len++;
-	printf("aqui0.1.1\n");
 	while (i < d->num_env)
 	{
-		//mirar cuando llega una variable de entorno nula;
 		while (d->ent_var[i] == NULL && i < d->num_env)
 			i++;
 		if (i >= d->num_env)
 			break;
-		printf("vueltas al bucle %d\nnumero variables %d\n", i, d->num_env);
-		printf("hola\n");
 		var = d->ent_var[i];
 		j = -1;
-		printf("hola1\n");
 		while (++j != len)
 			if (full_var[j] != var[j])
 				break ;
 		if (j == len)
-		{
-			printf("entro en el if del while \n");
 			d->ent_var[i] = NULL;
-		}
-		printf("hola2\n");
 		i++;
 	}
-	printf("aqui0.1.3\n");
 }
+
+//⚠️implementar valor variables de otras variables con $ , pero sobretodo el que una nueva variable tenga el valor de 2 o mas variables de entorno⚠️
 
 int export_parse(t_list *d, char *array)
 {
@@ -77,12 +62,9 @@ int export_parse(t_list *d, char *array)
 	i = 1;
 	j = 0;
 	control = 0;
-	//printf("hola-1\n");
-	printf("aqui0.1\n");
 	while (d->num_args - 1 > i - 1) 
 	{
 		del_exist_variable(d->argu[i], d);
-		printf("argu[i]: |%s|\n", d->argu[i]);
 		if (parse_equal(d->argu[i]) == -1)
 			array[i - 1] = '0';
 		else
@@ -92,13 +74,9 @@ int export_parse(t_list *d, char *array)
 		}
 		i++;
 	}
-	printf("aqui0.4\n");
-	//printf("%s\n", array);
-	//printf("hola0\n");
 	array[i - 1] = '\0';
 	if (control == 0)
 		return(-1);
-	printf("aqui0.5\n");
 	return (0);
 }
 
@@ -115,37 +93,10 @@ void	print_export_var(t_list *d)
 	}
 }
 
-int add_new_vars(t_list *d, char *binary_array)
+void add_new_vars2(t_list *d, char *binary_array, int i, char **aux)
 {
-	char **aux;
-	int i;
 	int j;
-	int guarrada;
 
-	i = -1;
-	guarrada = 0;
-	printf("aqui\n");
-	while (binary_array[++i])
-	{
-		if (binary_array[i] == '1')
-			guarrada++;
-	}
-	printf("aqui1\n");
-	aux = malloc(sizeof(char *) * (d->num_env + guarrada));
-	if (!aux)
-		ft_free();
-	i = 0;
-	while (i < d->num_env)
-	{
-		aux[i] = d->ent_var[i];
-		i++;
-	}
-	printf("aqui2\n");
-	//printf("hola3\n");
-	//printf("i: %d\n", i);
-	//printf("total: %d\n", d->num_env + guarrada);
-	free(d->ent_var);
-	d->num_env = d->num_env + guarrada;
 	j = -1;
 	while (binary_array[++j])
 	{
@@ -155,18 +106,39 @@ int add_new_vars(t_list *d, char *binary_array)
 			i++;
 		}
 	}
-	printf("aqui3\n");
-	//printf("hola4\n");
-	//printf("a %s\n", aux[i - 1]);
 	d->ent_var = (char **)malloc(sizeof(char *) * d->num_env);
 	if (d->ent_var == NULL)
 		ft_free();
 	i = -1;
 	while (++i < d->num_env)
 		d->ent_var[i] = aux[i];
-	printf("aqui4\n");
-	//printf("l %s\n", d->ent_var[0]);
-	//printf("hola5\n");
+}
+
+int add_new_vars1(t_list *d, char *binary_array)
+{
+	char **aux;
+	int i;
+	int guarrada;
+
+	i = -1;
+	guarrada = 0;
+	while (binary_array[++i])
+	{
+		if (binary_array[i] == '1')
+			guarrada++;
+	}
+	aux = malloc(sizeof(char *) * (d->num_env + guarrada));
+	if (!aux)
+		ft_free();
+	i = 0;
+	while (i < d->num_env)
+	{
+		aux[i] = d->ent_var[i];
+		i++;
+	}
+	free(d->ent_var);
+	d->num_env = d->num_env + guarrada;
+	add_new_vars2(d, binary_array, i, aux);
 	return (0);
 }
 
@@ -177,7 +149,7 @@ int ft_export(t_list *d)
 
 	i = 0;
 
-	printf("aqui0\n");
+	//printf("aqui0\n");
 	if (d->num_args == 1)
 	{
 		print_export_var(d);
@@ -188,8 +160,8 @@ int ft_export(t_list *d)
 		ft_free();
 	if (export_parse(d, binary_array) == -1)
 		return (0);
-	printf("aqui0.6\n");
-	add_new_vars(d, binary_array);
-	printf("aqui0.7\n");
+	//printf("aqui0.6\n");
+	add_new_vars1(d, binary_array);
+	//printf("aqui0.7\n");
 	return (0);
 }
