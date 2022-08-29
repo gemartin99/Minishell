@@ -118,16 +118,16 @@ int add_new_vars1(t_list *d, char *binary_array)
 {
 	char **aux;
 	int i;
-	int guarrada;
+	int new_envs;
 
 	i = -1;
-	guarrada = 0;
+	new_envs = 0;
 	while (binary_array[++i])
 	{
 		if (binary_array[i] == '1')
-			guarrada++;
+			new_envs++;
 	}
-	aux = malloc(sizeof(char *) * (d->num_env + guarrada));
+	aux = malloc(sizeof(char *) * (d->num_env + new_envs));
 	if (!aux)
 		ft_free();
 	i = 0;
@@ -137,8 +137,210 @@ int add_new_vars1(t_list *d, char *binary_array)
 		i++;
 	}
 	free(d->ent_var);
-	d->num_env = d->num_env + guarrada;
+	d->num_env = d->num_env + new_envs;
 	add_new_vars2(d, binary_array, i, aux);
+	return (0);
+}
+
+static int var_strcmp(char *s1, char *s2) //funcion strcmp modificada para variables de entorno
+{
+	int i;
+
+	i = 0;
+	if (!s1 || !s2)
+		return (1);
+	while (s2[i] && s2[i] != '=')
+		i++;
+	if (ft_strlen(s1) != i)
+		return (1); 
+	i = 0;
+	while (s1[i] && s2[i] && s2[i] != '=')
+	{
+		if (s1[i] != s2[i])
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+char *add_var_value(char *s1) //funcion para añadir el valor de la variable de entorno a nuestra variable result
+{
+	int i;
+	int j;
+	char *result;
+
+	i = 0;
+	j = 0;
+	while (s1[i] != '=')
+		i++;
+	result = malloc(sizeof(char) * ft_strlen(s1) - i);
+	if (!result)
+		ft_free();
+	while(s1[++j])
+		result[j - 1] = s1[i + j];
+	result[j] = '\0';
+	return (result);
+}
+
+char *check_same_var(t_list *d, char *aux) //funcion para checkear si hay una variable de entorno igual que lo que me han mandado por parametro
+{
+	int i;
+	char *result;
+
+	i = -1;
+	result = NULL;
+	while (++i < d->num_env)
+	{
+		if (var_strcmp(aux, d->ent_var[i]) == 0)
+		{
+			result = add_var_value(d->ent_var[i]);
+			return(result);
+		}
+	}
+	return(NULL);
+}
+
+char *replace_dolar(t_list *d, char *var, int i) //funcion para añadir una string que sea lo que va despues del $
+{
+	char *aux;
+	int j;
+
+	j = 0;
+	while (var[i] != '$')
+		i++;
+	i++;
+	while (var[i + j])
+		j++;
+	aux = malloc(sizeof(char) * j + 1);
+	if (!aux)
+		ft_free();
+	j = -1;
+	while (var[++j + i])
+		aux[j] = var[i + j];
+	aux[j] = '\0';
+	aux = check_same_var(d, aux);
+	return(aux);
+}
+
+char *join_value3(char *s1) //lo mismo que la 1 y 2 pero esta aplica a $var que no existen
+{
+	int i;
+	char *result;
+	int c;
+	int j;
+
+	i = 0;
+	c = -1;
+	j = 0;
+	while (s1[i] != '$')
+		i++;
+	if (!s1[i + 1])
+		return (s1);
+	result = malloc(sizeof(char) * i + 1);
+	if (!result)
+		ft_free();
+	i = 0;
+	while(s1[i] != '$')
+	{
+		result[i] = s1[i];
+		i++;
+	}
+	result[i] = '\0';
+	return (result);
+}
+
+
+char *join_value2(char *s1, char *s2) //lo mismo que la 1 pero es para cuando hay caracteres antes de la variable $VAR
+{
+	int i;
+	char *result;
+	int c;
+	int j;
+
+	i = 0;
+	c = -1;
+	j = 0;
+	while (s1[i] != '$')
+		i++;
+	result = malloc(sizeof(char) *  i + ft_strlen(s2) + 1);
+	if (!result)
+		ft_free();
+	while (s1[j] != '$')
+	{
+		result[j] = s1[j];
+		j++;
+	}
+	while (s2[++c])
+		result[j + c] = s2[c];
+	result[j + c] = '\0';
+	return (result);
+}
+
+char *join_value(char *s1, char *s2) //funcion para juntar el nombre de la nueva variable con su valor
+{
+	int i;
+	char *result;
+	int c;
+	int j;
+
+	i = 0;
+	c = 0;
+	j = -1;
+	while (s1[i] != '=')
+		i++;
+	result = malloc(sizeof(char) *  i + ft_strlen(s2) + 2);
+	if (!result)
+		ft_free();
+	while (s1[j++] != '=')
+		result[j] = s1[j];
+	result[j] = s1[j];
+	while (s2[c])
+	{
+		result[j + c] = s2[c];
+		c++;
+	}
+	result[j + c] = '\0';
+	return (result);
+}
+
+char *value_var(t_list *d, char *var) //funcion main para crear una variable nueva que contenga un $variable
+{
+	char *result;
+	int i;
+	int j;
+
+	result = NULL;
+	j = 0;
+	i = 0;
+	while (var[j] && var[j] != '=')
+		j++;
+	while(var[i + j] && var[++i + j])
+	{
+		if (var[i + j] == '$')
+		{
+			result = replace_dolar(d, var, j++);
+			break;	
+		}
+	}
+	if (result == NULL)
+		return (join_value3(var));
+	if (var[j] == '$')
+		return (join_value(var, result));
+	return (join_value2(var, result));
+}
+
+int check_dolar_export(char *var) //checkear que haya un dolar en cada variable que me manden
+{
+	int i;
+
+	i = 0;
+	while (var[i] && var[i] != '=')
+		i++;
+	while(var[i] && var[++i])
+	{
+		if (var[i] == '$')
+			return (1);
+	}
 	return (0);
 }
 
@@ -148,20 +350,21 @@ int ft_export(t_list *d)
 	char *binary_array;
 
 	i = 0;
-
-	//printf("aqui0\n");
 	if (d->num_args == 1)
 	{
 		print_export_var(d);
 		return (0);
+	}
+	while (d->argu[++i] && i < d->num_args)
+	{
+		if (check_dolar_export(d->argu[i]) == 1)
+			d->argu[i] = value_var(d, d->argu[i]);
 	}
 	binary_array = malloc(sizeof(char) * d->num_args);
 	if (!binary_array)
 		ft_free();
 	if (export_parse(d, binary_array) == -1)
 		return (0);
-	//printf("aqui0.6\n");
 	add_new_vars1(d, binary_array);
-	//printf("aqui0.7\n");
 	return (0);
 }

@@ -50,5 +50,6 @@ int ft_env(t_list *d);
 int ft_pwd();
 int ft_cd(t_list *d);
 void ft_free();
+char	*ft_strjoin(char const *s1, char const *s2);
 
 #endif

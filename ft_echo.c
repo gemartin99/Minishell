@@ -53,7 +53,7 @@ int check_dash_n(char *s)
 	return (0);
 }
 
-int check_dolar(char *line)
+int check_dolar_echo(char *line)
 {
 	int i;
 
@@ -80,7 +80,7 @@ int ft_echo(t_list *d)
 	//	printf("hola\n");
 	//	exit (0);
 	//}
-	if (check_dolar(d->read_line) == 1)
+	if (check_dolar_echo(d->read_line) == 1)
 	{
 		printf("hay un dolar en la readline\n");
 	}

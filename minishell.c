@@ -376,6 +376,7 @@ int init_env(t_list *d, char **envp)
 	return (0);
 }
 
+//funcion para el tester
 int	ft_test(int argc, char **argv, char **envp, t_list *d)
 {
 	char		*input;
