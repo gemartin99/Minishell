@@ -29,6 +29,7 @@
 
 typedef struct s_list
 {
+	int 	echo_control;
 	int		quotes;
 	int		num_args;
 	int 	num_env;
@@ -40,6 +41,7 @@ typedef struct s_list
 	char	*result;
 }	t_list;
 
+int parsing(char *s, t_list *d);
 int main(int argc, char **argv, char **envp);
 int ft_echo(t_list *d);
 int check_echo_word(char *s);

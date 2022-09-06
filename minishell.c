@@ -361,6 +361,7 @@ int init_env(t_list *d, char **envp)
 	int i;
 
 	i = 0;
+	d->echo_control = 0;
 	while (envp[i])
 		i++;
 	d->num_env = i;
