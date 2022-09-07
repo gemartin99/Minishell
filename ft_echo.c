@@ -1,5 +1,29 @@
 #include "minishell.h"
 
+void	ft_putchar_fd(char c, int fd)
+{
+	if (write (fd, &c, 1) != 1)
+	{
+		printf("FALLO MEMORIA\n");
+		ft_free();
+	}
+}
+
+void	ft_putstr_fd(char *s, int fd)
+{
+	int	i;
+
+	i = 0;
+	if (s)
+	{
+		while (s[i])
+		{
+			ft_putchar_fd(s[i], fd);
+			i++;
+		}
+	}
+}
+
 int check_echo_word(char *s)
 {
 	if (s[0] != 'E' && s[0] != 'e')
@@ -12,25 +36,6 @@ int check_echo_word(char *s)
 		return (-1);
 	if (s[4])
 		return (-1);
-	return (0);
-}
-
-int print_echo(char *s, t_list *d, int n)
-{
-	int i;
-
-	i = 0;
-	if (!s)
-		return (0);
-	while (s[i])
-		i++;
-	if (write(1, &s[0], i) != i)
-		return (-1);
-	if (n != d->num_args -1)
-	{
-		if (write(1, " ", 1) != 1)
-			return (-1);
-	}
 	return (0);
 }
 
@@ -214,8 +219,13 @@ int check_dolar_echo(char *line) //funcion para checkear si hay un dolar en la l
 int ft_echo(t_list *d)
 {
 	int i;
+	int condition;
+	int space;
 
-	i = 0;
+	condition = 1;
+	i = 1;
+	space = 0;
+	//mirar si me mandan echo '"' da segfault, si pongo algo mas dentro de las comillas no
 	if (check_dolar_echo(d->read_line) == 1 && d->echo_control == 0)
 	{
 		d->echo_control = 1;
@@ -228,24 +238,22 @@ int ft_echo(t_list *d)
 		return (write(1, "\n", 1) - 1);
 	else
 	{
-		if (check_dash_n(d->argu[++i]) == 0)
+		if (check_dash_n(d->argu[i]) == 0)
 		{
-			while (i < d->num_args && check_dash_n(d->argu[++i]) == 0)
-				;
-			i = i - 1;
-			while (++i < d->num_args)
-				if (print_echo(d->argu[i], d, i) != 0)
-					return (-1);
+			condition = 0;
+			i++;
 		}
-		else
+		while (i < d->num_args)
 		{
-			i = 0;
-			while (++i < d->num_args)
-				if (print_echo(d->argu[i], d, i) != 0)
-					return (-1);
-				if (write(1, "\n", 1) != 1)
-					return (-1);
+			if (d->argu[i])
+				ft_putstr_fd(d->argu[i], 1);
+			i++;
+			if (d->argu[i + 1])
+				ft_putchar_fd(' ', 1);
 		}
+		if (condition == 1)
+			ft_putchar_fd('\n', 1);
+		return (0);
 	}
 	d->echo_control = 0;
 	return (0);

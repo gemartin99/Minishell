@@ -41,6 +41,8 @@ typedef struct s_list
 	char	*result;
 }	t_list;
 
+int	ft_strncmp(const char *s1, const char *s2, size_t n);
+int check_env_word(char *s);
 int parsing(char *s, t_list *d);
 int main(int argc, char **argv, char **envp);
 int ft_echo(t_list *d);

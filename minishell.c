@@ -169,21 +169,17 @@ int ft_try_to_exec(t_list *d)
 	return (0);
 }
 
-//cuando se hagan pipes y redirecciones cambiar esto y que en vez de ser
-//argumento 0 sea el numero de una variable que se inicializara en 0 y 
-//cada vez que haya un pipe valdra el arg del pipe + 1;
 int check_fst_arg(t_list *d)
 {
-	//printf("linea %s\n", d->read_line);
+	int i = -1;
+
 	if (check_echo_word(d->argu[0]) == 0)
 		return (ft_echo(d));
-	//if (ft_strcmp(d->argu[0], "echo") == 0)
-	//	return (ft_echo(d));
 	else if (ft_strcmp(d->argu[0], "pwd") == 0)
 		return (ft_pwd());
 	else if (ft_strcmp(d->argu[0], "cd") == 0)
 		return (ft_cd(d));
-	else if (ft_strcmp(d->argu[0], "env") == 0)
+	else if (check_env_word(d->argu[0]) == 0)
 		return (ft_env(d));
 	else if (ft_strcmp(d->argu[0], "export") == 0)
 		return (ft_export(d));
@@ -195,6 +191,9 @@ int check_fst_arg(t_list *d)
 	{
 		ft_try_to_exec(d);
 	}
+	while (d->argu[++i])
+		free(d->argu[i]);
+	free(d->argu);
 	return (0);
 }
 
@@ -399,7 +398,6 @@ int	ft_test(int argc, char **argv, char **envp, t_list *d)
 int main(int argc, char **argv, char **envp)
 {
 	t_list d;
-
 	int		exit_status;
 
 	if (argc >= 3 && !ft_strncmp(argv[1], "-c", 3))
