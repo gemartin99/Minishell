@@ -66,6 +66,7 @@ int		ft_export(t_list *d);
 int		ft_env(t_list *d);
 int		ft_pwd(int i);
 int		ft_cd(t_list *d);
+int		parsing(char *s, t_list *d);
 void	ft_free();
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strdup(const char *s1);

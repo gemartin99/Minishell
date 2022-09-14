@@ -32,5 +32,5 @@ int	ft_pwd(int i)
 	res[i] = '\n';
 	if (write(1, &res[0], i + 1) != i + 1)
 		return (-1);
-	return(0);
+	return (0);
 }

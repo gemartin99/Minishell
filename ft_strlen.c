@@ -1,9 +1,22 @@
-int ft_strlen(const char *s)
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gemartin <gemartin@student.42barc...>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/14 16:10:30 by gemartin          #+#    #+#             */
+/*   Updated: 2022/09/14 16:10:32 by gemartin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+#include "minishell.h"
+
+int	ft_strlen(const char *s)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(s[i])
+	while (s[i])
 		i++;
 	return (i);
 }
