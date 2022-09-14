@@ -216,15 +216,16 @@ int check_dolar_echo(char *line) //funcion para checkear si hay un dolar en la l
 	return (0);
 }
 
+//cuando me mandan: echo ""algo genera un espacio y no debe hacerlo.
 int ft_echo(t_list *d)
 {
 	int i;
 	int condition;
-	int space;
+	//char *test;
 
+	//test = "";
 	condition = 1;
 	i = 1;
-	space = 0;
 	//mirar si me mandan echo '"' da segfault, si pongo algo mas dentro de las comillas no
 	if (check_dolar_echo(d->read_line) == 1 && d->echo_control == 0)
 	{
@@ -245,11 +246,13 @@ int ft_echo(t_list *d)
 		}
 		while (i < d->num_args)
 		{
+			//if (ft_strncmp(d->argu[i], test, 1) == 0)
+			//	if (d->argu[i + 1])
+			//		ft_putchar_fd(' ', 1);
+			//printf("vuelta: %d\n", i);
 			if (d->argu[i])
 				ft_putstr_fd(d->argu[i], 1);
 			i++;
-			if (d->argu[i + 1])
-				ft_putchar_fd(' ', 1);
 		}
 		if (condition == 1)
 			ft_putchar_fd('\n', 1);

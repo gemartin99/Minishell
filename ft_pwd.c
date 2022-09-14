@@ -1,13 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gemartin <gemartin@student.42barc...>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/14 11:22:14 by gemartin          #+#    #+#             */
+/*   Updated: 2022/09/14 11:22:42 by gemartin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "minishell.h"
 
-int ft_pwd()
+int	ft_pwd(int i)
 {
-	char *s;
-	char *res;
-	int i;
+	char	*s;
+	char	*res;
 
-	i = 0;
 	s = malloc(sizeof(char) * (MAXPATHLEN + 1));
+	if (!s)
+		ft_free();
 	getcwd(s, MAXPATHLEN);
 	while (s[i])
 		i++;
@@ -21,5 +32,5 @@ int ft_pwd()
 	res[i] = '\n';
 	if (write(1, &res[0], i + 1) != i + 1)
 		return (-1);
-	return (0);
+	return(0);
 }

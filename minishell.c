@@ -5,158 +5,17 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gemartin <gemartin@student.42barc...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/23 09:19:02 by gemartin          #+#    #+#             */
-
+/*   Created: 2022/09/14 11:22:14 by gemartin          #+#    #+#             */
+/*   Updated: 2022/09/14 11:22:42 by gemartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "minishell.h"
 
-void ft_free()
+void	ft_free()
 {
 	printf("FALLA RESERVA MEMORIA\n");
 	exit (0);
 }
-
-///////////////////////////////////---LIBFT ⬇️---///////////////////////////////////
-
-int ft_strlen(const char *s)
-{
-	int i;
-
-	i = 0;
-	while(s[i])
-		i++;
-	return (i);
-}
-
-char	*ft_substr(char *s, int start, int len)
-{
-	int	i;
-	char	*res;
-
-	i = 0;
-	if (!s)
-		return (0);
-	if (start > ft_strlen(s))
-	{
-		res = malloc(1);
-		if (!res)
-			return (0);
-		res[0] = '\0';
-		return (res);
-	}
-	if (ft_strlen(s) - start < len)
-		len = ft_strlen(s) - start;
-	res = malloc(sizeof(char) * (len + 1));
-	if (!res)
-		return (0);
-	while (start < ft_strlen(s) && i < len && s[start])
-		res[i++] = s[start++];
-	res[i] = '\0';
-	return (res);
-}
-
-int	ft_strcmp(char *s1, char *s2)
-{
-	size_t	i;
-
-	i = 0;
-	while (s1[i] && s2[i] && s1[i] == s2[i])
-	{
-		i++;
-	}
-	return (((unsigned char *)s1)[i] - ((unsigned char *)s2)[i]);
-}
-
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	char	*str;
-	size_t	i;
-	size_t	c;
-
-	if (!s1 || !s2)
-		return (0);
-	str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
-	if (!str)
-		return (0);
-	i = 0;
-	while (s1[i])
-	{
-		str[i] = s1[i];
-		i++;
-	}
-	c = 0;
-	while (s2[c])
-	{
-		str[i + c] = s2[c];
-		c++;
-	}
-	str[i + c] = '\0';
-	return (str);
-}
-
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
-{
-	unsigned int	i;
-	unsigned int	c;
-
-	i = 0;
-	c = 0;
-	while (src[c] != '\0')
-		c++;
-	if (dstsize != 0)
-	{
-		while (src[i] != '\0' && i < (dstsize - 1))
-		{
-			dst[i] = src[i];
-			i++;
-		}
-		dst[i] = '\0';
-	}
-	return (c);
-}
-
-char	*ft_strdup(const char *s1)
-{
-	char	*res;
-
-	res = (char *)malloc(sizeof(char) * (ft_strlen(s1) + 1));
-	if (!res)
-		ft_free();
-	ft_strlcpy (res, s1, ft_strlen(s1) + 1);
-	return (res);
-}
-
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	if (n == 0)
-		return (0);
-	while (s1[i] && s2[i] && s1[i] == s2[i] && i + 1 < n)
-	{
-		i++;
-	}
-	return (((unsigned char *)s1)[i] - ((unsigned char *)s2)[i]);
-}
-
-char	*ft_strtrim(char *s1, char set)
-{
-	size_t	len;
-
-	if (!s1 || !set)
-		return (0);
-	while (*s1 && *s1 != set)
-		s1++;
-	len = ft_strlen(s1);
-	while (s1[len] != set && len)
-		len--;
-	return (ft_substr(s1, 0, len + 1));
-}
-
-///////////////////////////////////---LIBFT ⬆️---///////////////////////////////////
 
 int ft_try_to_exec(t_list *d)
 {
@@ -171,12 +30,10 @@ int ft_try_to_exec(t_list *d)
 
 int check_fst_arg(t_list *d)
 {
-	int i = -1;
-
 	if (check_echo_word(d->argu[0]) == 0)
 		return (ft_echo(d));
 	else if (ft_strcmp(d->argu[0], "pwd") == 0)
-		return (ft_pwd());
+		return (ft_pwd(0));
 	else if (ft_strcmp(d->argu[0], "cd") == 0)
 		return (ft_cd(d));
 	else if (check_env_word(d->argu[0]) == 0)
@@ -191,9 +48,6 @@ int check_fst_arg(t_list *d)
 	{
 		ft_try_to_exec(d);
 	}
-	while (d->argu[++i])
-		free(d->argu[i]);
-	free(d->argu);
 	return (0);
 }
 
@@ -344,7 +198,7 @@ int parsing(char *s, t_list *d)
 */
 //funcion para checkear el numero de tokens que hay
 
-void	many_args(char **argv)
+void	many_args(char **argv) //
 {
 	if (ft_strcmp(argv[0], argv[1]) == 0)
 		{
@@ -355,7 +209,7 @@ void	many_args(char **argv)
 		exit(0);
 }
 
-int init_env(t_list *d, char **envp)
+int init_env(t_list *d, char **envp) //funcion para inicializar el valor de las variables de entorno
 {
 	int i;
 
@@ -414,8 +268,11 @@ int main(int argc, char **argv, char **envp)
 		d.quotes = 0;
 		//init_prompt(&d);
 		d.read_line = readline("Minishell 🥵🇪🇸 ->");
-		if (d.read_line == NULL)
+		if (!d.read_line)
+		{
+			printf("aaaaa\n");
 			break ;
+		}
 		if (d.read_line && parsing(d.read_line, &d) == -1)
 			return (printf("ERROR EN EL PARSING\n"));
 		add_history(d.read_line);

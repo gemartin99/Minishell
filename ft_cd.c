@@ -1,12 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_cd.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gemartin <gemartin@student.42barc...>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/14 11:22:14 by gemartin          #+#    #+#             */
+/*   Updated: 2022/09/14 11:22:42 by gemartin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "minishell.h"
 
-char *get_path()
+char	*get_path(int i)
 {
-	char *s;
-	char *res;
-	int i;
+	char	*s;
+	char	*res;
 
-	i = 0;
 	s = malloc(sizeof(char) * (MAXPATHLEN + 1));
 	getcwd(s, MAXPATHLEN);
 	while (s[i])
@@ -22,13 +31,13 @@ char *get_path()
 	return (res);
 }
 
-int ft_cd(t_list *d)
+int	ft_cd(t_list *d)
 {
-	char *path;
-	int i;
+	char	*path;
+	int		i;
 
-	path = get_path();
 	i = 0;
+	path = get_path(i);
 	if (d->num_args == 1)
 		chdir(getenv("HOME"));
 	if (d->num_args == 2)
