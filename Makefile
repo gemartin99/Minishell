@@ -2,7 +2,8 @@ NAME = minishell
 
 SRCS = minishell.c ft_echo.c ft_unset.c ft_export.c ft_cd.c ft_env.c ft_pwd.c \
 		ft_strlen.c ft_substr.c ft_strcmp.c ft_strjoin.c ft_strlcpy.c \
-		ft_strdup.c ft_strncmp.c ft_strtrim.c ft_free.c ft_parsing.c
+		ft_strdup.c ft_strncmp.c ft_strtrim.c ft_free.c ft_parsing.c check_command_name.c \
+
 INCLUDE = minishell.h \
 
 CC = gcc

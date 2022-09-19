@@ -27,7 +27,7 @@ int check_fst_arg(t_list *d)
 {
 	if (check_echo_word(d->argu[0]) == 0)
 		return (ft_echo(d));
-	else if (ft_strcmp(d->argu[0], "pwd") == 0)
+	else if (check_pwd_word(d->argu[0]) == 0)
 		return (ft_pwd(0));
 	else if (ft_strcmp(d->argu[0], "cd") == 0)
 		return (ft_cd(d));
@@ -111,6 +111,8 @@ int main(int argc, char **argv, char **envp)
 		if (d.read_line && parsing(d.read_line, &d) == -1)
 			return (printf("ERROR EN EL PARSING\n"));
 		add_history(d.read_line);
+		if (check_null_args(d.read_line, &d, 0) == -1)
+			parsing(d.read_line, &d);
 		if (d.read_line && d.quotes == 0 && check_fst_arg(&d) == -1)
 			return (printf("ERROR DE RETORNO \n"));
 	}

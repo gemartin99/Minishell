@@ -24,21 +24,6 @@ void	ft_putstr_fd(char *s, int fd)
 	}
 }
 
-int check_echo_word(char *s)
-{
-	if (s[0] != 'E' && s[0] != 'e')
-		return (-1);
-	if (s[1] != 'C' && s[1] != 'c')
-		return (-1);
-	if (s[2] != 'H' && s[2] != 'h')
-		return (-1);
-	if (s[3] != 'O' && s[3] != 'o')
-		return (-1);
-	if (s[4])
-		return (-1);
-	return (0);
-}
-
 int check_dash_n(char *s)
 {
 	int i;
@@ -165,7 +150,7 @@ char *change_line_value(char *line, char *var) //funcion que cambia el valor de 
 	while (line[i] != '$')
 		i++;
 	c = i;
-	while (line[i + j] && line[i + j] != ' ')
+	while (line[i + j] && line[i + j] != ' ' && line[i + j] != 34 && line[i + j] != 39)
 		j++;
 	while (line[i + j])
 		i++;
@@ -216,46 +201,68 @@ int check_dolar_echo(char *line) //funcion para checkear si hay un dolar en la l
 	return (0);
 }
 
+int calc_dash_n(char *s)
+{
+	int i;
+
+	i = -1;
+	while (s[++i])
+	{
+		if (s[i] == ' ')
+			break;
+	}
+	while (s[++i])
+	{
+		if (s[i] == ' ')
+			break;
+	}
+	return (i);
+}
+
+char *change_dolar_x_var(t_list *d)
+{
+	d->read_line = ft_change_var(d, d->read_line);
+	if (d->read_line == NULL)
+		d->read_line = "echo";
+	if (check_dolar_echo(d->read_line) == 1)
+		change_dolar_x_var(d);
+	d->echo_control = 1;
+	parsing(d->read_line, d);
+	return (d->read_line);
+}
+
 //cuando me mandan: echo ""algo genera un espacio y no debe hacerlo.
 int ft_echo(t_list *d)
 {
 	int i;
 	int condition;
-	//char *test;
 
-	//test = "";
 	condition = 1;
-	i = 1;
-	//mirar si me mandan echo '"' da segfault, si pongo algo mas dentro de las comillas no
+	i = 4;
 	if (check_dolar_echo(d->read_line) == 1 && d->echo_control == 0)
-	{
-		d->echo_control = 1;
-		d->read_line = ft_change_var(d, d->read_line);
-		if (d->read_line == NULL)
-			d->read_line = "echo";
-		parsing(d->read_line, d);
-	}
+		d->read_line = change_dolar_x_var(d);
 	if (d->num_args == 1 && check_echo_word(d->argu[0]) == 0)
 		return (write(1, "\n", 1) - 1);
 	else
 	{
-		if (check_dash_n(d->argu[i]) == 0)
+		if (check_dash_n(d->argu[1]) == 0)
 		{
 			condition = 0;
-			i++;
+			i = calc_dash_n(d->read_line);
 		}
-		while (i < d->num_args)
+		while (d->read_line[++i])
 		{
-			//if (ft_strncmp(d->argu[i], test, 1) == 0)
-			//	if (d->argu[i + 1])
-			//		ft_putchar_fd(' ', 1);
-			//printf("vuelta: %d\n", i);
-			if (d->argu[i])
-				ft_putstr_fd(d->argu[i], 1);
-			i++;
+			if (d->read_line[i] == 34)
+			{
+				while (d->read_line[++i] != 34)
+					write(1, &d->read_line[i], 1);
+			}
+			else
+				write(1, &d->read_line[i], 1);
 		}
 		if (condition == 1)
 			ft_putchar_fd('\n', 1);
+		d->echo_control = 0;
 		return (0);
 	}
 	d->echo_control = 0;
