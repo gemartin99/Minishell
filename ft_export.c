@@ -343,7 +343,7 @@ int check_dolar_export(char *var) //checkear que haya un dolar en cada variable 
 	}
 	return (0);
 }
-
+//export "hola=a"    -> elimina o nose que hace que cuando haces env no se printan las env's//
 int ft_export(t_list *d)
 {
 	int i;

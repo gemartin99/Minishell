@@ -161,14 +161,14 @@ char *change_null_args(char *s, t_list *d)
 	i = -1;
 	while (s[++i])
 	{
-		if (s[i] == ' ' && s[i + 1] == 34 && s[i + 2] == 34 && s[i + 3] == ' ')
+		if (s[i] == ' ' && (s[i + 1] == 34 || s[i + 1] == 39) && (s[i + 2] == 34 || s[i + 2] == 39) && s[i + 3] == ' ')
 		{
 			i++;
 			s = quit_null_space(s, i);
 			d->num_args--;
 			s = change_null_args(s, d);
 		}
-		else if (s[i] == 34 && s[i + 1] == 34)
+		else if ((s[i] == 34 && s[i + 1] == 34) || (s[i] == 39 && s[i + 1] == 39))
 		{
 			s = quit_null(s, i);
 			d->num_args--;
@@ -187,7 +187,9 @@ int check_null_args(char *s, t_list *d, int control)
 	{
 		if (s[i] == ' ' && s[i + 1] == 34 && s[i + 2] == 34 && s[i + 3] == ' ')
 			control = 1;
-		else if (s[i] == 34 && s[i + 1] == 34)
+		else if (s[i] == ' ' && s[i + 1] == 39 && s[i + 2] == 39 && s[i + 3] == ' ')
+			control = 1;
+		else if ((s[i] == 34 && s[i + 1] == 34) || (s[i] == 39 && s[i + 1] == 39))
 			control = 1;
 	}
 	d->read_line = change_null_args(s, d);
