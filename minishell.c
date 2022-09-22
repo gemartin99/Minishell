@@ -41,6 +41,7 @@ int check_fst_arg(t_list *d)
 	//	ft_free(d);
 	else
 	{
+		printf("NO BUILTIN\n\n\n");
 		ft_try_to_exec(d);
 	}
 	return (0);
