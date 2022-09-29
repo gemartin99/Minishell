@@ -45,11 +45,13 @@ typedef struct s_list
 	int		num_args;
 	int		num_env;
 	int		control;
+	//int 	cmd_lines;
 	char	**argu;
 	char	**ent_var;	
 	char	*read_line;
 	char	*prompt;
 	char	*result;
+	char 	*cmd_line;
 }	t_list;
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);

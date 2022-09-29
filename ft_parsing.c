@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-int count_args(char *s)
+int count_args(char *s) //funcion que cuenta el numero de argumentos que me mandan
 {
 	int i;
 	int res;
@@ -52,7 +52,7 @@ void ft_free_arg(t_list *d)  //funcion por si falla una reserva de memoria de su
 	free(d->argu);
 }
 
-int choose_arg(char *s, t_list *d)
+int choose_arg(char *s, t_list *d) //funcion para guardar lo que me mandan en var args
 {
 	int pos;
 	int i;
@@ -110,7 +110,7 @@ int choose_arg(char *s, t_list *d)
 	return (0);
 }
 
-char *quit_null(char *s, int i)
+char *quit_null(char *s, int i) //funcion para quitar argumentos nulos sin espacios antes y despues
 {
 	 int j;
 	 char *res;
@@ -129,10 +129,11 @@ char *quit_null(char *s, int i)
 	 	j++;
 	 }
 	 res[j] = '\0';
+	 free(s);
 	 return (res);
 }
 
-char *quit_null_space(char *s, int i)
+char *quit_null_space(char *s, int i) //funcion para quitar argumentos nulos si hay espacios antes y despues del argumento
 {
 	 int j;
 	 char *res;
@@ -151,6 +152,7 @@ char *quit_null_space(char *s, int i)
 	 	j++;
 	 }
 	 res[j] = '\0';
+	 free(s);
 	 return (res);
 }
 
@@ -198,7 +200,68 @@ int check_null_args(char *s, t_list *d, int control)
 	return (0);
 }
 
-int parsing(char *s, t_list *d)
+char *ft_split_line(char *s, int i) //funcion para splitear la linea en caso de que haya un pipe
+{
+	int j;
+	char *res;
+
+	j = -1;
+	res = malloc(sizeof(char) * i);
+	if (!res)
+		ft_free();
+	while (++j < i)
+		res[j] = s[j];
+	res[i] = '\0';
+	return (res);
+}
+
+void ft_define_cmd_line(char *s, t_list *d) //funcion para detectar pipe y si lo hay guardar el comando antes del pipe para ejecutar solo eso
+{
+	int i;
+
+	i = -1;
+	while (s[++i])
+	{
+		if (s[i] == 34)
+		{
+			while (s[++i] == 34)
+				;
+		}
+		if (s[i] == 39)
+		{
+			while (s[++i] == 39)
+				;
+		}
+		if (s[i] == '|')
+			d->cmd_line = ft_split_line(s, i);
+	}
+}
+
+char *ft_quit_spaces(char *s) //funcion para quitar los espacios que hay antes del primero comando ya que son innecesarios
+{
+	int i;
+	int j;
+	char *res;
+
+	i = -1;
+	j = 0;
+	while (s[++i] == ' ')
+		;
+	res = (char *)malloc(sizeof(char) * ft_strlen(s) - i + 1);
+	if (!res)
+		ft_free();
+	while (s[i])
+	{
+		res[j] = s[i];
+		i++;
+		j++;
+	}
+	res[j] = '\0';
+	free(s);
+	return(res);
+}
+
+int parsing(char *s, t_list *d) //funcion parsing para quitar dquote y llamar a mas funciones
 {
 	//printf("\n\n\n 	ENTROOOOOOOO\n\n\n\n");
 	int i;
@@ -236,5 +299,8 @@ int parsing(char *s, t_list *d)
 	}
 	if (choose_arg(s, d) == -1)
 		return (-1);
+	if (s[0] == ' ')
+		d->read_line = ft_quit_spaces(s);
+	//ft_define_cmd_line(s, d);
 	return (0);
 }

@@ -148,7 +148,7 @@ char *change_line_value(char *line, char *var) //funcion que cambia el valor de 
 	return (ft_craft_result(line_final, line, var, j));
 }
 
-char *ft_change_var(t_list *d, char *line)
+char *ft_change_var(t_list *d, char *line) 
 {
 	char *name_var;
 	int i;

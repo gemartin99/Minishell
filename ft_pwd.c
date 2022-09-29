@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-int	ft_pwd(int i)
+int	ft_pwd(int i) //funcion para saber mi ruta actual
 {
 	char	*s;
 	char	*res;

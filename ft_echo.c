@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+;/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-int check_dash_n(char *s)
+int check_dash_n(char *s) // funcion que checkea si hay un argumento -n despues de echo
 {
 	int i;
 
@@ -30,7 +30,7 @@ int check_dash_n(char *s)
 	return (0);
 }
 
-int check_more_n(char *s, int i, int control)
+int check_more_n(char *s, int i) //funcion que checkea si hay mas -n o no quedan mas
 {
 	int j;
 
@@ -51,35 +51,26 @@ int check_more_n(char *s, int i, int control)
 		i++;
 	}
 	if (s[i] == '-' && s[i + 1] == 'n')
-	{
-		control = 1;
-		i = check_more_n(s, i, control);
-	}
+		i = check_more_n(s, i);
 	else if (s[i + 1] == '-' && s[i + 2] == 'n')
-	{
-		control = 1;
-		i = check_more_n(s, i, control);
-	}
+		i = check_more_n(s, i);
 	return (i);
 }
 
-int calc_dash_n(char *s, int i)
+int calc_dash_n(char *s, int i) //funcion para ubicar el indice justo despues del ultimo arg -n
 {
-	int control;
-
-	control = 0;
 	while (s[++i])
 	{
 		if (s[i] == ' ')
 			break;
 	}
-	i = check_more_n(s, i, control);
+	i = check_more_n(s, i);
 	while (s[i] == ' ')
 		i--;
 	return (i);
 }
 
-int ft_skip_echo(char *s, int i)
+int ft_skip_echo(char *s, int i) //funcion paara ubicarme cuando empieza el comando echo por si hay espacios antes
 {
 	while (s[i] != 'E' && s[i] != 'e')
 		i++;
@@ -88,7 +79,7 @@ int ft_skip_echo(char *s, int i)
 	return (i);
 }
 
-int start_arg(char *s)
+int start_arg(char *s) //funcion que me ubica al final del comando echo y por ende despues al principio del arguemnto
 {
 	int i;
 
@@ -102,6 +93,24 @@ int start_arg(char *s)
 	return (i);
 }
 
+/*
+void write_conditions(t_list *d, int i)
+{
+	if (d->read_line[i] == 39)
+	{
+		while (d->read_line[++i] != 39)
+			write(1, &d->read_line[i], 1);
+	}
+	if (d->read_line[i] == 34)
+	{
+		while (d->read_line[++i] != 34)
+			write(1, &d->read_line[i], 1);
+	}
+	if (d->read_line[i] != 34 && d->read_line[i] != 39)
+		write(1, &d->read_line[i], 1);
+}
+*/
+
 void ft_echo_write(t_list *d, int i, int condition)
 {
 	i = start_arg(d->read_line);
@@ -114,6 +123,7 @@ void ft_echo_write(t_list *d, int i, int condition)
 		}
 	while (d->read_line[++i])
 		{
+			//write_conditions(d, i);
 			if (d->read_line[i] == 39)
 			{
 				while (d->read_line[++i] != 39)
@@ -126,12 +136,40 @@ void ft_echo_write(t_list *d, int i, int condition)
 			}
 			if (d->read_line[i] != 34 && d->read_line[i] != 39)
 				write(1, &d->read_line[i], 1);
-			while (d->read_line[i] == ' ' && d->read_line[i + 1] == ' ')
-				i++;
+					while (d->read_line[i] == ' ' && d->read_line[i + 1] == ' ')
+						i++;
 		}
 		if (condition == 1)
 			ft_putchar_fd('\n', 1);
 		d->echo_control = 0;
+}
+
+char *ft_quit_quotes(char *s) //funcion para quitar comillas en caso de que esten asi: 'echo'
+{
+	int i;
+	int j;
+	char *res;
+
+	i = 0;
+	j = 4;
+	res = malloc(sizeof(char) * ft_strlen(s) - 1);
+	if (!res)
+		ft_free();
+	res[0] = 'e';
+	res[1] = 'c';
+	res[2] = 'h';
+	res[3] = 'o';
+	while (s[i] && s[i] != ' ')
+		i++;
+	while (s[i])
+	{
+		res[j] = s[i];
+		j++;
+		i++;
+	}
+	res[j] = '\0';
+	free(s);
+	return (res);
 }
 
 int ft_echo(t_list *d)
@@ -141,15 +179,18 @@ int ft_echo(t_list *d)
 
 	condition = 1;
 	i = 0;
-	//if (d->read_line[0] != 'e' || d->read_line[0] != 'E')
-	i = ft_skip_echo(d->read_line, i);
-	while (d->read_line[i] != ' ')
-		i++;
-	if (check_dolar_echo(d->read_line) == 1 && d->echo_control == 0)
-		d->read_line = change_dolar_x_var(d);
+	if (d->read_line[0] == 34 || d->read_line[0] == 39)
+		d->read_line = ft_quit_quotes(d->read_line);
 	if (d->num_args == 1 && check_echo_word(d->argu[0]) == 0)
 		return (write(1, "\n", 1) - 1);
+	if (check_dolar_echo(d->read_line) == 1 && d->echo_control == 0)
+		d->read_line = change_dolar_x_var(d);
 	else
+	{
+		i = ft_skip_echo(d->read_line, i);
+		while (d->read_line[i] != ' ')
+			i++;
 		ft_echo_write(d, i, condition);
+	}
 	return (0);
 }

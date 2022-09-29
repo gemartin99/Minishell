@@ -11,19 +11,48 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-//funcion para ejecutar 
-int ft_try_to_exec(t_list *d)
+/*void ft_free_d(t_list *d)
 {
-	if (d->num_args == 1)
+	int i;
+
+	i = 0;
+	while (i < d->num_args)
 	{
-		if (execve ("/usr/bin/ls", d->argu, d->ent_var) == -1)
-			//printf("%s\n", d->argu[1]);
-			perror("execv failed");
+		free(d->argu[i]);
+		i++;
 	}
+	if (d->argu)
+		free(d->argu);
+	if (d->read_line)
+		free(d->read_line);
+	if (d->result)
+		free(d->result);
+}*/
+
+//funcion para ejecutar 
+int ft_try_to_exec(t_list *d) //funcion para intentar hacer execv de lo que me manden
+{
+	int pid;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		char cmd[] = "/bin/ls";
+		char * argVec[] = {"ls", "-la", NULL};
+		char * envVec[] = {NULL};
+
+		if (d->num_args == 1)
+		{
+			if (execve (cmd, argVec, envVec) == -1)
+				perror("execv failed");
+		}
+	}
+	else
+		;
 	return (0);
 }
 
-int check_fst_arg(t_list *d)
+int check_fst_arg(t_list *d) //funcion para filtrar los builtings o para execv
 {
 	if (check_echo_word(d->argu[0]) == 0)
 		return (ft_echo(d));
@@ -53,7 +82,7 @@ int check_fst_arg(t_list *d)
 */
 //funcion para checkear el numero de tokens que hay
 
-void	many_args(char **argv) //
+void	many_args(char **argv) //funcion para si cuando vas a correr el programa por primera vez y introduces ciertos args se muestre esto
 {
 	if (ft_strcmp(argv[0], argv[1]) == 0)
 		{
@@ -104,18 +133,20 @@ int main(int argc, char **argv, char **envp)
 		d.quotes = 0;
 		//init_prompt(&d);
 		d.read_line = readline("Minishell 🥵🇪🇸 ->");
-		if (!d.read_line)
+		if (d.read_line[0] == '\0')
+			printf("");
+		else
 		{
-			printf("aaaaa\n");
-			break ;
+			add_history(d.read_line);
+			if (d.read_line && parsing(d.read_line, &d) == -1)
+				return (printf("ERROR EN EL PARSING\n"));
+			//add_history(d.read_line);
+			if (check_null_args(d.read_line, &d, 0) == -1)
+				parsing(d.read_line, &d);
+			if (d.read_line && d.quotes == 0 && check_fst_arg(&d) == -1)
+				return (printf("ERROR DE RETORNO \n"));
+		//ft_free_d(&d);
 		}
-		if (d.read_line && parsing(d.read_line, &d) == -1)
-			return (printf("ERROR EN EL PARSING\n"));
-		add_history(d.read_line);
-		if (check_null_args(d.read_line, &d, 0) == -1)
-			parsing(d.read_line, &d);
-		if (d.read_line && d.quotes == 0 && check_fst_arg(&d) == -1)
-			return (printf("ERROR DE RETORNO \n"));
 	}
 	return (0);
 }
