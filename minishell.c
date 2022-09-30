@@ -66,8 +66,11 @@ int check_fst_arg(t_list *d) //funcion para filtrar los builtings o para execv
 		return (ft_export(d));
 	else if (ft_strcmp(d->argu[0], "unset") == 0)
 		return (ft_unset(d));
-	//else if (ft_strcmp(d->argu[0], "exit") == 0)
-	//	ft_free(d);
+	else if (ft_strcmp(d->argu[0], "exit") == 0)
+	{
+		ft_exit(d);
+		return (0);
+	}
 	else
 	{
 		printf("NO BUILTIN\n\n\n");
