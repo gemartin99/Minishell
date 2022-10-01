@@ -129,7 +129,8 @@ char *quit_null(char *s, int i) //funcion para quitar argumentos nulos sin espac
 	 	j++;
 	 }
 	 res[j] = '\0';
-	 free(s);
+	 if (s)
+	 	s = NULL;
 	 return (res);
 }
 
@@ -139,20 +140,21 @@ char *quit_null_space(char *s, int i) //funcion para quitar argumentos nulos si 
 	 char *res;
 
 	 s[i] = 48;
-	 s[i + 1] = ' ';
+	 s[i + 1] = ';';
 	 j = -1;
 	 res = malloc(sizeof(char) * ft_strlen(s));
 	 if (!res)
 	 	ft_free();
 	 while (++j < i)
 	 	res[j] = s[j];
-	 while (s[j + 2])
+	 while (s[j + 1])
 	 {
-	 	res[j] = s[j + 2];
+	 	res[j] = s[j + 1];
 	 	j++;
 	 }
 	 res[j] = '\0';
-	 free(s);
+	 if (s)
+	 	s = NULL;
 	 return (res);
 }
 

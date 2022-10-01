@@ -117,6 +117,35 @@ int init_env(t_list *d, char **envp) //funcion para inicializar el valor de las 
 	return (0);
 }
 
+int ft_launch_minishell(int argc, char **argv, char **envp)
+{
+	t_list d;
+
+	if (argc <= 2)
+		return(0);
+	if (init_env(&d, envp) == -1)
+		return (-1); //ft_free()
+		d.quotes = 0;
+		//init_prompt(&d);
+		// d.read_line = readline("Minishell 🥵🇪🇸 ->");
+		// if (d.read_line[0] == '\0')
+		// 	printf("");
+		// else
+		//{
+			d.read_line = argv[2];
+			//add_history(d.read_line);
+			if (d.read_line && parsing(d.read_line, &d) == -1)
+				return (printf("ERROR EN EL PARSING\n"));
+			//add_history(d.read_line);
+			if (check_null_args(d.read_line, &d, 0) == -1)
+				parsing(d.read_line, &d);
+			if (d.read_line && d.quotes == 0 && check_fst_arg(&d) == -1)
+				return (printf("ERROR DE RETORNO \n"));
+		//ft_free_d(&d);
+		//}
+	return (0);
+}
+
 int main(int argc, char **argv, char **envp)
 {
 	t_list d;
@@ -127,6 +156,11 @@ int main(int argc, char **argv, char **envp)
 		exit_status = ft_test(argc, argv, envp, &d);
 		exit(exit_status);
 	}*/
+	if (argc >= 3 && !ft_strncmp(argv[1], "-c", 3))
+  	{
+    	int exit_status = ft_launch_minishell(argc, argv, envp);
+    	exit(exit_status);
+    }
 	if (argc != 1)
 		many_args(argv);
 	if (init_env(&d, envp) == -1)

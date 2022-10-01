@@ -96,17 +96,22 @@ int start_arg(char *s) //funcion que me ubica al final del comando echo y por en
 /*
 void write_conditions(t_list *d, int i)
 {
-	if (d->read_line[i] == 39)
+	if (d->read_line[i] == ';')
+	{
+		write(1, " ", 1);
+		i++;
+	}
+	else if (d->read_line[i] == 39)
 	{
 		while (d->read_line[++i] != 39)
 			write(1, &d->read_line[i], 1);
 	}
-	if (d->read_line[i] == 34)
+	else if (d->read_line[i] == 34)
 	{
 		while (d->read_line[++i] != 34)
 			write(1, &d->read_line[i], 1);
 	}
-	if (d->read_line[i] != 34 && d->read_line[i] != 39)
+	else if (d->read_line[i] != 34 && d->read_line[i] != 39)
 		write(1, &d->read_line[i], 1);
 }
 */
@@ -124,17 +129,25 @@ void ft_echo_write(t_list *d, int i, int condition)
 	while (d->read_line[++i])
 		{
 			//write_conditions(d, i);
-			if (d->read_line[i] == 39)
+			//hacer funcion para checkear todos los casos de ~ ya que hay mil mierdas
+			if (d->read_line[i] == '~' && d->read_line[i - 1] == ' ' && (d->read_line[i + 1] == ' ' || d->read_line[i + 1] == '\0'))
+				write(1, "/Users/gemartin", 15);
+			else if (d->read_line[i] == ';')
+			{
+				write(1, " ", 1);
+				i++;
+			}
+			else if (d->read_line[i] == 39)
 			{
 				while (d->read_line[++i] != 39)
 					write(1, &d->read_line[i], 1);
 			}
-			if (d->read_line[i] == 34)
+			else if (d->read_line[i] == 34)
 			{
 				while (d->read_line[++i] != 34)
 					write(1, &d->read_line[i], 1);
 			}
-			if (d->read_line[i] != 34 && d->read_line[i] != 39)
+			else if (d->read_line[i] != 34 && d->read_line[i] != 39)
 				write(1, &d->read_line[i], 1);
 					while (d->read_line[i] == ' ' && d->read_line[i + 1] == ' ')
 						i++;
@@ -179,12 +192,12 @@ int ft_echo(t_list *d)
 
 	condition = 1;
 	i = 0;
-	if (d->read_line[0] == 34 || d->read_line[0] == 39)
-		d->read_line = ft_quit_quotes(d->read_line);
-	if (d->num_args == 1 && check_echo_word(d->argu[0]) == 0)
-		return (write(1, "\n", 1) - 1);
 	if (check_dolar_echo(d->read_line) == 1 && d->echo_control == 0)
 		d->read_line = change_dolar_x_var(d);
+	if (d->read_line[0] == 34 || d->read_line[0] == 39)
+		d->read_line = ft_quit_quotes(d->read_line);
+	else if (d->num_args == 1 && check_echo_word(d->argu[0]) == 0)
+		return (write(1, "\n", 1) - 1);
 	else
 	{
 		i = ft_skip_echo(d->read_line, i);

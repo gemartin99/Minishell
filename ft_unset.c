@@ -11,6 +11,19 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
+int ft_check_wrong_let(char c, char *s)
+{
+	if (c == '=' || c == '?' || c == '!' || c == '.' 
+		|| c == '+' || c == '}' || c == '{' || c == '-' || c == 92 
+		|| c == '[' || c == ']' || c == '@' || c == '*' || c == '#'
+		|| c == '^')
+	{
+		printf("bash: unset: `%s': not a valid identifier\n", s);
+		return (-1);
+	}
+	return (0);
+}
+
 int	ft_special_strcmp(char *s1, char *s2)
 {
 	size_t	i;
@@ -34,6 +47,11 @@ int	ft_unset_strcmp(char *s, t_list *d)
 	{
 		printf("bash: unset: `%s': not a valid identifier\n", s);
 		return (0);
+	}
+	while (s[++i])
+	{
+		if (ft_check_wrong_let(s[i], s) == -1)
+			return (0);	
 	}
 	while (++i < d->num_env)
 	{

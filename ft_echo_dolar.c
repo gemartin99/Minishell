@@ -18,6 +18,21 @@ int check_dolar_echo(char *line) //funcion para checkear si hay un dolar en la l
 	i = 0;
 	while (line[i])
 	{
+		if (line[i] == 39)
+		{
+			i++;
+			while (line[i] != 39)
+				i++;
+			i++;
+		}
+		if (line [i] == 34)
+		{
+			while (line[++i] != 34)
+			{
+				if (line[i] == '$' && line[i + 1])
+					return (1);
+			}
+		}
 		if (line[i] == '$' && line[i + 1])
 			return (1);
 		i++;
@@ -62,6 +77,15 @@ static int var_strcmp_echo(char *s1, char *s2) //funcion strcmp modificada para 
 	return (0);
 }
 
+int check_special_char(char c) //funcion para checkear si despues de la variable hay algunos caracter especial ya que cambia la interpretacion de la var
+{
+	if (c == '=' || c == '@' || c == '#' || c == '-' || c == '+' || c == '{' ||
+		c == '}' || c == '[' || c == ']' || c == '?' || c == '!' || c == '~' ||
+		c == '%' || c == '^' || c == '=' || c == '*')
+		return (-1);
+	return (0);
+}
+
 char *ft_name_var(char *line) //funcion que crea una variable con el nombre que tiene el argumento que me manden cn $ para luego comprarlo con las variables de entorno
 {
 	int j;
@@ -70,13 +94,13 @@ char *ft_name_var(char *line) //funcion que crea una variable con el nombre que 
 
 	i = position_dolar(line);
 	j = 0;
-	while (line[i + j] && line[i + j] != ' ' && line[i + j] != '"')
+	while (line[i + j] && line[i + j] != ' ' && line[i + j] != '"' && check_special_char(line[i + j]) == 0)
 		j++;
 	result = malloc(sizeof(char) * i + j + 1);
 	if (!result)
 		ft_free();
 	j = 0;
-	while (line[i + j] && line[i + j] != ' ' && line[i + j] != '"')
+	while (line[i + j] && line[i + j] != ' ' && line[i + j] != '"' && check_special_char(line[i + j]) == 0)
 	{
 		result[j] = line[i + j];
 		j++;
@@ -148,13 +172,70 @@ char *change_line_value(char *line, char *var) //funcion que cambia el valor de 
 	return (ft_craft_result(line_final, line, var, j));
 }
 
+char *ft_split_var(char *line, int i, t_list *d) //funcion que retorna el resto de una variable si hay caracteres especiales. Ej: echo "$USER@hola" esta funcion retornara @hola
+{
+	int j;
+	char *res;
+
+	d->control_var_reminder = 1;
+	j = i;
+	while (line[i])
+		i++;
+	res = malloc(sizeof(char) * i - j + 1);
+	if (!res)
+		ft_free();
+	i = 0;
+	while (line[j])
+	{
+		res[i] = line[j];
+		i++;
+		j++;
+	}
+	res[i] = '\0';
+	return (res);
+}
+
+char *ft_strjoin_special(char *s1, char *s2)
+{
+	char	*str;
+	size_t	i;
+	size_t	c;
+
+	if (!s1 || !s2)
+		return (0);
+	str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2)));
+	if (!str)
+		return (0);
+	i = 0;
+	while (s1[i + 1])
+	{
+		str[i] = s1[i];
+		i++;
+	}
+	c = 0;
+	while (s2[c])
+	{
+		str[i + c] = s2[c];
+		c++;
+	}
+	str[i + c] = '\0';
+	return (str);
+}
+
 char *ft_change_var(t_list *d, char *line) 
 {
 	char *name_var;
 	int i;
 	char *result;
 
+	i = -1;
 	name_var = ft_name_var(line);
+	while (line[++i])
+		if (check_special_char(line[i]) == -1)
+		{
+			d->var_reminder = ft_split_var(line, i, d);
+			break;
+		}
 	if (!name_var)
 		return (NULL);
 	i = -1;
@@ -177,12 +258,17 @@ char *ft_change_var(t_list *d, char *line)
 
 char *change_dolar_x_var(t_list *d)
 {
+	d->control_var_reminder = 0;
 	d->read_line = ft_change_var(d, d->read_line);
 	if (d->read_line == NULL)
 		d->read_line = "echo";
 	if (check_dolar_echo(d->read_line) == 1)
 		change_dolar_x_var(d);
 	d->echo_control = 1;
+	if (d->control_var_reminder == 1)
+	{
+		d->read_line = ft_strjoin_special(d->read_line, d->var_reminder);
+	}
 	parsing(d->read_line, d);
 	return (d->read_line);
 }
