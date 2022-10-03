@@ -22,7 +22,10 @@ char	*get_path(int i)
 		i++;
 	res = malloc(sizeof(char) * i + 1);
 	if (!res)
+	{
+		free(s);
 		ft_free();
+	}
 	i = -1;
 	while (s[++i])
 		res[i] = s[i];
@@ -37,10 +40,15 @@ int	ft_cd(t_list *d)
 	int		i;
 
 	i = 0;
+	//hacer que variable entorno $OLDPWD tenga el valor de la ruta actual 
+	//antes de hacer algun CD siempre y cuando el CD no sea hacia $OLDPWD
 	path = get_path(i);
 	if (d->num_args == 1)
 		chdir(getenv("HOME"));
 	if (d->num_args == 2)
-		chdir(d->argu[1]);
+	{
+		if (chdir(d->argu[1]) == -1)
+			printf("bash: cd: %s: No such file or directory\n", d->argu[1]);
+	}
 	return (0);
 }

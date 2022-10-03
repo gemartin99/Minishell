@@ -165,7 +165,13 @@ char *change_null_args(char *s, t_list *d)
 	i = -1;
 	while (s[++i])
 	{
-		if (s[i] == ' ' && (s[i + 1] == 34 || s[i + 1] == 39) && (s[i + 2] == 34 || s[i + 2] == 39) && s[i + 3] == ' ')
+		if (s[i] == 34 && s[i + 1] != 34)
+			while (s[++i] != 34)
+				;
+		else if (s[i] == 39 && s[i + 1] != 39)
+			while (s[++i] != 39)
+				;	
+		else if (s[i] == ' ' && (s[i + 1] == 34 || s[i + 1] == 39) && (s[i + 2] == 34 || s[i + 2] == 39) && s[i + 3] == ' ')
 		{
 			i++;
 			s = quit_null_space(s, i);

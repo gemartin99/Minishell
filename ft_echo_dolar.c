@@ -81,7 +81,7 @@ int check_special_char(char c) //funcion para checkear si despues de la variable
 {
 	if (c == '=' || c == '@' || c == '#' || c == '-' || c == '+' || c == '{' ||
 		c == '}' || c == '[' || c == ']' || c == '?' || c == '!' || c == '~' ||
-		c == '%' || c == '^' || c == '=' || c == '*')
+		c == '%' || c == '^' || c == '=' || c == '*' || c == '$' || c == '/')
 		return (-1);
 	return (0);
 }
@@ -195,24 +195,22 @@ char *ft_split_var(char *line, int i, t_list *d) //funcion que retorna el resto 
 	return (res);
 }
 
-char *ft_strjoin_special(char *s1, char *s2)
+char *ft_strjoin_special(char *s1, char *s2, size_t i, size_t c)
 {
 	char	*str;
-	size_t	i;
-	size_t	c;
+	size_t 	size1;
 
-	if (!s1 || !s2)
-		return (0);
-	str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2)));
+	size1 = ft_strlen(s1);
+	if (s1[size1 - 1] == 34 || s1[size1 - 1] == 39)
+		size1--;
+	str = (char *)malloc(sizeof(char) * (size1 + ft_strlen(s2)));
 	if (!str)
 		return (0);
-	i = 0;
-	while (s1[i + 1])
+	while (s1[i] && i < size1)
 	{
 		str[i] = s1[i];
 		i++;
 	}
-	c = 0;
 	while (s2[c])
 	{
 		str[i + c] = s2[c];
@@ -228,8 +226,10 @@ char *ft_change_var(t_list *d, char *line)
 	int i;
 	char *result;
 
-	i = -1;
+	i = 0;
 	name_var = ft_name_var(line);
+	while (line[i] && line[i] != '$')
+		i++;
 	while (line[++i])
 		if (check_special_char(line[i]) == -1)
 		{
@@ -258,6 +258,9 @@ char *ft_change_var(t_list *d, char *line)
 
 char *change_dolar_x_var(t_list *d)
 {
+	int i;
+
+	i = -1;
 	d->control_var_reminder = 0;
 	d->read_line = ft_change_var(d, d->read_line);
 	if (d->read_line == NULL)
@@ -267,7 +270,7 @@ char *change_dolar_x_var(t_list *d)
 	d->echo_control = 1;
 	if (d->control_var_reminder == 1)
 	{
-		d->read_line = ft_strjoin_special(d->read_line, d->var_reminder);
+		d->read_line = ft_strjoin_special(d->read_line, d->var_reminder, 0, 0);
 	}
 	parsing(d->read_line, d);
 	return (d->read_line);

@@ -116,6 +116,15 @@ void write_conditions(t_list *d, int i)
 }
 */
 
+void ft_write_path(int i, char *s)
+{
+	while (s[++i])
+	{
+		if (s[i] != 34 && s[i] != 39)
+			write(1, &s[i], 1);
+	}
+}
+
 void ft_echo_write(t_list *d, int i, int condition)
 {
 	i = start_arg(d->read_line);
@@ -130,7 +139,7 @@ void ft_echo_write(t_list *d, int i, int condition)
 		{
 			//write_conditions(d, i);
 			//hacer funcion para checkear todos los casos de ~ ya que hay mil mierdas
-			if (d->read_line[i] == '~' && d->read_line[i - 1] == ' ' && (d->read_line[i + 1] == ' ' || d->read_line[i + 1] == '\0'))
+			if (d->read_line[i] == '~' && d->read_line[i - 1] == ' ' && (d->read_line[i + 1] == ' ' || d->read_line[i + 1] == '\0' || d->read_line[i + 1] == '/'))
 				write(1, "/Users/gemartin", 15);
 			else if (d->read_line[i] == ';')
 			{

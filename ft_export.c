@@ -209,15 +209,16 @@ char *replace_dolar(t_list *d, char *var, int i) //funcion para añadir una stri
 	while (var[i] != '$')
 		i++;
 	i++;
-	while (var[i + j])
+	while (var[i + j] && var[i + j] != 34 && var[i + j] != 39)
 		j++;
 	aux = malloc(sizeof(char) * j + 1);
 	if (!aux)
 		ft_free();
 	j = -1;
-	while (var[++j + i])
+	while (var[++j + i] && var[i + j] != 34 && var[i + j] != 39)
 		aux[j] = var[i + j];
 	aux[j] = '\0';
+	printf("aux %s\n", aux);
 	aux = check_same_var(d, aux);
 	return(aux);
 }
@@ -309,6 +310,7 @@ char *value_var(t_list *d, char *var) //funcion main para crear una variable nue
 	int i;
 	int j;
 
+	printf("ENTRO3\n");
 	result = NULL;
 	j = 0;
 	i = 0;
@@ -326,6 +328,7 @@ char *value_var(t_list *d, char *var) //funcion main para crear una variable nue
 		return (join_value3(var));
 	if (var[j] == '$')
 		return (join_value(var, result));
+	printf("ENTRO4\n");
 	return (join_value2(var, result));
 }
 
@@ -338,12 +341,17 @@ int check_dolar_export(char *var) //checkear que haya un dolar en cada variable 
 		i++;
 	while(var[i] && var[++i])
 	{
+		//printf("char |%c|\n", var[i]);
 		if (var[i] == '$')
 			return (1);
 	}
 	return (0);
 }
-//export "hola=a"    -> elimina o nose que hace que cuando haces env no se printan las env's//
+
+/*
+Cuando me mandan el valor de la var entre "" se lia en la funcion check_dolar_export ya que son argumentos diferentes
+*/
+
 int ft_export(t_list *d)
 {
 	int i;
@@ -355,10 +363,15 @@ int ft_export(t_list *d)
 		print_export_var(d);
 		return (0);
 	}
+	//printf("ENTRO1\n");
 	while (d->argu[++i] && i < d->num_args)
 	{
+		//printf("bucle\n");
 		if (check_dolar_export(d->argu[i]) == 1)
+		{
+			//printf("ENTRO2\n");
 			d->argu[i] = value_var(d, d->argu[i]);
+		}
 	}
 	binary_array = malloc(sizeof(char) * d->num_args);
 	if (!binary_array)
