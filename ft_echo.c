@@ -65,8 +65,6 @@ int calc_dash_n(char *s, int i) //funcion para ubicar el indice justo despues de
 			break;
 	}
 	i = check_more_n(s, i);
-	while (s[i] == ' ')
-		i--;
 	return (i);
 }
 
@@ -125,6 +123,18 @@ void ft_write_path(int i, char *s)
 	}
 }
 
+int check_exist_more_arg(char *s, int i) //funcion para checkear que no venga solo -n y no haya nada que printar
+{
+	int j;
+
+	j = i;
+	while (s[i] && s[i] == ' ')
+		i++;
+	if (i == ft_strlen(s))
+		return (i);
+	return (j);
+}
+
 void ft_echo_write(t_list *d, int i, int condition)
 {
 	i = start_arg(d->read_line);
@@ -132,13 +142,13 @@ void ft_echo_write(t_list *d, int i, int condition)
 		{
 			condition = 0;
 			i = calc_dash_n(d->read_line, i);
-			while (d->read_line[i] != ' ')
-				i--;
+			i = check_exist_more_arg(d->read_line, i);
+			if (i != ft_strlen(d->read_line))
+				while (d->read_line[i] != ' ')
+					i--;
 		}
 	while (d->read_line[++i])
 		{
-			//write_conditions(d, i);
-			//hacer funcion para checkear todos los casos de ~ ya que hay mil mierdas
 			if (d->read_line[i] == '~' && d->read_line[i - 1] == ' ' && (d->read_line[i + 1] == ' ' || d->read_line[i + 1] == '\0' || d->read_line[i + 1] == '/'))
 				write(1, "/Users/gemartin", 15);
 			else if (d->read_line[i] == ';')

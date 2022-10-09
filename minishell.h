@@ -40,6 +40,7 @@
 
 typedef struct s_list
 {
+	int 	atoi_error;
 	int		echo_control;
 	int		quotes;
 	int		num_args;

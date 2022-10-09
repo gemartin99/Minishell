@@ -101,6 +101,7 @@ int init_env(t_list *d, char **envp) //funcion para inicializar el valor de las 
 	int i;
 
 	i = 0;
+	d->atoi_error = 0;
 	d->echo_control = 0;
 	while (envp[i])
 		i++;
@@ -117,7 +118,7 @@ int init_env(t_list *d, char **envp) //funcion para inicializar el valor de las 
 	return (0);
 }
 
-int ft_launch_minishell(int argc, char **argv, char **envp)
+int ft_launch_minishell(int argc, char **argv, char **envp) //funcion para los testers
 {
 	t_list d;
 
@@ -156,6 +157,7 @@ int main(int argc, char **argv, char **envp)
 		exit_status = ft_test(argc, argv, envp, &d);
 		exit(exit_status);
 	}*/
+	//este if es para los testers
 	if (argc >= 3 && !ft_strncmp(argv[1], "-c", 3))
   	{
     	int exit_status = ft_launch_minishell(argc, argv, envp);

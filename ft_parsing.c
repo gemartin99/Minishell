@@ -61,7 +61,7 @@ int choose_arg(char *s, t_list *d) //funcion para guardar lo que me mandan en va
 	d->num_args = count_args(s);
 	d->argu = malloc(sizeof(char *) * (d->num_args));
 	if (d->argu == NULL)
-		return (-1);
+		ft_free();
 	i = -1;
 	start = 0;
 	pos = 0;
@@ -76,7 +76,7 @@ int choose_arg(char *s, t_list *d) //funcion para guardar lo que me mandan en va
 			if (d->argu[pos] == NULL)
 			{
 				ft_free_arg(d);
-				return (-1);
+				ft_free();
 			}
 			pos++;
 		}
@@ -89,7 +89,7 @@ int choose_arg(char *s, t_list *d) //funcion para guardar lo que me mandan en va
 			if (d->argu[pos] == NULL)
 			{
 				ft_free_arg(d);
-				return (-1);
+				ft_free();
 			}
 			pos++;
 		}
@@ -102,7 +102,7 @@ int choose_arg(char *s, t_list *d) //funcion para guardar lo que me mandan en va
 			if (d->argu[pos] == NULL)
 			{
 				ft_free_arg(d);
-				return (-1);
+				ft_free();
 			}
 			pos++;
 		}
@@ -188,11 +188,56 @@ char *change_null_args(char *s, t_list *d)
 	return (s);
 }
 
+//funciones comentadas que intentan arreglar el fallo cuando: echo -n" "hola 
+
+/*char *quit_quotes(char *s, int i) //funcion para eliminar las comillas en argumentos con solo espacio
+{
+	int j;
+	char *res;
+
+
+	j = -1;
+	res = malloc(sizeof(char) * ft_strlen(s) - 1);
+	if (!res)
+		ft_free();
+	while (s[++j] && j < i)
+		res[j] = s[j];
+	res[j] = s[++i];
+	while(s[++i])
+	{
+		res[++j] = s[i]; 
+	}
+	res[j] = '\0';
+	free(s);
+	return (res);
+}
+
+char *quit_null_space(char *s) //funcion para detectar si hay que quitar las comillas en argumentos con solo un espacio ej: ' '
+{
+	int i;
+
+	i = -1;
+	while (s[++i])
+	{
+		if (s[i] == 34 && s[i + 1] == ' ' && s[i + 2] == 34)
+		{
+			s = quit_quotes(s, i);
+			d->num_args--;
+		}
+		else if (s[i] == 39 && s[i + 1] == ' ' && s[i + 2] == 39)
+		{
+			s = quit_quotes(s, i);
+			d->num_args--;
+		}
+	}
+}*/
+
 int check_null_args(char *s, t_list *d, int control)
 {
 	int i;
 
 	i = -1;
+	//s = quit_null_space(s);
 	while (s[++i])
 	{
 		if (s[i] == ' ' && s[i + 1] == 34 && s[i + 2] == 34 && s[i + 3] == ' ')
@@ -277,7 +322,6 @@ int parsing(char *s, t_list *d) //funcion parsing para quitar dquote y llamar a 
 	int doble = 0;
 
 	i = -1;
-
 	while (s[++i])
 	{
 		if (s[i] == 34)

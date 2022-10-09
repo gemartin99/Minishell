@@ -11,6 +11,36 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
+int check_dolar_cd(char *line) //funcion para checkear si hay un dolar en la linea que me mandan
+{
+	int i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == 39)
+		{
+			i++;
+			while (line[i] != 39)
+				i++;
+			i++;
+		}
+		if (line [i] == 34)
+		{
+			while (line[++i] != 34)
+			{
+				if (line[i] == '$' && line[i + 1])
+					return (1);
+			}
+		}
+		if (line[i] == '$' && line[i + 1])
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+
 char	*get_path(int i)
 {
 	char	*s;
@@ -42,6 +72,8 @@ int	ft_cd(t_list *d)
 	i = 0;
 	//hacer que variable entorno $OLDPWD tenga el valor de la ruta actual 
 	//antes de hacer algun CD siempre y cuando el CD no sea hacia $OLDPWD
+	if (d->argu[1] && check_dolar_cd(d->argu[1]) == 1)
+		d->read_line = change_dolar_x_var(d);
 	path = get_path(i);
 	if (d->num_args == 1)
 		chdir(getenv("HOME"));
