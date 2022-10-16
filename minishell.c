@@ -29,22 +29,135 @@
 		free(d->result);
 }*/
 
+static int var_strcmp_path(char *s1, char *s2) //funcion strcmp modificada para variables de entorno path
+{
+	int i;
+
+	i = 0;
+	if (!s1 || !s2)
+		return (1);
+	while (s2[i] && s2[i] != '=')
+		i++;
+	if (ft_strlen(s1) != i)
+		return (1); 
+	i = 0;
+	while (s1[i] && s2[i] && s2[i] != '=')
+	{
+		if (s1[i] != s2[i])
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int path_exist(t_list *d) //funcion que checkea si existe la var $PATH
+{
+	int i;
+
+	i = -1;
+	while (++i < d->num_env)
+	{
+		if (d->ent_var[i] == NULL)
+			;
+		else if (var_strcmp_path("PATH", d->ent_var[i]) == 0)
+		{
+			d->path_value = ft_strdup(d->ent_var[i]);
+			i = 0;
+			while (*d->path_value != '=')
+				d->path_value++;
+			d->path_value++;
+			return (0);
+		}
+	}
+	return (-1);
+}
+
+char *value_dolar_path(char *s)
+{
+	int i;
+	char *res;
+
+	i = 0;
+	if (!s || !s[i])
+		return (NULL);
+	while (s[i] && s[i] != ':')
+		i++;
+	res = malloc(sizeof(char) * i + 2);
+	if (!res)
+		ft_free();
+	i = 0;
+	while (*s && *s != ':')
+	{
+		res[i] = *s;
+		s++;
+		i++;
+	}
+	res[i] = '/';
+	res[i + 1] = '\0';
+	return (res);
+}
+
+char *increase_pointer(char *s)
+{
+	int i;
+	int j;
+	char *res;
+
+	i = 0;
+	if (!s)
+		return (NULL);
+	j = ft_strlen(s);
+	while (s[i] && s[i] != ':')
+		i++;
+	res = malloc(sizeof(char) * j - i + 1);
+	if (!res)
+		ft_free();
+	j = 0;
+	while (s[++i])
+	{
+		res[j] = s[i];
+		j++;
+	}
+	res[j] = '\0';
+	return (res);
+}
+
 //funcion para ejecutar 
 int ft_try_to_exec(t_list *d) //funcion para intentar hacer execv de lo que me manden
 {
 	int pid;
+	int returnvalue;
+	char *absolute_path;
+	char *search_path;
+	int i;
 
+	i = 0;
+	if (path_exist(d) == -1)
+		printf("$PATH NO EXISTE\n");
+	else
+		printf("PATH EXISTE\n");
 	pid = fork();
 	if (pid == 0)
 	{
-		char cmd[] = "/bin/ls";
-		char * argVec[] = {"ls", "-la", NULL};
-		char * envVec[] = {NULL};
-
-		if (d->num_args == 1)
+		//char cmd[] = "/bin/ls";
+		//char * argVec[] = {"ls", "-la", NULL};
+		//char * envVec[] = {NULL};
+		//printf("c %s\n", absolute_path);
+		absolute_path = value_dolar_path(d->path_value);
+		d->path_value = increase_pointer(d->path_value);
+		search_path = ft_strjoin(absolute_path, d->argu[0]);
+		while (absolute_path)
 		{
-			if (execve (cmd, argVec, envVec) == -1)
-				perror("execv failed");
+			printf("\na %s\n", search_path);
+			returnvalue = execve(search_path, d->argu[0], d->ent_var);
+			if (returnvalue == 0 || returnvalue == 1)
+				break ;
+			//printf("\na %s\n", d->path_value);
+			absolute_path = value_dolar_path(d->path_value);
+			d->path_value = increase_pointer(d->path_value);
+			search_path = ft_strjoin(absolute_path, d->argu[0]);
+			//if (execve (cmd, argVec, envVec) == -1)
+			//	perror("execv failed");
 		}
 	}
 	else

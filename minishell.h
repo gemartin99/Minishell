@@ -55,6 +55,7 @@ typedef struct s_list
 	char	*result;
 	char 	*cmd_line;
 	char 	*var_reminder;
+	char	*path_value;
 }	t_list;
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
@@ -83,7 +84,7 @@ void	ft_putstr_fd(char *s, int fd);
 int		check_null_args(char *s, t_list *d, int control);
 char	*change_dolar_x_var(t_list *d);
 char	*ft_strjoin(char const *s1, char const *s2);
-char	*ft_strdup(const char *s1);
+char	*ft_strdup(char *s1);
 char	*ft_strtrim(char *s1, char set);
 char	*ft_substr(char *s, int start, int len);
 
