@@ -59,7 +59,7 @@ int choose_arg(char *s, t_list *d) //funcion para guardar lo que me mandan en va
 	int start;
 
 	d->num_args = count_args(s);
-	d->argu = malloc(sizeof(char *) * (d->num_args));
+	d->argu = malloc(sizeof(char *) * (d->num_args) + 1);
 	if (d->argu == NULL)
 		ft_free();
 	i = -1;
@@ -107,6 +107,7 @@ int choose_arg(char *s, t_list *d) //funcion para guardar lo que me mandan en va
 			pos++;
 		}
 	}
+	d->argu[pos] = NULL;
 	return (0);
 }
 

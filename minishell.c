@@ -125,10 +125,12 @@ char *increase_pointer(char *s)
 //funcion para ejecutar 
 int ft_try_to_exec(t_list *d) //funcion para intentar hacer execv de lo que me manden
 {
-	int returnvalue;
+	//CHECKEAR SI ME MANDAN PATH ABSOLUTA Y SI LO HACEN EJECUTAR ESO DIRECTAMENTE
+	int returnvalue = EXIT_FAILURE;
 	char *absolute_path;
 	char *search_path;
 	pid_t pid;
+	int status;
 //	const char *test;
 
 //	test = malloc(sizeof(char) * ft_strlen(d->argu[0]) + 1);
@@ -145,6 +147,7 @@ int ft_try_to_exec(t_list *d) //funcion para intentar hacer execv de lo que me m
 	//char * argVec[] = {"ls", "-la", NULL};
 	//char * envVec[] = {NULL};
 	//printf("c %s\n", absolute_path);
+	//printf("%s\n", d->argu[1]);
 	absolute_path = ft_strdup("a");
 	while (absolute_path) //ARREGLAR: NOSE PORQUE ME SALE EL PROMPT CUANDO HAGO FORK
 	{
@@ -153,7 +156,9 @@ int ft_try_to_exec(t_list *d) //funcion para intentar hacer execv de lo que me m
 		//printf("%s\n", absolute_path);
 		//printf("%s\n", d->path_value);
 		pid = fork();
-		if (pid == 0)
+		if (pid < 0)
+			ft_free();
+		else if (pid == 0)
 		{
 			absolute_path = value_dolar_path(d->path_value);
 			d->path_value = increase_pointer(d->path_value);
@@ -162,16 +167,35 @@ int ft_try_to_exec(t_list *d) //funcion para intentar hacer execv de lo que me m
 			//printf("|%s|\n", d->argu[0]);
 			if (access(search_path, F_OK) != -1)
 			{
-				returnvalue = execve(search_path, &d->argu[0], d->ent_var);
-				printf("%d\n", returnvalue);
-				if (returnvalue == 0 || returnvalue == 1)
-					exit (0);
-				else
-					exit (255);
+				i = 0;
+				//printf("%s\n", search_path);
+				//printf("%s\n", d->argu[2]);
+				// while (d->argu[i])
+				// {
+				// 	printf("%s\n", d->argu[i]);
+				// 	printf("%s\n", d->argu[i + 1]);
+				// 	i++;
+				// }
+				returnvalue = execve(search_path, d->argu, NULL);
+				//printf("ret = %d\n", returnvalue);
+				exit(8);
 			}
 			else
-					exit (255);
+				exit(255);
+			//}
+			//else
+			//		exit (255);
 		}
+		else
+		{
+			waitpid(pid, &status, 0);
+			if (WIFEXITED(status))
+				returnvalue = WEXITSTATUS(status);
+			//printf("%d\n", returnvalue);
+
+		}
+
+
 	}
 	return (0);
 }
@@ -197,7 +221,7 @@ int check_fst_arg(t_list *d) //funcion para filtrar los builtings o para execv
 	}
 	else
 	{
-		printf("NO BUILTIN\n\n\n");
+		//printf("NO BUILTIN\n\n\n");
 		ft_try_to_exec(d);
 	}
 	return (0);
