@@ -131,30 +131,14 @@ int ft_try_to_exec(t_list *d) //funcion para intentar hacer execv de lo que me m
 	char *search_path;
 	pid_t pid;
 	int status;
-//	const char *test;
 
-//	test = malloc(sizeof(char) * ft_strlen(d->argu[0]) + 1);
-	int i;
-
-//	i = -1;
-//	while (d->argu[0][++i])
-//		test[i] = d->argu[0][i];
-//	test[i] = '\0';
-	i = 0;
 	if (path_exist(d) == -1)
 		printf("$PATH NO EXISTE\n");
-	//char cmd[] = "/bin/ls";
-	//char * argVec[] = {"ls", "-la", NULL};
-	//char * envVec[] = {NULL};
-	//printf("c %s\n", absolute_path);
-	//printf("%s\n", d->argu[1]);
 	absolute_path = ft_strdup("a");
-	while (absolute_path) //ARREGLAR: NOSE PORQUE ME SALE EL PROMPT CUANDO HAGO FORK
+	while (absolute_path)
 	{
 		absolute_path = value_dolar_path(d->path_value);
 		d->path_value = increase_pointer(d->path_value);
-		//printf("%s\n", absolute_path);
-		//printf("%s\n", d->path_value);
 		pid = fork();
 		if (pid < 0)
 			ft_free();
@@ -163,39 +147,20 @@ int ft_try_to_exec(t_list *d) //funcion para intentar hacer execv de lo que me m
 			absolute_path = value_dolar_path(d->path_value);
 			d->path_value = increase_pointer(d->path_value);
 			search_path = ft_strjoin(absolute_path, d->argu[0]);
-			//printf("\na %s\n", search_path);
-			//printf("|%s|\n", d->argu[0]);
 			if (access(search_path, F_OK) != -1)
 			{
-				i = 0;
-				//printf("%s\n", search_path);
-				//printf("%s\n", d->argu[2]);
-				// while (d->argu[i])
-				// {
-				// 	printf("%s\n", d->argu[i]);
-				// 	printf("%s\n", d->argu[i + 1]);
-				// 	i++;
-				// }
-				returnvalue = execve(search_path, d->argu, NULL);
-				//printf("ret = %d\n", returnvalue);
+				returnvalue = execve(search_path, d->argu, NULL); //poner variables de entorno propias para que los comandos que necesiten las env las puedan utilizar
 				exit(8);
 			}
 			else
 				exit(255);
-			//}
-			//else
-			//		exit (255);
 		}
 		else
 		{
 			waitpid(pid, &status, 0);
 			if (WIFEXITED(status))
 				returnvalue = WEXITSTATUS(status);
-			//printf("%d\n", returnvalue);
-
 		}
-
-
 	}
 	return (0);
 }
