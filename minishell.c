@@ -125,43 +125,54 @@ char *increase_pointer(char *s)
 //funcion para ejecutar 
 int ft_try_to_exec(t_list *d) //funcion para intentar hacer execv de lo que me manden
 {
-	int pid;
 	int returnvalue;
 	char *absolute_path;
 	char *search_path;
+	pid_t pid;
+//	const char *test;
+
+//	test = malloc(sizeof(char) * ft_strlen(d->argu[0]) + 1);
 	int i;
 
+//	i = -1;
+//	while (d->argu[0][++i])
+//		test[i] = d->argu[0][i];
+//	test[i] = '\0';
 	i = 0;
 	if (path_exist(d) == -1)
 		printf("$PATH NO EXISTE\n");
-	else
-		printf("PATH EXISTE\n");
-	pid = fork();
-	if (pid == 0)
+	//char cmd[] = "/bin/ls";
+	//char * argVec[] = {"ls", "-la", NULL};
+	//char * envVec[] = {NULL};
+	//printf("c %s\n", absolute_path);
+	absolute_path = ft_strdup("a");
+	while (absolute_path) //ARREGLAR: NOSE PORQUE ME SALE EL PROMPT CUANDO HAGO FORK
 	{
-		//char cmd[] = "/bin/ls";
-		//char * argVec[] = {"ls", "-la", NULL};
-		//char * envVec[] = {NULL};
-		//printf("c %s\n", absolute_path);
 		absolute_path = value_dolar_path(d->path_value);
 		d->path_value = increase_pointer(d->path_value);
-		search_path = ft_strjoin(absolute_path, d->argu[0]);
-		while (absolute_path)
+		//printf("%s\n", absolute_path);
+		//printf("%s\n", d->path_value);
+		pid = fork();
+		if (pid == 0)
 		{
-			printf("\na %s\n", search_path);
-			returnvalue = execve(search_path, d->argu[0], d->ent_var);
-			if (returnvalue == 0 || returnvalue == 1)
-				break ;
-			//printf("\na %s\n", d->path_value);
 			absolute_path = value_dolar_path(d->path_value);
 			d->path_value = increase_pointer(d->path_value);
 			search_path = ft_strjoin(absolute_path, d->argu[0]);
-			//if (execve (cmd, argVec, envVec) == -1)
-			//	perror("execv failed");
+			//printf("\na %s\n", search_path);
+			//printf("|%s|\n", d->argu[0]);
+			if (access(search_path, F_OK) != -1)
+			{
+				returnvalue = execve(search_path, &d->argu[0], d->ent_var);
+				printf("%d\n", returnvalue);
+				if (returnvalue == 0 || returnvalue == 1)
+					exit (0);
+				else
+					exit (255);
+			}
+			else
+					exit (255);
 		}
 	}
-	else
-		;
 	return (0);
 }
 

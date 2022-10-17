@@ -40,22 +40,22 @@
 
 typedef struct s_list
 {
-	int 	atoi_error;
-	int		echo_control;
-	int		quotes;
-	int		num_args;
-	int		num_env;
-	int		control;
-	int 	control_var_reminder;
+	int 		atoi_error;
+	int			echo_control;
+	int			quotes;
+	int			num_args;
+	int			num_env;
+	int			control;
+	int 		control_var_reminder;
 	//int 	cmd_lines;
-	char	**argu;
-	char	**ent_var;	
-	char	*read_line;
-	char	*prompt;
-	char	*result;
-	char 	*cmd_line;
-	char 	*var_reminder;
-	char	*path_value;
+	char		**argu;
+	char		**ent_var;	
+	char		*read_line;
+	char		*prompt;
+	char		*result;
+	char 		*cmd_line;
+	char 		*var_reminder;
+	char		*path_value;
 }	t_list;
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
