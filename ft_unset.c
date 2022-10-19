@@ -58,6 +58,7 @@ int	ft_unset_strcmp(char *s, t_list *d)
 		if (ft_special_strcmp(s, d->ent_var[i]) == 0)
 		{
 			d->ent_var[i] = NULL;
+			d->num_env--;
 			break ;
 		}
 	}

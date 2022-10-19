@@ -11,6 +11,13 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
+static int ft_isdigit(int i)
+{
+	if (i < 48 || i > 57)
+		return (0);
+	return (1);
+}
+
 int static atoi_error(t_list *d)
 {
 	d->atoi_error = -1;
@@ -64,21 +71,23 @@ int ft_validate_num(char c)
 
 void return_value_exit(long long n)
 {
+	//printf("ll %lld\n", n);
 	while (n > 255)
 		n = n - 256;
 	while (n < -255)
 		n = n + 256;
+	//printf("ll %lld\n", n);
 	if (n < 0)
 	{
-		printf("ll %lld\n", n);
-		n = 256 + n;
-		printf("f %lld\n", n);
+		//printf("ll %lld\n", n);
+		n = n + 256;
+		//printf("f %lld\n", n);
 	}
 	//printf("exit value %d\n", n);
 	exit (n);
 }
 
-char *check_space_and_nums(char *s, t_list *d)
+char *check_space_and_nums(char *s, t_list *d) 
 {
 	int i;
 	int final_value;
@@ -87,6 +96,7 @@ char *check_space_and_nums(char *s, t_list *d)
 	int j;
 
 	j = 0;
+	//printf("s %s\n", s);
 	not_res = malloc(sizeof(char) * 100);
 	if (!not_res)
 		ft_free();
@@ -94,21 +104,16 @@ char *check_space_and_nums(char *s, t_list *d)
 	final_value = 0;
 	while(s[i] != ' ')
 		i++;
-	while (s[i] == ' ')
+	while (s[i] == ' ' && s[i + 1] && ft_isdigit(s[i + 1]) != 1)
 		i++;
 	while (s[i] == 34 || s[i] == 39)
 		i++;
-	printf("%s\n %d\n %c\n", s, i, s[i]);
-	if (s[i + 1] == '-') //si no tengo comillas esto me lo salto // ARREGLAR
-	{
+	//printf("%s\n %d\n %c\n", s, i, s[i]);
+	if (s[i] == '-' && s[i + 1] >= '0' && s[i + 1] <= '9') //si no tengo comillas esto me lo salto // ARREGLAR
 		final_value = 1;
-		i++;
-	}
-	else if (s[i + 1] == '+')
-	{
+	else if (s[i] == '+' && final_value != 1)
 		final_value = 0;
-		i++;
-	}
+	//printf("S: %s\n%c\n%c\n", s, s[i], s[i + 1]);
 	while (s[++i])
 	{
 		if (s[i] == 34)
@@ -141,22 +146,26 @@ char *check_space_and_nums(char *s, t_list *d)
 		}
 		else if (ft_validate_num(s[i]) == 1)
 		{
-			printf("%c\n", s[i]);
+			//printf("%c\n", s[i]);
 			printf("exit\nbash: exit: %s: numeric argument required\n", d->argu[1]);
 			exit (255);
 		}
 	}
 	not_res[j] = '\0';
-	res = malloc(sizeof(char) * ft_strlen(not_res) + 1);
+	//printf("%s\n", not_res);
+	//printf("size %d\n", ft_strlen(not_res) + final_value + 1);
+	res = malloc(sizeof(char) * ft_strlen(not_res) + final_value + 1);
 	if (!res)
 		ft_free();
 	i = -1;
+	//printf("ffv %d\n", final_value);
 	if (final_value == 1)
 		res[++i] = '-';
-	while (not_res[++i])
-		res[i] = not_res[i];
+	while (not_res[++i - final_value])
+		res[i] = not_res[i - final_value];
 	res[i] = '\0';
 	free(not_res);
+	//printf("res %s\n", res);
 	return(res);
 }
 
@@ -165,7 +174,7 @@ void check_only_num(char *s)
 	int i;
 
 	i = 0;
-	printf("|%s\n", s);
+	//printf("|%s\n", s);
 	if (s[i] == '+' || s[i] == '-')
 		i++;
 	while (s[i])

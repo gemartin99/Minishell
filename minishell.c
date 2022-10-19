@@ -72,7 +72,7 @@ int path_exist(t_list *d) //funcion que checkea si existe la var $PATH
 	return (-1);
 }
 
-char *value_dolar_path(char *s)
+char *value_dolar_path(char *s) //funcion que muestra el valor de la variable path pero se ira acortando cada vez que se intente ejecutar algo en una de las rutas
 {
 	int i;
 	char *res;
@@ -97,7 +97,7 @@ char *value_dolar_path(char *s)
 	return (res);
 }
 
-char *increase_pointer(char *s)
+char *increase_pointer(char *s) //funcion que incrementa el indice de la variable path hacia todas las rutas
 {
 	int i;
 	int j;
@@ -122,18 +122,60 @@ char *increase_pointer(char *s)
 	return (res);
 }
 
-//funcion para ejecutar 
+int ft_count_env(t_list *d) //funcion para contar todas las variables de entorno que no sean nulas.
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while(i + j < d->num_env)
+	{
+		if (d->ent_var[i + j])
+			i++;
+		else
+			j++;
+	}
+	return (i - j);
+}
+
+char **convert_to_env(t_list *d) //funcion que retorna una variable que guarde todas las variables de entorno actuales.
+{
+	int i;
+	int j;
+	char **res;
+
+	i = ft_count_env(d);
+	res = malloc(sizeof(char *) * i + 1);
+	if (!res)
+		ft_free();
+	i = -1;
+	j = 0;
+	while (++i < d->num_env)
+	{
+		if (d->ent_var[i])
+		{
+			res[j] = d->ent_var[i];
+			j++;
+		}
+	}
+	res[j] = NULL;
+	return (res);
+}
+
 int ft_try_to_exec(t_list *d) //funcion para intentar hacer execv de lo que me manden
 {
 	//CHECKEAR SI ME MANDAN PATH ABSOLUTA Y SI LO HACEN EJECUTAR ESO DIRECTAMENTE
 	int returnvalue = EXIT_FAILURE;
 	char *absolute_path;
 	char *search_path;
+	char **envp_2; //variable creada porque se asignan variables a NULL (en vez de borrar) cuando se hace unset entonces no funcionaria execve correctamente con el ent_var de la estructura
 	pid_t pid;
 	int status;
 
 	if (path_exist(d) == -1)
 		printf("$PATH NO EXISTE\n");
+	envp_2 = convert_to_env(d);
 	absolute_path = ft_strdup("a");
 	while (absolute_path)
 	{
@@ -149,8 +191,8 @@ int ft_try_to_exec(t_list *d) //funcion para intentar hacer execv de lo que me m
 			search_path = ft_strjoin(absolute_path, d->argu[0]);
 			if (access(search_path, F_OK) != -1)
 			{
-				returnvalue = execve(search_path, d->argu, NULL); //poner variables de entorno propias para que los comandos que necesiten las env las puedan utilizar
-				exit(8);
+				returnvalue = execve(search_path, d->argu, envp_2); //poner variables de entorno propias para que los comandos que necesiten las env las puedan utilizar
+				exit(0);
 			}
 			else
 				exit(255);
@@ -185,10 +227,7 @@ int check_fst_arg(t_list *d) //funcion para filtrar los builtings o para execv
 		return (0);
 	}
 	else
-	{
-		//printf("NO BUILTIN\n\n\n");
 		ft_try_to_exec(d);
-	}
 	return (0);
 }
 
@@ -219,15 +258,16 @@ int init_env(t_list *d, char **envp) //funcion para inicializar el valor de las 
 	while (envp[i])
 		i++;
 	d->num_env = i;
-	d->ent_var = malloc(sizeof(char *) * (d->num_env));
+	d->ent_var = malloc(sizeof(char *) * (d->num_env) + 1);
 	if (d->ent_var == NULL)
-		return (-1);
+		ft_free();
 	i = 0;
 	while (i < d->num_env)
-	{
+	{  
 		d->ent_var[i] = ft_substr(envp[i], 0, ft_strlen(envp[i]));
 		i++;
 	}
+	d->ent_var[i] = NULL;
 	return (0);
 }
 
@@ -277,9 +317,8 @@ int main(int argc, char **argv, char **envp)
     	exit(exit_status);
     }
 	if (argc != 1)
-		many_args(argv);
-	if (init_env(&d, envp) == -1)
-		return (-1); //ft_free()
+		many_args(argv);  
+	init_env(&d, envp);
 	while (1)
 	{
 		d.quotes = 0;

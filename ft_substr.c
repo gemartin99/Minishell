@@ -23,7 +23,7 @@ char	*ft_substr(char *s, int start, int len)
 	{
 		res = malloc(1);
 		if (!res)
-			return (0);
+			ft_free();
 		res[0] = '\0';
 		return (res);
 	}
@@ -31,7 +31,7 @@ char	*ft_substr(char *s, int start, int len)
 		len = ft_strlen(s) - start;
 	res = malloc(sizeof(char) * (len + 1));
 	if (!res)
-		return (0);
+		ft_free();
 	while (start < ft_strlen(s) && i < len && s[start])
 		res[i++] = s[start++];
 	res[i] = '\0';
