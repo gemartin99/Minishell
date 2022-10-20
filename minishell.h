@@ -77,6 +77,7 @@ int		parsing(char *s, t_list *d);
 int 	choose_arg(char *s, t_list *d);
 int		check_dolar_echo(char *line);
 int		ft_atoi(const char *str);
+int		ft_isdigit(int i);
 void	ft_exit(t_list *d);
 void	ft_free();
 void	ft_putchar_fd(char c, int fd);

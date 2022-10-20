@@ -11,13 +11,6 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-static int ft_isdigit(int i)
-{
-	if (i < 48 || i > 57)
-		return (0);
-	return (1);
-}
-
 int static atoi_error(t_list *d)
 {
 	d->atoi_error = -1;

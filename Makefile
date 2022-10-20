@@ -3,7 +3,7 @@ NAME = minishell
 SRCS = minishell.c ft_echo.c ft_unset.c ft_export.c ft_cd.c ft_env.c ft_pwd.c \
 		ft_strlen.c ft_substr.c ft_strcmp.c ft_strjoin.c ft_strlcpy.c \
 		ft_strdup.c ft_strncmp.c ft_strtrim.c ft_free.c ft_parsing.c check_command_name.c \
-		ft_echo_dolar.c ft_putchar_fd.c ft_putstr_fd.c ft_exit.c ft_atoi.c
+		ft_echo_dolar.c ft_putchar_fd.c ft_putstr_fd.c ft_exit.c ft_atoi.c ft_isdigit.c
 INCLUDE = minishell.h \
 
 CC = gcc

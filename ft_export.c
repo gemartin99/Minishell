@@ -1,5 +1,17 @@
 #include "minishell.h"
 
+static int ft_check_wrong_let_export(char c)
+{
+	if (c == '=' || c == '?' || c == '!' || c == '.' 
+		|| c == '+' || c == '}' || c == '{' || c == '-' || c == 92 
+		|| c == '[' || c == ']' || c == '@' || c == '*' || c == '#'
+		|| c == '^')
+	{
+		return (1);
+	}
+	return (0);
+}
+
 int parse_equal(char *s)
 {
 	int i;
@@ -9,9 +21,9 @@ int parse_equal(char *s)
 	correct = 0;
 	while (s[i])
 	{
-		if (s[0] == '=')
+		if (ft_check_wrong_let_export(s[i]) == 1 || ft_isdigit(s[0]) == 1)
 		{
-			printf("export: `%s': not a valid identifier\n", s);
+			printf("bash: export: `%s': not a valid identifier\n", s);
 			return (-1);
 		}
 		if (s[i] == '=')
@@ -304,13 +316,13 @@ char *join_value(char *s1, char *s2) //funcion para juntar el nombre de la nueva
 	return (result);
 }
 
-char *value_var(t_list *d, char *var) //funcion main para crear una variable nueva que contenga un $variable
+char *value_var(t_list *d, char *var) //funcion main para crear una variable nueva que contenga un $variable. Ej a=abc b=$a  el valor de $b es abc.
 {
 	char *result;
 	int i;
 	int j;
 
-	printf("ENTRO3\n");
+	//printf("ENTRO3\n");
 	result = NULL;
 	j = 0;
 	i = 0;
@@ -328,7 +340,7 @@ char *value_var(t_list *d, char *var) //funcion main para crear una variable nue
 		return (join_value3(var));
 	if (var[j] == '$')
 		return (join_value(var, result));
-	printf("ENTRO4\n");
+	//printf("ENTRO4\n");
 	return (join_value2(var, result));
 }
 

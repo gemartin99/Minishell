@@ -195,7 +195,7 @@ char *ft_split_var(char *line, int i, t_list *d) //funcion que retorna el resto 
 	return (res);
 }
 
-char *ft_strjoin_special(char *s1, char *s2, size_t i, size_t c)
+char *ft_strjoin_special(char *s1, char *s2, size_t i, size_t c) //funcion que concatena la $var y /aaa o lo que le manden despues de una $var siempre y cuando sea caracter especial
 {
 	char	*str;
 	size_t 	size1;
@@ -203,7 +203,7 @@ char *ft_strjoin_special(char *s1, char *s2, size_t i, size_t c)
 	size1 = ft_strlen(s1);
 	if (s1[size1 - 1] == 34 || s1[size1 - 1] == 39)
 		size1--;
-	str = (char *)malloc(sizeof(char) * (size1 + ft_strlen(s2)));
+	str = (char *)malloc(sizeof(char) * (size1 + ft_strlen(s2) + 1));
 	if (!str)
 		return (0);
 	while (s1[i] && i < size1)
@@ -220,7 +220,7 @@ char *ft_strjoin_special(char *s1, char *s2, size_t i, size_t c)
 	return (str);
 }
 
-char *ft_change_var(t_list *d, char *line) 
+char *ft_change_var(t_list *d, char *line) //funcion para detectar y cambiar el valor a la linea y que si hay un caracter especial despues de $var se concatene. Ej: $USER/aaa 
 {
 	char *name_var;
 	int i;
@@ -269,9 +269,7 @@ char *change_dolar_x_var(t_list *d)
 		change_dolar_x_var(d);
 	d->echo_control = 1;
 	if (d->control_var_reminder == 1)
-	{
 		d->read_line = ft_strjoin_special(d->read_line, d->var_reminder, 0, 0);
-	}
 	parsing(d->read_line, d);
 	return (d->read_line);
 }

@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-int ft_check_wrong_let(char c, char *s)
+static int ft_check_wrong_let(char c, char *s)
 {
 	if (c == '=' || c == '?' || c == '!' || c == '.' 
 		|| c == '+' || c == '}' || c == '{' || c == '-' || c == 92 
