@@ -81,8 +81,11 @@ int check_special_char(char c) //funcion para checkear si despues de la variable
 {
 	if (c == '=' || c == '@' || c == '#' || c == '-' || c == '+' || c == '{' ||
 		c == '}' || c == '[' || c == ']' || c == '?' || c == '!' || c == '~' ||
-		c == '%' || c == '^' || c == '=' || c == '*' || c == '$' || c == '/')
+		c == '%' || c == '^' || c == '=' || c == '*' ||	c == '/')
+	{
+		printf("%c\n", c);
 		return (-1);
+	}
 	return (0);
 }
 
@@ -119,7 +122,7 @@ char *add_var_value_echo(char *s1) //funcion para añadir el valor de la variabl
 	j = 0;
 	while (s1[i] != '=')
 		i++;
-	result = malloc(sizeof(char) * ft_strlen(s1) - i);
+	result = malloc(sizeof(char) * ft_strlen(s1) - i + 1);
 	if (!result)
 		ft_free();
 	while(s1[++j])
@@ -254,13 +257,70 @@ char *ft_change_var(t_list *d, char *line) //funcion para detectar y cambiar el 
 	return(0);
 }
 
+static int ft_isdigit_special(int i) //funcion que checkea si es un numero o caracter especial
+{
+	if (i == '*' || i == '@' || i == 92)
+		return (1);
+	else if (i < 48 || i > 57)
+		return (0);
+	return (1);
+}
+
+int check_dolar_and_digit(char *s) //funcion para detectar si hay un digito despues de un dolar para posteriormente quitarlo , tanto el dolar como el numero
+{
+	int i;
+
+	i = -1;
+	while(s[++i] && s[i] != '$')
+		;
+	if (s[i] && s[i] == '$' && s[i + 1] && ft_isdigit_special(s[i + 1]) == 1)
+		return (0);
+	else
+		return (1);
+}
+
+char *quit_dollar_and_digit(char *s) //funcion recursiva para ir quitando todos los digitos y dolares sobrantes. ej: $1aaa $2bb. Quedaria asi aaa bb
+{
+	char *res;
+	int i;
+	int j;
+
+	i = -1;
+	while(s[++i])
+	{
+		if (s[i] && s[i] == '$' && s[i + 1] && ft_isdigit_special(s[i + 1]) == 1)
+		{
+			j = -1;
+			res = malloc(sizeof(char) * ft_strlen(s) - 1);
+			if (!res)
+				ft_free();
+			while (++j < i)
+				res[j] = s[j];
+			i++;
+			while (s[++i])
+			{
+				res[j] = s[i];
+				j++;
+			}
+			res[j] = '\0';
+			free(s);
+			s = quit_dollar_and_digit(res);
+		}
+	}
+	return (s);
+}
+
 //cambiar valor a env's ⬆️//
 
 char *change_dolar_x_var(t_list *d)
 {
 	int i;
 
-	i = -1;
+	i = 0;
+	if (check_dolar_and_digit(d->read_line) == 0)
+		d->read_line = quit_dollar_and_digit(d->read_line);
+	if (check_dolar_echo(d->read_line) == 0)
+		return (d->read_line);
 	d->control_var_reminder = 0;
 	d->read_line = ft_change_var(d, d->read_line);
 	if (d->read_line == NULL)
@@ -270,6 +330,11 @@ char *change_dolar_x_var(t_list *d)
 	d->echo_control = 1;
 	if (d->control_var_reminder == 1)
 		d->read_line = ft_strjoin_special(d->read_line, d->var_reminder, 0, 0);
+	i = -1;
+	/*while (d->argu[i])
+		free(d->argu[i]);
+	if (d->argu)
+		free(d->argu);*/
 	parsing(d->read_line, d);
 	return (d->read_line);
 }

@@ -52,6 +52,19 @@ void ft_free_arg(t_list *d)  //funcion por si falla una reserva de memoria de su
 	free(d->argu);
 }
 
+void ft_free_args(t_list *d) //funcion que libera toda la memoria de d->argu en el caso de que exista
+{
+	int i;
+
+	i = -1;
+	if (d->argu)
+	{
+		while (i < d->num_env && d->argu[++i])
+			free(d->argu[i]);
+		free(d->argu);
+	}
+}
+
 int choose_arg(char *s, t_list *d) //funcion para guardar lo que me mandan en var args
 {
 	int pos;
@@ -59,6 +72,7 @@ int choose_arg(char *s, t_list *d) //funcion para guardar lo que me mandan en va
 	int start;
 
 	d->num_args = count_args(s);
+	ft_free_args(d);
 	d->argu = malloc(sizeof(char *) * (d->num_args) + 1);
 	if (d->argu == NULL)
 		ft_free();
