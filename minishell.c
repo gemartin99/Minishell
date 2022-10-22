@@ -11,6 +11,10 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
+#define RESET_COLOR    "\x1b[0m"
+#define ROJO_T     "\x1b[31m"
+#define AMARILLO_T "\x1b[33m"
+#define BLANCO_T   "\x1b[37m"
 /*void ft_free_d(t_list *d)
 {
 	int i;
@@ -268,6 +272,7 @@ int init_env(t_list *d, char **envp) //funcion para inicializar el valor de las 
 		i++;
 	}
 	d->ent_var[i] = NULL;
+	d->dolar_question = 0;
 	return (0);
 }
 
@@ -323,7 +328,7 @@ int main(int argc, char **argv, char **envp)
 	{
 		d.quotes = 0;
 		//init_prompt(&d);
-		d.read_line = readline("Minishell 🥵🇪🇸 ->");
+		d.read_line = readline(ROJO_T "Mini" AMARILLO_T "shell" "🥵🇪🇸 ->" BLANCO_T);
 		if (d.read_line[0] == '\0')
 			printf("");
 		else

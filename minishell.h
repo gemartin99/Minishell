@@ -48,6 +48,7 @@ typedef struct s_list
 	int			control;
 	int 		control_var_reminder;
 	//int 	cmd_lines;
+	int 		dolar_question; //variable $?
 	char		**argu;
 	char		**ent_var;	
 	char		*read_line;

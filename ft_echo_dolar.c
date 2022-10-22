@@ -56,13 +56,19 @@ int position_dolar(char *line)
 	return (0);
 }
 
-static int var_strcmp_echo(char *s1, char *s2) //funcion strcmp modificada para variables de entorno
+static int var_strcmp_echo(char *s1, char *s2) //, t_list *d) //funcion strcmp modificada para variables de entorno
 {
 	int i;
 
 	i = 0;
 	if (!s1 || !s2)
 		return (1);
+	/*if (s1[0] == '?' && !s1[1])
+	{
+		//printf("%d\n", d->dolar_question); hacer que si tengo $? cambiar eso por el valor de dolar_question
+		//se podria hacer llamando a una funcion que cambie el valor de d->read_line cambiando el $? por el valor.
+		return (0);
+	}*/
 	while (s2[i] && s2[i] != '=')
 		i++;
 	if (ft_strlen(s1) != i)
@@ -80,12 +86,9 @@ static int var_strcmp_echo(char *s1, char *s2) //funcion strcmp modificada para 
 int check_special_char(char c) //funcion para checkear si despues de la variable hay algunos caracter especial ya que cambia la interpretacion de la var
 {
 	if (c == '=' || c == '@' || c == '#' || c == '-' || c == '+' || c == '{' ||
-		c == '}' || c == '[' || c == ']' || c == '?' || c == '!' || c == '~' ||
+		c == '}' || c == '[' || c == ']' || c == '!' || c == '~' ||
 		c == '%' || c == '^' || c == '=' || c == '*' ||	c == '/')
-	{
-		printf("%c\n", c);
 		return (-1);
-	}
 	return (0);
 }
 
@@ -244,7 +247,7 @@ char *ft_change_var(t_list *d, char *line) //funcion para detectar y cambiar el 
 	i = -1;
 	while (++i < d->num_env)
 	{
-		if (var_strcmp_echo(name_var, d->ent_var[i]) == 0)
+		if (var_strcmp_echo(name_var, d->ent_var[i]) == 0) //, d) == 0)
 		{
 			free(name_var);
 			result = add_var_value_echo(d->ent_var[i]);

@@ -17,7 +17,7 @@ int parse_equal(char *s)
 	int i;
 	int correct;
 
-	i = 0;
+	i = 0; 
 	correct = 0;
 	while (s[i])
 	{

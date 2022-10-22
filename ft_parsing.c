@@ -331,7 +331,6 @@ char *ft_quit_spaces(char *s) //funcion para quitar los espacios que hay antes d
 
 int parsing(char *s, t_list *d) //funcion parsing para quitar dquote y llamar a mas funciones
 {
-	//printf("\n\n\n 	ENTROOOOOOOO\n\n\n\n");
 	int i;
 	int simple = 0;
 	int doble = 0;
@@ -362,10 +361,10 @@ int parsing(char *s, t_list *d) //funcion parsing para quitar dquote y llamar a 
 	{
 		d->quotes = 1;
 		printf("dquote>\n");
+		d->dolar_question = 1;
 		return (0);
 	}
-	if (choose_arg(s, d) == -1)
-		return (-1);
+	choose_arg(s, d);
 	if (s[0] == ' ')
 		d->read_line = ft_quit_spaces(s);
 	//ft_define_cmd_line(s, d);
