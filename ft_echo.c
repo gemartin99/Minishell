@@ -6,7 +6,7 @@
 /*   By: gemartin <gemartin@student.42barc...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 11:22:14 by gemartin          #+#    #+#             */
-/*   Updated: 2022/09/14 11:22:42 by gemartin         ###   ########.fr       */
+
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -204,6 +204,30 @@ char *ft_quit_quotes(char *s) //funcion para quitar comillas en caso de que este
 	return (res);
 }
 
+/*
+int detect_quotes(char *s, int i) //funcion para saber cuanta reserva hay que hacer en la funcion de abajo
+{
+	while(s[++i])
+	{
+
+	}
+}
+
+char *convert_quote(t_list *d, char *s) //funcion para convertir '' en caracter random siempre y cuando esten dentro de ""
+{
+	int i;
+	char *res;
+	int size_malloc;
+
+	i = -1;
+	size_malloc = detect_quotes(s, i);
+	while (s[++i])
+	{
+
+	}
+}
+*/
+
 int ft_echo(t_list *d)
 {
 	int i;
@@ -211,6 +235,7 @@ int ft_echo(t_list *d)
 
 	condition = 1;
 	i = 0;
+	//d->read_line = convert_quote(d, d->read_line);
 	if (check_dolar_echo(d->read_line) == 1 && d->echo_control == 0)
 		d->read_line = change_dolar_x_var(d);
 	if (d->read_line[0] == 34 || d->read_line[0] == 39)

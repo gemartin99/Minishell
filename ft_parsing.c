@@ -22,19 +22,19 @@ int count_args(char *s) //funcion que cuenta el numero de argumentos que me mand
 		return (res);
 	while (s[++i])
 	{
-		if ((s[i] != 32 && s[i] != 34 && s[i] != 39) && (s[i + 1] == 32 || s[i + 1] == '\0'
+		if (s[i] && (s[i] != 32 && s[i] != 34 && s[i] != 39) && (s[i + 1] == 32 || s[i + 1] == '\0'
 			|| s[i + 1] == 34 || s[i + 1] == 39))
 			res++;
 		if (s[i] == 34)
 		{
 			res++;
-			while (s[++i] != 34)
+			while (s[i] && s[++i] != 34)
 				;
 		}
 		if (s[i] == 39)
 		{
 			res++;
-			while (s[++i] != 39)
+			while (s[i] && s[++i] != 39)
 				;
 			i++;
 		}

@@ -6,7 +6,7 @@
 /*   By: gemartin <gemartin@student.42barc...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 11:22:14 by gemartin          #+#    #+#             */
-/*   Updated: 2022/09/14 11:22:42 by gemartin         ###   ########.fr       */
+
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -43,7 +43,7 @@ static int var_strcmp_path(char *s1, char *s2) //funcion strcmp modificada para 
 	while (s2[i] && s2[i] != '=')
 		i++;
 	if (ft_strlen(s1) != i)
-		return (1); 
+		return (1);
 	i = 0;
 	while (s1[i] && s2[i] && s2[i] != '=')
 	{
@@ -267,7 +267,7 @@ int init_env(t_list *d, char **envp) //funcion para inicializar el valor de las 
 		ft_free();
 	i = 0;
 	while (i < d->num_env)
-	{  
+	{
 		d->ent_var[i] = ft_substr(envp[i], 0, ft_strlen(envp[i]));
 		i++;
 	}
@@ -282,9 +282,11 @@ int ft_launch_minishell(int argc, char **argv, char **envp) //funcion para los t
 
 	if (argc <= 2)
 		return(0);
+	printf("HOLA\n");
 	if (init_env(&d, envp) == -1)
 		return (-1); //ft_free()
 		d.quotes = 0;
+		printf("HOLA1\n");
 		//init_prompt(&d);
 		// d.read_line = readline("Minishell 🥵🇪🇸 ->");
 		// if (d.read_line[0] == '\0')
@@ -295,26 +297,51 @@ int ft_launch_minishell(int argc, char **argv, char **envp) //funcion para los t
 			//add_history(d.read_line);
 			if (d.read_line && parsing(d.read_line, &d) == -1)
 				return (printf("ERROR EN EL PARSING\n"));
+			printf("HOLA2\n");
 			//add_history(d.read_line);
 			if (check_null_args(d.read_line, &d, 0) == -1)
 				parsing(d.read_line, &d);
+			printf("HOLA3\n");
 			if (d.read_line && d.quotes == 0 && check_fst_arg(&d) == -1)
 				return (printf("ERROR DE RETORNO \n"));
+			printf("HOLA4\n");
 		//ft_free_d(&d);
 		//}
+	return (0);
+}
+
+int	ft_test(int argc, char **argv, char **envp, t_list *d)
+{
+	char		*input;
+
+	(void)argc;
+	(void)envp;
+	d->quotes = 0;
+	//if (set_signal())
+	//	return (1);
+	input = ft_strdup(argv[2]);
+	d->result = ft_strdup(input);
+	parsing(d->result, d);
+	if (check_null_args(d->result, d, 0) == -1)
+		parsing(d->result, d);
+	d->read_line = d->result;
+	check_fst_arg(d);
+	//if (!lexer(&shell, 0, 0))
+	//	parser(&shell);
 	return (0);
 }
 
 int main(int argc, char **argv, char **envp)
 {
 	t_list d;
-	//int		exit_status;
+	int		exit_status;
 
-	/*if (argc >= 3 && !ft_strncmp(argv[1], "-c", 3))
+	if (argc >= 3 && !ft_strncmp(argv[1], "-c", 3))
 	{
+		init_env(&d, envp);
 		exit_status = ft_test(argc, argv, envp, &d);
 		exit(exit_status);
-	}*/
+	}
 	//este if es para los testers
 	if (argc >= 3 && !ft_strncmp(argv[1], "-c", 3))
   	{
@@ -322,7 +349,7 @@ int main(int argc, char **argv, char **envp)
     	exit(exit_status);
     }
 	if (argc != 1)
-		many_args(argv);  
+		many_args(argv);
 	init_env(&d, envp);
 	while (1)
 	{
@@ -346,23 +373,3 @@ int main(int argc, char **argv, char **envp)
 	}
 	return (0);
 }
-
-//funcion para el tester
-/*int	ft_test(int argc, char **argv, char **envp, t_list *d)
-{
-	char		*input;
-
-	(void)argc;
-	(void)envp;
-	d->quotes = 0;
-	//if (set_signal())
-	//	return (1);
-	input = ft_strdup(argv[2]);
-	d->result = ft_strdup(input);
-	parsing(d->result, d);
-	check_fst_arg(d);
-	//if (!lexer(&shell, 0, 0))
-	//	parser(&shell);
-	return (0);
-}*/
-

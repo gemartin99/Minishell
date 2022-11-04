@@ -334,10 +334,6 @@ char *change_dolar_x_var(t_list *d)
 	if (d->control_var_reminder == 1)
 		d->read_line = ft_strjoin_special(d->read_line, d->var_reminder, 0, 0);
 	i = -1;
-	/*while (d->argu[i])
-		free(d->argu[i]);
-	if (d->argu)
-		free(d->argu);*/
 	parsing(d->read_line, d);
 	return (d->read_line);
 }
