@@ -1,37 +1,100 @@
-NAME = minishell
+################################################################################
+### INIT
+################################################################################
 
-SRCS = minishell.c ft_echo.c ft_unset.c ft_export.c ft_cd.c ft_env.c ft_pwd.c \
-		ft_strlen.c ft_substr.c ft_strcmp.c ft_strjoin.c ft_strlcpy.c \
-		ft_strdup.c ft_strncmp.c ft_strtrim.c ft_free.c ft_parsing.c check_command_name.c \
-		ft_echo_dolar.c ft_putchar_fd.c ft_putstr_fd.c ft_exit.c ft_atoi.c ft_isdigit.c
-INCLUDE = minishell.h \
+NAME		= minishell
+INC			= ./inc/
+INC_HEADERS	= $(INC)minishell.h
 
-CC = gcc
-RM = rm -f
-AR = ar rcs
-CFLAGS = -Wall -Wextra -Werror -MMD
-COMFLAGS = -I${HOME}/.brew/opt/readline/include
-LINKFLAGS = -lreadline -L${HOME}/.brew/opt/readline/lib
-#-g3 -fsanitize=address
+FT_INC		= $(FT)includes/libft.h
 
-.c.o:
-			${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
+FT			= ./libft/
+FT_LNK		= -L$(FT) -lft
+FT_LIB		= $(FT)libft.a
 
-OBJS = ${SRCS:.c=.o}
-DEPS = $(addsuffix .d, $(basename $(SRCS)))
+SRC_DIR		= src/
+OBJ_DIR		= obj/
+CC			= gcc
+COMFLAGS = -I/usr/local/opt/readline/include
+LINKFLAGS = -lreadline -L/usr/local/opt/readline/lib
+CFLAGS		= -I $(INC) -MMD#-Wall -Werror -Wextra -fsanitize=address
+RM			= rm -f
 
-all:	${NAME}
+################################################################################
+### COLORS
+################################################################################
 
--include $(DEPS)
-${NAME}:	${OBJS}
-			$(CC) $(CFLGS) $(COMFLAGS) $(LINKFLAGS) $(OBJS) -o $(NAME)
+DEF_COLOR = \033[0;39m
+GRAY = \033[0;90m
+RED = \033[0;91m
+GREEN = \033[0;92m
+YELLOW = \033[0;93m
+BLUE = \033[0;94m
+MAGENTA = \033[0;95m
+CYAN = \033[0;96m
+WHITE = \033[0;97m
+
+################################################################################
+### OBJECTS
+################################################################################
+
+SRC_FILES	=	main \
+				ft_free \
+				ft_pwd \
+				ft_unset \
+				ft_parsing \
+				ft_export \
+				ft_exit \
+				ft_env \
+				ft_echo_dolar \
+				ft_echo \
+				ft_cd \
+				check_command_name
+
+SRC			=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
+OBJ 		=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))
+B_OBJ		=	$(OBJ)
+
+OBJF		=	.cache_exists
+
+################################################################################
+### RULES
+################################################################################
+
+
+all:		$(NAME)
+
+$(OBJF):
+			@mkdir -p $(OBJ_DIR)
+
+$(FT_LIB):	$(FT_INC) $(FT)srcs/*.c $(FT)Makefile
+			@make -C $(FT)
+
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(INC_HEADERS) $(FT_LIB) Makefile | $(OBJF)
+			@echo "$(YELLOW)Compiling: $< $(DEF_COLOR)"
+			@$(CC) $(CFLAGS) -c $< -o $@
+
+$(NAME):	$(OBJ)
+			@$(CC) $(CFLAGS) $(OBJ) $(FT_LNK) $(COMFLAGS) $(LINKFLAGS) -o $(NAME)
+			@echo "$(GREEN)Minishell compiled!$(DEF_COLOR)"
+
+bonus:		$(B_OBJ) $(NAME)
 
 clean:
-			${RM} ${OBJS} ${DEPS}
+			@$(RM) -rf $(OBJ_DIR)
+			@make clean -C $(FT)
+			@echo "$(BLUE)Minishell object files cleaned!$(DEF_COLOR)"
 
-fclean: clean
-			${RM} ${NAME}
+fclean:		clean
+			@$(RM) -f $(NAME)
+			@$(RM) -f lib*.a
+			@make fclean -C $(FT)
+			@echo "$(CYAN)Minishell executable files cleaned!$(DEF_COLOR)"
 
-re: fclean all
+re:			fclean all
+			@echo "$(GREEN)Cleaned and rebuilt everything for fdf!$(DEF_COLOR)"
 
-.PHONY: all clean fclean re
+norm:
+			@norminette $(SRC) $(INC)minishell.h $(FT) | grep -v Norme -B1 || true
+
+.PHONY:		all clean fclean re norm
