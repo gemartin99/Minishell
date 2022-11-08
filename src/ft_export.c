@@ -44,7 +44,7 @@ void del_exist_variable(char *full_var, t_msh *d)
 
 	i = 0;
 	len = 0;
-	while (full_var[len] != '=')
+	while (full_var[len] && full_var[len] != '=')
 		len++;
 	while (i < d->num_env)
 	{
@@ -218,7 +218,7 @@ char *replace_dolar(t_msh *d, char *var, int i) //funcion para añadir una strin
 	int j;
 
 	j = 0;
-	while (var[i] != '$')
+	while (var[i] && var[i] != '$')
 		i++;
 	i++;
 	while (var[i + j] && var[i + j] != 34 && var[i + j] != 39)
@@ -230,7 +230,6 @@ char *replace_dolar(t_msh *d, char *var, int i) //funcion para añadir una strin
 	while (var[++j + i] && var[i + j] != 34 && var[i + j] != 39)
 		aux[j] = var[i + j];
 	aux[j] = '\0';
-	printf("aux %s\n", aux);
 	aux = check_same_var(d, aux);
 	return(aux);
 }
@@ -245,7 +244,7 @@ char *join_value3(char *s1) //lo mismo que la 1 y 2 pero esta aplica a $var que 
 	i = 0;
 	c = -1;
 	j = 0;
-	while (s1[i] != '$')
+	while (s1[i] && s1[i] != '$')
 		i++;
 	if (!s1[i + 1])
 		return (s1);
@@ -253,7 +252,7 @@ char *join_value3(char *s1) //lo mismo que la 1 y 2 pero esta aplica a $var que 
 	if (!result)
 		ft_free();
 	i = 0;
-	while(s1[i] != '$')
+	while(s1[i] && s1[i] != '$')
 	{
 		result[i] = s1[i];
 		i++;
@@ -273,12 +272,12 @@ char *join_value2(char *s1, char *s2) //lo mismo que la 1 pero es para cuando ha
 	i = 0;
 	c = -1;
 	j = 0;
-	while (s1[i] != '$')
+	while (s1[i] && s1[i] != '$')
 		i++;
 	result = malloc(sizeof(char) *  i + ft_strlen(s2) + 1);
 	if (!result)
 		ft_free();
-	while (s1[j] != '$')
+	while (s1[j] && s1[j] != '$')
 	{
 		result[j] = s1[j];
 		j++;
@@ -299,12 +298,12 @@ char *join_value(char *s1, char *s2) //funcion para juntar el nombre de la nueva
 	i = 0;
 	c = 0;
 	j = -1;
-	while (s1[i] != '=')
+	while (s1[i] && s1[i] != '=')
 		i++;
 	result = malloc(sizeof(char) *  i + ft_strlen(s2) + 2);
 	if (!result)
 		ft_free();
-	while (s1[j++] != '=')
+	while (s1[j++] && s1[j] != '=')
 		result[j] = s1[j];
 	result[j] = s1[j];
 	while (s2[c])

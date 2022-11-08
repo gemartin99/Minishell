@@ -66,7 +66,7 @@ int path_exist(t_msh *d) //funcion que checkea si existe la var $PATH
 		{
 			d->path_value = ft_strdup(d->ent_var[i]);
 			i = 0;
-			while (*d->path_value != '=')
+			while (*d->path_value && *d->path_value != '=')
 				d->path_value++;
 			d->path_value++;
 			return (0);
@@ -206,10 +206,7 @@ int ft_try_to_exec(t_msh *d) //funcion para intentar hacer execv de lo que me ma
 
 			}
 			else
-			{
-
 				exit(255);
-			}
 		}
 		else
 		{

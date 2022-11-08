@@ -16,9 +16,9 @@ int check_dash_n(const char *s) // funcion que checkea si hay un argumento -n de
 	int i;
 
 	i = 0;
-	if (s[0] != '-')
+	if (s[0] && s[0] != '-')
 		return (-1);
-	if (s[1] != 'n')
+	if (s[1] && s[1] != 'n')
 		return (-1);
 	while (s[++i])
 	{
@@ -35,22 +35,22 @@ int check_more_n(char *s, int i) //funcion que checkea si hay mas -n o no quedan
 	int j;
 
 	j = i;
-	while (s[i] == ' ')
+	while (s[i] && s[i] == ' ')
 		i++;
-	if (s[i] == '-' && s[i + 1] == 'n')
+	if (s[i] && s[i] == '-' && s[i + 1] == 'n')
 	{
-		while (s[++i] == 'n')
+		while (s[++i] && s[i] == 'n')
 			;
-		if (s[i] != ' ')
+		if (s[i] && s[i] != ' ')
 			return (j + 1);
 	}
-	while (s[i] == ' ' || (s[i + 1] == ' ' && s[i] == '-'))
+	while (s[i] && (s[i] == ' ' || (s[i + 1] == ' ' && s[i] == '-')))
 	{
 		if (s[i] == '-' && s[i + 1] == ' ')
 			return (i);
 		i++;
 	}
-	if ((s[i] == '-' && s[i + 1] == 'n') || (s[i + 1] == '-' && s[i + 2] == 'n'))
+	if ((s[i] && s[i + 1] && s[i] == '-' && s[i + 1] == 'n') || (s[i + 1] && s[i + 2] && s[i + 1] == '-' && s[i + 2] == 'n'))
 		i = check_more_n(s, i);
 	return (i);
 }
@@ -59,7 +59,7 @@ int calc_dash_n(char *s, int i) //funcion para ubicar el indice justo despues de
 {
 	while (s[++i])
 	{
-		if (s[i] == ' ')
+		if (s[i] && s[i] == ' ')
 			break;
 	}
 	i = check_more_n(s, i);
@@ -68,9 +68,9 @@ int calc_dash_n(char *s, int i) //funcion para ubicar el indice justo despues de
 
 int ft_skip_echo(char *s, int i) //funcion paara ubicarme cuando empieza el comando echo por si hay espacios antes
 {
-	while (s[i] != 'E' && s[i] != 'e')
+	while (s[i] && s[i] != 'E' && s[i] != 'e')
 		i++;
-	while (s[i] != ' ')
+	while (s[i] && s[i] != ' ')
 		i++;
 	return (i);
 }
@@ -80,10 +80,10 @@ int start_arg(const char *s) //funcion que me ubica al final del comando echo y 
 	int i;
 
 	i = 0;
-	while (s[i] != 'o' && s[i] != 'O')
+	while (s[i] && s[i] != 'o' && s[i] != 'O')
 		i++;
 	i++;
-	while (s[i] == ' ')
+	while (s[i] && s[i] == ' ')
 		i++;
 	i--;
 	return (i);
@@ -142,7 +142,7 @@ void ft_echo_write(t_msh *d, int i, int condition)
 		i = calc_dash_n(d->read_line, i);
 		i = check_exist_more_arg(d->read_line, i);
 		if (i != ft_strlen(d->read_line))
-			while (d->read_line[i] != ' ')
+			while (d->read_line[i] && d->read_line[i] != ' ')
 				i--;
 	}
 	while (d->read_line[++i])
@@ -154,9 +154,9 @@ void ft_echo_write(t_msh *d, int i, int condition)
 			write(1, " ", 1);
 			i++;
 		}
-		else if (d->read_line[i] == 39)
+		else if (d->read_line[i] && d->read_line[i] == 39)
 		{
-			while (d->read_line[++i] != 39)
+			while (d->read_line[++i] && d->read_line[i] != 39)
 			{
 				if (d->read_line[i] == 28)
 					ft_putchar_fd('"', 1);
@@ -164,9 +164,9 @@ void ft_echo_write(t_msh *d, int i, int condition)
 					write(1, &d->read_line[i], 1);
 			}
 		}
-		else if (d->read_line[i] == 34)
+		else if (d->read_line[i] && d->read_line[i] == 34)
 		{
-			while (d->read_line[++i] != 34)
+			while (d->read_line[++i] && d->read_line[i] != 34)
 			{
 				if (d->read_line[i] == 29)
 					write(1, "'", 1);
@@ -174,9 +174,9 @@ void ft_echo_write(t_msh *d, int i, int condition)
 					write(1, &d->read_line[i], 1);
 			}
 		}
-		else if (d->read_line[i] != 34 && d->read_line[i] != 39)
+		else if (d->read_line[i] && d->read_line[i] != 34 && d->read_line[i] != 39)
 			write(1, &d->read_line[i], 1);
-		while (d->read_line[i] == ' ' && d->read_line[i + 1] == ' ')
+		while (d->read_line[i] && d->read_line[i + 1] && d->read_line[i] == ' ' && d->read_line[i + 1] == ' ')
 			i++;
 	}
 	if (condition == 1)
@@ -231,7 +231,7 @@ int ft_echo(t_msh *d)
 	else
 	{
 		i = ft_skip_echo(d->read_line, i);
-		while (d->read_line[i] != ' ')
+		while (d->read_line[i] && d->read_line[i] != ' ')
 			i++;
 		ft_echo_write(d, i, condition);
 	}

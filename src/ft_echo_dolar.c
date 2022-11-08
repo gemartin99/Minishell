@@ -21,13 +21,13 @@ int check_dolar_echo(char *line) //funcion para checkear si hay un dolar en la l
 		if (line[i] == 39)
 		{
 			i++;
-			while (line[i] != 39)
+			while (line[i] && line[i] != 39)
 				i++;
 			i++;
 		}
 		if (line [i] == 34)
 		{
-			while (line[++i] != 34)
+			while (line[++i] && line[i] != 34)
 			{
 				if (line[i] == '$' && line[i + 1])
 					return (1);
@@ -100,13 +100,13 @@ char *ft_name_var(char *line) //funcion que crea una variable con el nombre que 
 
 	i = position_dolar(line);
 	j = 0;
-	while (line[i + j] && line[i + j] != ' ' && line[i + j] != '"' && check_special_char(line[i + j]) == 0)
+	while (line[i + j] && line[i + j] != ' ' && line[i + j] != '"' && line[i + j] != 39 && check_special_char(line[i + j]) == 0)
 		j++;
 	result = malloc(sizeof(char) * j + 1);
 	if (!result)
 		ft_free();
 	j = 0;
-	while (line[i + j] && line[i + j] != ' ' && line[i + j] != '"' && check_special_char(line[i + j]) == 0)
+	while (line[i + j] && line[i + j] != ' ' && line[i + j] != '"' && line[i + j] != 39 && check_special_char(line[i + j]) == 0)
 	{
 		result[j] = line[i + j];
 		j++;
@@ -123,7 +123,7 @@ char *add_var_value_echo(char *s1) //funcion para añadir el valor de la variabl
 
 	i = 0;
 	j = 0;
-	while (s1[i] != '=')
+	while (s1[i] && s1[i] != '=')
 		i++;
 	result = malloc(sizeof(char) * ft_strlen(s1) - i + 1);
 	if (!result)
@@ -141,7 +141,7 @@ char *ft_craft_result(char *line_final, char *line, char *var, int c)
 
 	i = -1;
 	j = -1;
-	while (line[++i] != '$')
+	while (line[++i] && line[i] != '$')
 		line_final[i] = line[i];
 	while (var[++j])
 		line_final[i + j] = var[j];
@@ -163,7 +163,7 @@ char *change_line_value(char *line, char *var) //funcion que cambia el valor de 
 
 	i = 0;
 	j = 0;
-	while (line[i] != '$')
+	while (line[i] != '$' && line[i])
 		i++;
 	c = i;
 	while (line[i + j] && line[i + j] != ' ' && line[i + j] != 34 && line[i + j] != 39)
