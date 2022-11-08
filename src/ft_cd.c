@@ -21,19 +21,19 @@ int check_dolar_cd(char *line) //funcion para checkear si hay un dolar en la lin
 		if (line[i] == 39)
 		{
 			i++;
-			while (line[i] != 39)
+			while (line[i] && line[i] != 39)
 				i++;
 			i++;
 		}
 		if (line [i] == 34)
 		{
-			while (line[++i] != 34)
+			while (line[++i] && line[i] != 34)
 			{
 				if (line[i] == '$' && line[i + 1])
 					return (1);
 			}
 		}
-		if (line[i] == '$' && line[i + 1])
+		if (line[i] && line[i] == '$' && line[i + 1])
 			return (1);
 		i++;
 	}
@@ -77,7 +77,7 @@ int	ft_cd(t_msh *d)
 	path = get_path(i);
 	if (d->num_args == 1)
 		chdir(getenv("HOME"));
-	if (d->num_args == 2)
+	if (d->num_args != 1)
 	{
 		if (chdir(d->argu[1]) == -1)
 			printf("bash: cd: %s: No such file or directory\n", d->argu[1]);

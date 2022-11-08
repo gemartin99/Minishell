@@ -64,3 +64,6 @@ pipes ||
 
 
 6) Añadir signals. Ej: si se hace control+d debe cerrarse el programa.
+
+7) Implementar cd - (investigar si se tiene que implementar porque nose si cuenta como flag o algo) y el CD estará acabado una vez implemente eso y valor de retorno
+

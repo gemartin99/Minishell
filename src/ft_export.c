@@ -5,23 +5,61 @@ static int ft_check_wrong_let_export(char c)
 	if (c == '?' || c == '!' || c == '.'
 		|| c == '+' || c == '}' || c == '{' || c == '-' || c == 92
 		|| c == '[' || c == ']' || c == '@' || c == '*' || c == '#'
-		|| c == '^') //c == '=' ||
+		|| c == '^' || c == '~') //c == '=' ||
 	{
 		return (1);
 	}
 	return (0);
 }
 
-int parse_equal(char *s)
+char *ft_quit_last_char(char *s, int i)
 {
-	int i;
+	char *res;
+	int j;
+
+	j = -1;
+	while (s[i])
+	{
+		if (ft_check_wrong_let_export(s[i]) == 0 && s[i + 1] && s[i + 1] == '+' && s[i + 2] && s[i + 2] == '=')
+			break ;
+		i++;
+	}
+	res = malloc(sizeof(char) * ft_strlen(s));
+	if (!res)
+		ft_free();
+	while (++j <= i)
+		res[j] = s[j];
+	i++;
+	while(s[++i])
+	{
+		res[j] = s[i];
+		j++;
+	}
+	res[j] = '\0';
+	free(s);
+	return (res);
+}
+
+/*int ft_check_conditions(char *s, int i)
+{
+
+}*/
+
+int parse_equal(char *s, int i) //funcion que controla si hay caracteres o combinaciones de caracteres que provoquen que no se pueda realizar el export
+{
 	int correct;
 
-	i = 0;
 	correct = 0;
 	while (s[i])
 	{
-		if (ft_check_wrong_let_export(s[i]) == 1 || ft_isdigit(s[0]) == 1)
+		if (ft_check_wrong_let_export(s[i]) == 0 && s[i + 1] && s[i + 1] == '+' && s[i + 2] && s[i + 2] == '=')
+			return (-2);
+		else if (s[i] == '!' && s[i + 1] && s[i + 1] != '=')
+		{
+			printf("bash: %s: event not found\n", s);
+			return (-1);
+		}
+		else if (ft_check_wrong_let_export(s[i]) == 1 || ft_isdigit(s[0]) == 1)
 		{
 			printf("bash: export: `%s': not a valid identifier\n", s);
 			return (-1);
@@ -30,7 +68,7 @@ int parse_equal(char *s)
 			correct++;
 		i++;
 	}
-	if (correct == 0 || i == 1 || (i == 2 && correct == 2))
+	if (correct == 0 || i == 1 || i == correct)
 		return (-1);
 	return (0);
 }
@@ -65,19 +103,21 @@ void del_exist_variable(char *full_var, t_msh *d)
 
 //⚠️implementar valor variables de otras variables con $ , pero sobretodo el que una nueva variable tenga el valor de 2 o mas variables de entorno⚠️
 
-int export_parse(t_msh *d, char *array)
+int export_parse(t_msh *d, char *array, int j, int control)
 {
 	int i;
-	int j;
-	int control;
 
 	i = 1;
-	j = 0;
-	control = 0;
 	while (d->num_args - 1 > i - 1)
 	{
 		del_exist_variable(d->argu[i], d);
-		if (parse_equal(d->argu[i]) == -1)
+		if (parse_equal(d->argu[i], 0) == -2)
+		{
+			d->argu[i] = ft_quit_last_char(d->argu[i], 0);
+			ft_export(d);
+			return (-1);
+		}
+		else if (parse_equal(d->argu[i], 0) == -1)
 			array[i - 1] = '0';
 		else
 		{
@@ -303,9 +343,10 @@ char *join_value(char *s1, char *s2) //funcion para juntar el nombre de la nueva
 	result = malloc(sizeof(char) *  i + ft_strlen(s2) + 2);
 	if (!result)
 		ft_free();
-	while (s1[j++] && s1[j] != '=')
+	while (s1[++j] && s1[j] != '=')
 		result[j] = s1[j];
 	result[j] = s1[j];
+	j++;
 	while (s2[c])
 	{
 		result[j + c] = s2[c];
@@ -321,7 +362,6 @@ char *value_var(t_msh *d, char *var) //funcion main para crear una variable nuev
 	int i;
 	int j;
 
-	//printf("ENTRO3\n");
 	result = NULL;
 	j = 0;
 	i = 0;
@@ -339,7 +379,6 @@ char *value_var(t_msh *d, char *var) //funcion main para crear una variable nuev
 		return (join_value3(var));
 	if (var[j] == '$')
 		return (join_value(var, result));
-	//printf("ENTRO4\n");
 	return (join_value2(var, result));
 }
 
@@ -352,7 +391,6 @@ int check_dolar_export(char *var) //checkear que haya un dolar en cada variable 
 		i++;
 	while(var[i] && var[++i])
 	{
-		//printf("char |%c|\n", var[i]);
 		if (var[i] == '$')
 			return (1);
 	}
@@ -374,20 +412,15 @@ int ft_export(t_msh *d)
 		print_export_var(d);
 		return (0);
 	}
-	//printf("ENTRO1\n");
 	while (d->argu[++i] && i < d->num_args)
 	{
-		//printf("bucle\n");
 		if (check_dolar_export(d->argu[i]) == 1)
-		{
-			//printf("ENTRO2\n");
 			d->argu[i] = value_var(d, d->argu[i]);
-		}
 	}
 	binary_array = malloc(sizeof(char) * d->num_args);
 	if (!binary_array)
 		ft_free();
-	if (export_parse(d, binary_array) == -1)
+	if (export_parse(d, binary_array, 0, 0) == -1)
 		return (0);
 	add_new_vars1(d, binary_array);
 	return (0);
