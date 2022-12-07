@@ -76,7 +76,7 @@ static char *get_comand(char *read_line)
 		i++;
 	}
 	str = ft_substr(read_line, start, i);
-	read_line += i;
+	read_line = read_line + i;
 	return (str);
 }
 
@@ -88,7 +88,7 @@ static t_cmd	*add_cmd(char *read_line)
 	if (!temp)
 		exit_error("Error malloc", 9);
 	temp->cmd = get_comand(read_line);
-	printf("cmd %s\n", temp->cmd);
+	read_line += ft_strlen(temp->cmd);
 	temp->arg = ft_get_args(read_line, temp);
 	temp->next = NULL;
 	return (temp);
