@@ -62,6 +62,7 @@ static char *get_comand(char *read_line)
 {
 	int	i;
 	int	start;
+	char	*str;
 
 	i = 0;
 	while (read_line[i] == 32 || (read_line[i] >= 9 && read_line[i] <= 13))
@@ -69,9 +70,14 @@ static char *get_comand(char *read_line)
 	start = i;
 	while (read_line[i] && read_line[i] != 32 
 			&& !(read_line[i] >= 9 && read_line[i] <= 13))
+	{
+		if (read_line[i] == 34 || read_line[i] == 39)
+			i = get_next_quote(i, str, read_line[i]);
 		i++;
+	}
+	str = ft_substr(read_line, start, i);
 	read_line += i;
-	return (ft_substr(read_line, start, i));
+	return (str);
 }
 
 static t_cmd	*add_cmd(char *read_line)
@@ -82,6 +88,7 @@ static t_cmd	*add_cmd(char *read_line)
 	if (!temp)
 		exit_error("Error malloc", 9);
 	temp->cmd = get_comand(read_line);
+	printf("cmd %s\n", temp->cmd);
 	temp->arg = ft_get_args(read_line, temp);
 	temp->next = NULL;
 	return (temp);

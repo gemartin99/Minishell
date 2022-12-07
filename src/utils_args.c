@@ -21,3 +21,10 @@ int ft_count_pipes(char *s) //funcion que retorna la cantidad de pipes que hay e
 	}
 	return (res);
 }
+
+int	get_next_quote(int i, char *str, char c) //Devuelve la poscision de la siguiente quote
+{
+	while (str[i] && str[i] != c)
+		i++;
+	return (i);
+}
