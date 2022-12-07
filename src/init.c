@@ -52,8 +52,5 @@ t_msh	*init(char **env) //init estructura general
 	msh->flags = ft_calloc(sizeof(t_flags), 1);
 	if (!msh->flags)
 		exit_error("Error malloc", 4);
-	msh->cmd = ft_calloc(sizeof(t_cmd), 1);
-	if (!msh->cmd)
-		exit_error("Error malloc", 8);
 	return (msh);
 }
