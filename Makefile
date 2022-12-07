@@ -53,7 +53,10 @@ SRC_FILES	=	minishell \
 				init \
 				export \
 				error_manager \
-				handle_args
+				handle_args \
+				utils_args \
+				delete_null_args
+
 
 SRC			=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
 OBJ 		=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))

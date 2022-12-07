@@ -65,6 +65,9 @@ void	exit_error(char *str, int n);
 t_msh	*init(char **env);
 void	many_args(char **argv);
 void	recive_arguments(t_msh *msh);
+int 	ft_count_pipes(char *s);
+char *change_null_args(char *s, t_cmd *cmd);
+int check_null_args(char *s, int control);
 
 #define WHITE_T   "\x1b[1;37m"
 #define YELLOW_T "\x1b[1;33m"
