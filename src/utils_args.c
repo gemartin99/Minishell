@@ -26,5 +26,5 @@ int	get_next_quote(int i, char *str, char c) //Devuelve la poscision de la sigui
 {
 	while (str[i] && str[i] != c)
 		i++;
-	return (i);
+	return (i - 1);
 }

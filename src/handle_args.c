@@ -72,7 +72,7 @@ static char *get_comand(char *read_line)
 			&& !(read_line[i] >= 9 && read_line[i] <= 13))
 	{
 		if (read_line[i] == 34 || read_line[i] == 39)
-			i = get_next_quote(i, str, read_line[i]);
+			i = get_next_quote(i + 1, read_line, read_line[i]);
 		i++;
 	}
 	str = ft_substr(read_line, start, i);
@@ -93,20 +93,6 @@ static t_cmd	*add_cmd(char *read_line)
 	temp->next = NULL;
 	return (temp);
 }
-
-/*
-static void	tokenize(t_msh *msh, char *read_line)
-{
-	int prueba;
-	char **test;
-
-	msh->flags->pipe = ft_count_pipes(read_line);
-	//if (pipe == 0)
-	//	msh->cmd->arg = ft_get_args(read_line, msh->cmd);
-	//else
-	msh->cmd->arg = ft_get_args(read_line, msh->cmd)
-	exit (0);
-}*/
 
 static void	tokenize(t_msh *msh, char *read_line) //
 {
