@@ -30,21 +30,20 @@
 # include	<sys/param.h>
 # include "libft/libft.h"
 
-typedef struct s_token
-{
-	char	*tkn;
-	int		type;
-	struct s_token	*next;
-}							t_token;
-
 typedef struct s_cmd
 {
+	char	*cmd;
 	char	**arg;
+	int		num_arg;
+	struct s_cmd	*next;
+}							t_cmd;
+
+typedef struct s_env
+{
 	char	**env;
 	char	*path;
-	int		num_arg;
 	int		num_env;
-}							t_cmd;
+}							t_env;
 
 typedef struct s_flags
 {
@@ -57,8 +56,8 @@ typedef struct s_flags
 typedef struct s_msh
 {
 	int	bash_lvl;
-	t_token	*tokens;
-	t_cmd		*cmd;
+	t_cmd	*cmd;
+	t_env		*env;
 	t_flags	*flags;
 }							t_msh;
 

@@ -12,28 +12,29 @@
 
 #include "../inc/minishell.h"
 
-static void	create_env(t_cmd *cmd, char **env) // incializar env
+static void	create_env(t_env *env, char **ev) // incializar env
 {
 	char **temp;
 	int	i;
 	
 	i = 0;
-	while (env[i])
+	while (ev[i])
 		i++;
-	cmd->num_env = i;
+	env->num_env = i;
 	temp = ft_calloc(i, sizeof(char *));
 	if (!temp)
 		exit_error("Error malloc", 3);
 	i--;
 	while (i >= 0)
 	{
-		temp[i] = ft_strdup(env[i]);
+		temp[i] = ft_strdup(ev[i]);
 		if (ft_strncmp(temp[i], "PATH=", 5) == 0)
-			cmd->path = ft_substr(temp[i], 5, ft_strlen(temp[i]) - 5);
+			env->path = ft_substr(temp[i], 5, ft_strlen(temp[i]) - 5);
 		i--;
 	}
-	if (!cmd->path)
-		cmd->path = ft_strdup("/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.");
+	if (!env->path)
+		env->path = ft_strdup("/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.");
+	env->env = temp;
 }
 
 t_msh	*init(char **env) //init estructura general
@@ -44,15 +45,15 @@ t_msh	*init(char **env) //init estructura general
 	if (!msh)
 		exit_error("Error malloc", 1);
 	msh->bash_lvl = 2;
-	msh->cmd = ft_calloc(sizeof(t_cmd), 1);
-	if (!msh->cmd)
+	msh->env = ft_calloc(sizeof(t_cmd), 1);
+	if (!msh->env)
 		exit_error("Error malloc", 2);
-	create_env(msh->cmd, env);
+	create_env(msh->env, env);
 	msh->flags = ft_calloc(sizeof(t_flags), 1);
 	if (!msh->flags)
 		exit_error("Error malloc", 4);
-	msh->tokens = ft_calloc(sizeof(t_token), 1);
-	if (!msh->tokens)
+	msh->cmd = ft_calloc(sizeof(t_cmd), 1);
+	if (!msh->cmd)
 		exit_error("Error malloc", 8);
 	return (msh);
 }
