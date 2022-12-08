@@ -110,20 +110,28 @@ static void	tokenize(t_msh *msh, t_cmd **cmd, char *read_line) //
 {
 	int i;
 	t_cmd	*temp;
+	char	**lines;
 
 	i = 0;
 	msh->flags->quote = ft_check_dquote(read_line, 2, 2, msh);
 	if (msh->flags->quote == 0)
 		return ;
 	msh->flags->pipe = ft_count_pipes(read_line);
-	*cmd = add_cmd(msh, read_line);
+	lines = ft_split(read_line, '|');
+	*cmd = add_cmd(msh, lines[0]);
+	if (!lines)
+		exit_error("Error malloc", 16);
 	while (++i <= msh->flags->pipe)
 	{
-		temp = add_cmd(msh, read_line);
+		msh->total_chars = 0;
+		temp = add_cmd(msh, lines[i]);
 		(ft_last(cmd))->next = temp;
 		temp = temp->next;
 	}
-	expand(cmd);
+	while (i--)
+		free(lines[i]);
+	free(lines);
+	//expand(cmd);
 }
 
 void	recive_arguments(t_msh *msh)

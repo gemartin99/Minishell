@@ -53,7 +53,7 @@ void	cmd_type(t_msh *msh)
 		else if (!ft_strncmp(temp_cmd, "exit", 5))
 			printf("%s\n", temp_cmd);
 		else
-			printf("exec\n");
+			printf("%s\n", temp_cmd);
 		temp = temp->next;
 		free(temp_cmd);
 	}
