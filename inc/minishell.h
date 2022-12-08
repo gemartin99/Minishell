@@ -56,6 +56,7 @@ typedef struct s_flags
 typedef struct s_msh
 {
 	int	bash_lvl;
+	int	total_chars;
 	t_cmd	*cmd;
 	t_env		*env;
 	t_flags	*flags;
@@ -66,9 +67,13 @@ t_msh	*init(char **env);
 void	many_args(char **argv);
 void	recive_arguments(t_msh *msh);
 int 	ft_count_pipes(char *s);
-char *change_null_args(char *s, t_cmd *cmd);
+char	*change_null_args(char *s, t_cmd *cmd);
 int		check_null_args(char *s, int control);
 int		get_next_quote(int i, char *str, char c);
+int		ft_check_dquote(char *s, int simple, int doble, t_msh *msh);
+int 	ft_count_args(char *s);
+void	cmd_type(t_msh *msh);
+t_cmd	*ft_last(t_cmd **cmd);
 
 #define WHITE_T   "\x1b[1;37m"
 #define YELLOW_T "\x1b[1;33m"

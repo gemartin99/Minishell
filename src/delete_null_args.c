@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   delete_null_args.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: smiro <smiro@student.42barcelona>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/08 02:20:50 by smiro             #+#    #+#             */
+/*   Updated: 2022/12/08 02:20:53 by smiro            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/minishell.h"
 
 static char *quit_null(char *s, int i) //funcion para quitar argumentos nulos sin espacios antes y despues

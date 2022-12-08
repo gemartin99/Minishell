@@ -55,7 +55,9 @@ SRC_FILES	=	minishell \
 				error_manager \
 				handle_args \
 				utils_args \
-				delete_null_args
+				delete_null_args \
+				execute_cmd \
+				utils
 
 
 SRC			=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
