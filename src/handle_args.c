@@ -32,7 +32,6 @@ static int ft_split_args(char *s, t_cmd *cmd, int i)
 
 	start = 0;
 	pos = 0;
-	printf("%s\n", s);
 	while(s[++i])
 	{
 		if (s[i] == 34 || s[i] == 39)
@@ -42,9 +41,7 @@ static int ft_split_args(char *s, t_cmd *cmd, int i)
 		if ((s[i] != ' ' && s[i] != 34 && s[i] != 39) && (s[i + 1] == ' ' || s[i + 1] == '\0'
 			|| s[i + 1] == 34 || s[i + 1] == 39))
 		{
-			printf("start %d i %d\n", start, i);
 			cmd->arg[pos] = ft_substr(s, start, i - start + 1);
-			//printf("%s\n", cmd->arg[pos]);
 			if (cmd->arg[pos] == NULL)
 				exit_error("Error malloc", 14);
 			pos++;
@@ -67,12 +64,6 @@ static char **ft_get_args(t_msh *msh, char *s, t_cmd *cmd)
 		exit_error("Error malloc", 13);
 	msh->total_chars += ft_split_args(s, cmd, i);
 	i = -1;
-	printf("%s\n", cmd->arg[0]);
-	printf("%s\n", cmd->arg[1]);
-	printf("%s\n", cmd->arg[2]);
-	printf("%s\n", cmd->arg[3]);
-	//while (msh->cmd->arg[++i])
-	//	printf("%s\n", cmd->arg[i]);
 	return (NULL);	
 }
 
@@ -132,6 +123,7 @@ static void	tokenize(t_msh *msh, t_cmd **cmd, char *read_line) //
 		(ft_last(cmd))->next = temp;
 		temp = temp->next;
 	}
+	expand(cmd);
 }
 
 void	recive_arguments(t_msh *msh)

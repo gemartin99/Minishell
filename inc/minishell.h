@@ -73,6 +73,7 @@ int		get_next_quote(int i, char *str, char c);
 int		ft_check_dquote(char *s, int simple, int doble, t_msh *msh);
 int 	ft_count_args(char *s);
 void	cmd_type(t_msh *msh);
+void 	expand(t_cmd *cmd);
 int 	ft_skip_space(char *s, int i);
 t_cmd	*ft_last(t_cmd **cmd);
 

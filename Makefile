@@ -57,7 +57,8 @@ SRC_FILES	=	minishell \
 				utils_args \
 				delete_null_args \
 				execute_cmd \
-				utils
+				utils \
+				expand
 
 
 SRC			=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
