@@ -94,6 +94,56 @@ static t_cmd	*add_cmd(char *read_line)
 	return (temp);
 }
 
+//////////////////////dquotes/////
+
+int ft_check_dquote_simple(char *s, int *i, int simple)
+{
+	simple++;
+	while (s[*i + 1] && s[*i + 1] != 39)
+		(*i)++;
+	if (s[*i + 1] == 39)
+		simple++;
+	(*i)++;
+	return (simple);
+}
+
+
+int ft_check_dquote_doble(char *s, int *i, int doble)
+{
+	doble++;
+	while (s[*i + 1] && s[*i + 1] != 34)
+		(*i)++;
+	if (s[*i + 1] == 34)
+		doble++;
+	(*i)++;
+	return (doble);
+}
+
+int ft_check_dquote(char *s, int simple, int doble, t_msh *msh)
+{
+	int i;
+
+	i = -1;
+	while (s[++i])
+	{
+		if (s[i] == 34)
+			doble = ft_check_dquote_doble(s, &i, doble);
+		if (s[i] == 39)
+			simple = ft_check_dquote_simple(s, &i, simple);
+		if (doble % 2 != 0 || simple % 2 != 0)
+		{
+			msh->flags->quote = 1;
+			printf("dquote>\n");
+			//g_var = 1;
+			return (0);
+		}
+	}
+	return (1);
+}
+
+//////////////////////dquotes/////
+
+
 static void	tokenize(t_msh *msh, char *read_line) //
 {
 	int i;
@@ -101,6 +151,9 @@ static void	tokenize(t_msh *msh, char *read_line) //
 
 	temp = msh->cmd;
 	i = -1;
+	msh->flags->quote = ft_check_dquote(read_line, 2, 2, msh);
+	if (msh->flags->quote == 0)
+		return ;
 	msh->flags->pipe = ft_count_pipes(read_line);
 	while (++i <= msh->flags->pipe)
 	{
@@ -125,6 +178,8 @@ void	recive_arguments(t_msh *msh)
 		{
 			add_history(read_line);
 			tokenize(msh, read_line);
+			if (msh->flags->quote != 0)
+				printf("%s\n", "hola");
 		}
 	}
 }
