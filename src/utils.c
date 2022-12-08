@@ -12,6 +12,13 @@
 
 #include "../inc/minishell.h"
 
+int ft_skip_space(char *s, int i)
+{
+	while (s[i] == 32 || (s[i] >= 9 && s[i] <= 13))
+		i++;
+	return (i);
+}
+
 t_cmd	*ft_last(t_cmd **cmd)
 {
 	t_cmd	*temp;

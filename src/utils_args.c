@@ -29,7 +29,6 @@ int ft_count_args(char *s) //funcion que cuenta el numero de argumentos que me m
 		{
 			res++;
 			i = get_next_quote(i + 1, s, s[i]);
-			printf("- %c\n", s[i]);
 		}
 	}
 	return (res);

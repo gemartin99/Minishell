@@ -12,21 +12,67 @@
 
 #include "../inc/minishell.h"
 
+static int ft_split_args_quote(char *s, int i, t_cmd *cmd, int *pos)
+{
+	int start;
+
+	start = i;
+	i = get_next_quote(i + 1, s, s[i]);
+	cmd->arg[*pos] = ft_substr(s, start, i - start + 1);
+	if (cmd->arg[*pos] == NULL)
+		exit_error("Error malloc", 14);
+	(*pos)++;
+	return (i);
+}
+
+static int ft_split_args(char *s, t_cmd *cmd, int i)
+{
+	int pos;
+	int start;
+
+	start = 0;
+	pos = 0;
+	printf("%s\n", s);
+	while(s[++i])
+	{
+		if (s[i] == 34 || s[i] == 39)
+			i = ft_split_args_quote(s, i, cmd, &pos);
+		if ((s[i] == ' ' || s[i] == 34 || s[i] == 39) && s[i + 1] && s[i + 1] != ' ')
+			start = i + 1;
+		if ((s[i] != ' ' && s[i] != 34 && s[i] != 39) && (s[i + 1] == ' ' || s[i + 1] == '\0'
+			|| s[i + 1] == 34 || s[i + 1] == 39))
+		{
+			printf("start %d i %d\n", start, i);
+			cmd->arg[pos] = ft_substr(s, start, i - start + 1);
+			//printf("%s\n", cmd->arg[pos]);
+			if (cmd->arg[pos] == NULL)
+				exit_error("Error malloc", 14);
+			pos++;
+		}
+	}
+	cmd->arg[pos] = NULL;
+	return (i);
+}
+
 static char **ft_get_args(t_msh *msh, char *s, t_cmd *cmd)
 {
 	int i;
-	char **res;
 
 	i = -1;
 	cmd->num_arg = ft_count_args(s);
 	while (check_null_args(s, 0) == -1)
 		s = change_null_args(s, cmd);
-	res = malloc(sizeof(char *) * (cmd->num_arg + 1));
-	while(s[++i])
-	{
-		return (NULL);
-	}
-	msh->total_chars += i;
+	cmd->arg = malloc(sizeof(char *) * (cmd->num_arg + 1));
+	if (!cmd->arg)
+		exit_error("Error malloc", 13);
+	msh->total_chars += ft_split_args(s, cmd, i);
+	i = -1;
+	printf("%s\n", cmd->arg[0]);
+	printf("%s\n", cmd->arg[1]);
+	printf("%s\n", cmd->arg[2]);
+	printf("%s\n", cmd->arg[3]);
+	//while (msh->cmd->arg[++i])
+	//	printf("%s\n", cmd->arg[i]);
 	return (NULL);	
 }
 
@@ -48,6 +94,7 @@ static char *get_comand(t_msh *msh, char *read_line)
 		i++;
 	}
 	str = ft_substr(read_line, start, i);
+	i = ft_skip_space(read_line, i);
 	msh->total_chars += i;
 	return (str);
 }
@@ -61,6 +108,8 @@ static t_cmd	*add_cmd(t_msh *msh, char *read_line)
 		exit_error("Error malloc", 9);
 	temp->cmd = get_comand(msh, read_line + msh->total_chars);
 	temp->num_arg = ft_count_args(read_line + msh->total_chars);
+	if (temp->num_arg == 0)
+		return (temp);
 	temp->arg = ft_get_args(msh, read_line + msh->total_chars, temp);
 	temp->next = NULL;
 	return (temp);
