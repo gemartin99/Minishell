@@ -31,5 +31,3 @@ void	exit_error(char *str, int n)
 	printf("%s\n", str);
 	exit(n);
 }
-
-

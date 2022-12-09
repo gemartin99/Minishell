@@ -12,18 +12,18 @@
 
 #include "../inc/minishell.h"
 
-int ft_count_args(char *s) //funcion que cuenta el numero de argumentos que me mandan
+int	ft_count_args(char *s) //funcion que cuenta el numero de argumentos que me mandan
 {
-	int i;
-	int res;
+	int	i;
+	int	res;
 
 	i = -1;
 	res = 0;
 	while (s[++i])
 	{
-		if ((s[i] != 32 && s[i] != 34 && s[i] != 39) 
+		if ((s[i] != 32 && s[i] != 34 && s[i] != 39)
 			&& (s[i + 1] == 32 || s[i + 1] == '\0'
-			|| s[i + 1] == 34 || s[i + 1] == 39))
+				|| s[i + 1] == 34 || s[i + 1] == 39))
 			res++;
 		if (s[i] == 34 || s[i] == 39)
 		{
@@ -34,10 +34,10 @@ int ft_count_args(char *s) //funcion que cuenta el numero de argumentos que me m
 	return (res);
 }
 
-int ft_count_pipes(char *s) //funcion que retorna la cantidad de pipes que hay en la linea
+int	ft_count_pipes(char *s) //funcion que retorna la cantidad de pipes que hay en la linea
 {
-	int i;
-	int res;
+	int	i;
+	int	res;
 
 	i = -1;
 	res = 0;
@@ -65,7 +65,7 @@ int	get_next_quote(int i, char *str, char c) //Devuelve la poscision de la sigui
 static int	ft_check_dquote_pair(char *s, int *i, char c)
 {
 	int	n;
-	
+
 	n = 1;
 	while (s[*i + 1] && s[*i + 1] != c)
 		(*i)++;
@@ -75,9 +75,9 @@ static int	ft_check_dquote_pair(char *s, int *i, char c)
 	return (n);
 }
 
-int ft_check_dquote(char *s, int simple, int doble, t_msh *msh)
+int	ft_check_dquote(char *s, int simple, int doble, t_msh *msh)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (s[++i])
@@ -95,4 +95,3 @@ int ft_check_dquote(char *s, int simple, int doble, t_msh *msh)
 	}
 	return (1);
 }
-

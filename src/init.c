@@ -14,9 +14,9 @@
 
 static void	create_env(t_env *env, char **ev) // incializar env
 {
-	char **temp;
-	int	i;
-	
+	char	**temp;
+	int		i;
+
 	i = 0;
 	while (ev[i])
 		i++;
@@ -40,7 +40,7 @@ static void	create_env(t_env *env, char **ev) // incializar env
 t_msh	*init(char **env) //init estructura general
 {
 	t_msh	*msh;
-	
+
 	msh = ft_calloc(sizeof(t_msh), 1);
 	if (!msh)
 		exit_error("Error malloc", 1);

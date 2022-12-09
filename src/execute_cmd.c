@@ -14,9 +14,9 @@
 
 static char	*str_tolower(char *str)
 {
-	int	i;
+	int		i;
 	char	*temp;
-	
+
 	i = 0;
 	temp = ft_calloc(1, ft_strlen(str) + 1);
 	if (!temp)

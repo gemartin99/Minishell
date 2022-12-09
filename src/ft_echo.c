@@ -14,9 +14,9 @@
 
 static int	is_flag(char *str)
 {
-	int	i;
-	char 	*temp;
-	
+	int		i;
+	char	*temp;
+
 	i = 0;
 	temp = ft_strdup(str);
 	temp = remove_quotes(temp, 34);
@@ -50,7 +50,7 @@ static void	special_putstr(char *str, char *next)
 	{
 		if (str[i] == 34 && simples != -1 && i++)
 				doubles *= -1;
-	 	if (str[i] == 39 && doubles != -1 && i++)
+		if (str[i] == 39 && doubles != -1 && i++)
 			simples *= -1;
 		if (str[i] == ';' && next && i++)
 			printf(" ");
@@ -66,7 +66,7 @@ void	ft_echo(t_cmd	**cmd)
 {
 	int	i;
 	int	n;
-	
+
 	if (!(*cmd)->arg && printf("\n"))
 		return ;
 	i = 0;

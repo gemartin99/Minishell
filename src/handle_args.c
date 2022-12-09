@@ -12,16 +12,16 @@
 
 #include "../inc/minishell.h"
 
-static int ft_split_args(char *s, char **arg)
+static int	ft_split_args(char *s, char **arg)
 {
-	int pos;
-	int start;
-	int i;
+	int	pos;
+	int	start;
+	int	i;
 
 	start = 0;
 	pos = 0;
 	i = -1;
-	while(s[++i])
+	while (s[++i])
 	{
 		if (s[i] == ' ' || (s[i] >= 9 && s[i] <= 13) && s[i + 1] && s[i + 1] != ' ')
 			start = i + 1;
@@ -49,21 +49,21 @@ static char	**ft_get_args(t_msh *msh, char *s, t_cmd *cmd)
 	if (!arg)
 		exit_error("Error malloc", 13);
 	msh->total_chars += ft_split_args(s, arg);
-	return (arg);	
+	return (arg);
 }
 
-static char *get_comand(t_msh *msh, char *read_line)
+static char	*get_comand(t_msh *msh, char *read_line)
 {
-	int	i;
-	int	start;
+	int		i;
+	int		start;
 	char	*str;
 
 	i = 0;
 	while (read_line[i] == 32 || (read_line[i] >= 9 && read_line[i] <= 13))
 		i++;
 	start = i;
-	while (read_line[i] && read_line[i] != 32 
-			&& !(read_line[i] >= 9 && read_line[i] <= 13))
+	while (read_line[i] && read_line[i] != 32
+		&& !(read_line[i] >= 9 && read_line[i] <= 13))
 	{
 		if (read_line[i] == 34 || read_line[i] == 39)
 			i = get_next_quote(i + 1, read_line, read_line[i]);
@@ -76,7 +76,7 @@ static char *get_comand(t_msh *msh, char *read_line)
 
 static t_cmd	*add_cmd(t_msh *msh, char *read_line)
 {
-	t_cmd *temp;
+	t_cmd	*temp;
 
 	temp = ft_calloc(sizeof(t_cmd), 1);
 	if (!temp)
@@ -94,7 +94,7 @@ static t_cmd	*add_cmd(t_msh *msh, char *read_line)
 
 static void	tokenize(t_msh *msh, t_cmd **cmd, char *read_line) //
 {
-	int i;
+	int		i;
 	t_cmd	*temp;
 	char	**lines;
 
@@ -124,10 +124,10 @@ static void	tokenize(t_msh *msh, t_cmd **cmd, char *read_line) //
 void	recive_arguments(t_msh *msh)
 {
 	char	*read_line;
-	
+
 	while (1)
 	{
-		read_line = readline( BLUE_T "Mi" WHITE_T "ni" YELLOW_T "s"
+		read_line = readline(BLUE_T "Mi" WHITE_T "ni" YELLOW_T "s"
 				WHITE_T "he" BLUE_T "ll" "🇦🇷 🧉->" RESET_COLOR);
 		if (!read_line)
 			exit_error("exit", 0);

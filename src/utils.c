@@ -12,7 +12,7 @@
 
 #include "../inc/minishell.h"
 
-int ft_skip_space(char *s, int i)
+int	ft_skip_space(char *s, int i)
 {
 	while (s[i] == 32 || (s[i] >= 9 && s[i] <= 13))
 		i++;
@@ -22,7 +22,7 @@ int ft_skip_space(char *s, int i)
 t_cmd	*ft_last(t_cmd **cmd)
 {
 	t_cmd	*temp;
-	
+
 	temp = *cmd;
 	while (temp->next)
 		temp = temp->next;
@@ -31,17 +31,16 @@ t_cmd	*ft_last(t_cmd **cmd)
 
 char	*remove_quotes(char *str, char c) //Recive un string y lo copia sin el caracter que resive
 {
-	int	i;
-	char *temp;
-	int	size;
+	int		i;
+	char	*temp;
+	int		size;
 
-	i = 0;
+	i = -1;
 	size = 0;
-	while (str[i])
+	while (str[++i])
 	{
 		if (str[i] != c)
 			size ++;
-		i++;
 	}
 	temp = malloc(sizeof(char) * size + 1);
 	if (!temp)
