@@ -97,6 +97,10 @@ int	ft_cd(t_cmd **cmd, char *s);
 
 int	ft_pwd(int i);
 
+int	ft_env(t_env *env);
+
+void	ft_unset(t_cmd **cmd);
+
 #define WHITE_T   "\x1b[1;37m"
 #define YELLOW_T "\x1b[1;33m"
 #define RESET_COLOR    "\x1b[0m"

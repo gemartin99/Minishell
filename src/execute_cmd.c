@@ -48,9 +48,9 @@ void	cmd_type(t_msh *msh, char *read_line)
 		else if (!ft_strncmp(temp_cmd, "export", 7))
 			printf("%s\n", temp_cmd);
 		else if (!ft_strncmp(temp_cmd, "unset", 6))
-			printf("%s\n", temp_cmd);
+			ft_unset(&temp);
 		else if (!ft_strncmp(temp_cmd, "env", 4))
-			printf("%s\n", temp_cmd);
+			ft_env(msh->env);
 		else if (!ft_strncmp(temp_cmd, "exit", 5))
 			printf("%s\n", temp_cmd);
 		else

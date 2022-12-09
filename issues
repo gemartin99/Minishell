@@ -8,3 +8,11 @@ Minishell🇦🇷 🧉->"smiro""smiro"
 Bash->"$USER"'smiro'
 
 /////////////////////////
+
+COMMAND: env ""
+
+Minishell🇦🇷 🧉->muestra las env
+
+Bash->env: : No such file or directory
+
+/////////////////////////
