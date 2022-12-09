@@ -1,0 +1,10 @@
+
+/////////////////////////
+
+COMMAND: echo '"$USER"'"""'$USER'"
+
+Minishell🇦🇷 🧉->"smiro""smiro"
+
+Bash->"$USER"'smiro'
+
+/////////////////////////
