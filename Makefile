@@ -59,7 +59,8 @@ SRC_FILES	=	minishell \
 				execute_cmd \
 				utils \
 				ft_echo \
-				expand
+				expand \
+				expand_utils
 
 
 SRC			=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))

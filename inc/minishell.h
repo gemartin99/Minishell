@@ -82,6 +82,16 @@ t_cmd	*ft_last(t_cmd **cmd);
 void	ft_echo(t_cmd	**cmd);
 char	*remove_quotes(char *str, char c);
 
+////////expand_utils ⬇️////////
+
+char *ft_strjoin_special(char *s1, char *s2, size_t i, size_t c);
+int position_dolar(char *line);
+int check_special_char(char c);
+int ft_isdigit_special(int i);
+int var_strcmp(char *s1, char *s2);
+
+////////expand_utils ⬆️////////
+
 #define WHITE_T   "\x1b[1;37m"
 #define YELLOW_T "\x1b[1;33m"
 #define RESET_COLOR    "\x1b[0m"
