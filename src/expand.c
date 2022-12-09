@@ -247,6 +247,8 @@ void	expand(t_cmd **cmd)
 	int	i;
 
 	i = -1;
+	if (!(*cmd)->arg)
+		return ;
 	while ((*cmd)->arg[++i])
 	{
 		if (check_dolar((*cmd)->arg[i]) == 1)

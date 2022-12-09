@@ -139,7 +139,7 @@ void	recive_arguments(t_msh *msh)
 			add_history(read_line);
 			tokenize(msh, &msh->cmd, read_line);
 			if (msh->flags->quote != 0)
-				cmd_type(msh);
+				cmd_type(msh, read_line);
 		}
 	}
 }

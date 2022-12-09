@@ -30,7 +30,7 @@ static char	*str_tolower(char *str)
 	return (temp);
 }
 
-void	cmd_type(t_msh *msh)
+void	cmd_type(t_msh *msh, char *read_line)
 {
 	t_cmd	*temp;
 	char	*temp_cmd;
@@ -42,9 +42,9 @@ void	cmd_type(t_msh *msh)
 		if (!ft_strncmp(temp_cmd, "echo", 5))
 			ft_echo(&temp);
 		else if (!ft_strncmp(temp_cmd, "cd", 3))
-			printf("%s\n", temp_cmd);
+			ft_cd(&temp, read_line);
 		else if (!ft_strncmp(temp_cmd, "pwd", 4))
-			printf("%s\n", temp_cmd);
+			ft_pwd(0);
 		else if (!ft_strncmp(temp_cmd, "export", 7))
 			printf("%s\n", temp_cmd);
 		else if (!ft_strncmp(temp_cmd, "unset", 6))

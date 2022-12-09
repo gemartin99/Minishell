@@ -75,7 +75,7 @@ int		check_null_args(char *s);
 int		get_next_quote(int i, char *str, char c);
 int		ft_check_dquote(char *s, int simple, int doble, t_msh *msh);
 int 	ft_count_args(char *s);
-void	cmd_type(t_msh *msh);
+void	cmd_type(t_msh *msh, char *read_line);
 void 	expand(t_cmd **cmd);
 int 	ft_skip_space(char *s, int i);
 t_cmd	*ft_last(t_cmd **cmd);
@@ -91,6 +91,11 @@ int ft_isdigit_special(int i);
 int var_strcmp(char *s1, char *s2);
 
 ////////expand_utils ⬆️////////
+
+
+int	ft_cd(t_cmd **cmd, char *s);
+
+int	ft_pwd(int i);
 
 #define WHITE_T   "\x1b[1;37m"
 #define YELLOW_T "\x1b[1;33m"
