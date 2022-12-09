@@ -18,26 +18,10 @@ static char *quit_null(char *s, int i) //funcion para quitar argumentos nulos si
 	int j;
 	char *res;
 
-	s[i] = 48;
-	s[i + 1] = 48;
-	j = -1;
-	res = malloc(sizeof(char) * ft_strlen(s)) - 1;
-	if (!res)
-		exit_error("Error malloc", 10);
-	while (++j < i)
-		res[j] = s[j];
-	if (s[j + 2] && s[j + 3] == '\0')
-		j++;
-	res[j] = '\0';
-	while (s[j + 2])
-	{
-		res[j] = s[j + 2];
-		j++;
-	}
-	res[j] = '\0';
-	if (s)
-		s = NULL;
-	return (res);
+	s[i] = 27;
+	s[i + 1] = 27;
+	res = ft_strdup(s);
+	return (remove_quotes(res, 27));
 }
 
 static char *quit_null_space(char *s, int i) //funcion para quitar argumentos nulos si hay espacios antes y despues del argumento
@@ -78,7 +62,7 @@ char *change_null_args(char *s, t_cmd *cmd)
 		else if (s[i] == 39 && s[i + 1] && s[i + 1] != 39)
 			while (s[++i] && s[i + 1] != 39)
 				;
-		else if (s[i] == ' ' && s[i + 1] && (s[i + 1] == 34 || s[i + 1] == 39) && s[i + 2] && (s[i + 2] == 34 || s[i + 2] == 39) && s[i + 3] && s[i + 3] == ' ')
+		else if (s[i] == ' ' && s[i + 1] && (s[i + 1] == 34 || s[i + 1] == 39) && s[i + 2] && (s[i + 2] == 34 || s[i + 2] == 39) && (s[i + 3] == ' ' || s[i + 3] == '\0'))
 		{
 			i++;
 			s = quit_null_space(s, i);

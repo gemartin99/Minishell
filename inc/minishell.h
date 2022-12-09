@@ -30,14 +30,6 @@
 # include	<sys/param.h>
 # include "libft/libft.h"
 
-typedef struct s_cmd
-{
-	char	*cmd;
-	char	**arg;
-	int		num_arg;
-	struct s_cmd	*next;
-}							t_cmd;
-
 typedef struct s_env
 {
 	char	**env;
@@ -50,8 +42,19 @@ typedef struct s_flags
 	int	quote;
 	int	pipe;
 	int	redic;
-	int	dollar;
+	int	dollar_special;
 }							t_flags;
+
+typedef struct s_cmd
+{
+	char	*cmd;
+	char	**arg;
+	int		num_arg;
+	struct s_cmd	*next;
+	t_env	*env;
+	t_flags	*flags;
+}							t_cmd;
+
 
 typedef struct s_msh
 {
@@ -73,7 +76,7 @@ int		get_next_quote(int i, char *str, char c);
 int		ft_check_dquote(char *s, int simple, int doble, t_msh *msh);
 int 	ft_count_args(char *s);
 void	cmd_type(t_msh *msh);
-void 	expand(t_cmd *cmd);
+void 	expand(t_cmd **cmd);
 int 	ft_skip_space(char *s, int i);
 t_cmd	*ft_last(t_cmd **cmd);
 void	ft_echo(t_cmd	**cmd);

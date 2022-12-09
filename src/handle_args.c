@@ -87,6 +87,8 @@ static t_cmd	*add_cmd(t_msh *msh, char *read_line)
 		return (temp);
 	temp->arg = ft_get_args(msh, read_line + msh->total_chars, temp);
 	temp->next = NULL;
+	temp->flags = msh->flags;
+	temp->env = msh->env;
 	return (temp);
 }
 
@@ -103,19 +105,20 @@ static void	tokenize(t_msh *msh, t_cmd **cmd, char *read_line) //
 	msh->flags->pipe = ft_count_pipes(read_line);
 	lines = ft_split(read_line, '|');
 	*cmd = add_cmd(msh, lines[0]);
+	expand(cmd);
 	if (!lines)
 		exit_error("Error malloc", 16);
 	while (++i <= msh->flags->pipe)
 	{
 		msh->total_chars = 0;
 		temp = add_cmd(msh, lines[i]);
+		expand(&temp);
 		(ft_last(cmd))->next = temp;
 		temp = temp->next;
 	}
 	while (i--)
 		free(lines[i]);
 	free(lines);
-	//expand(cmd);
 }
 
 void	recive_arguments(t_msh *msh)
