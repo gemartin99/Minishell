@@ -28,3 +28,33 @@ t_cmd	*ft_last(t_cmd **cmd)
 		temp = temp->next;
 	return (temp);
 }
+
+char	*remove_quotes(char *str, char c) //Recive un string y lo copia sin el caracter que resive
+{
+	int	i;
+	char *temp;
+	int	size;
+
+	i = 0;
+	size = 0;
+	while (str[i])
+	{
+		if (str[i] != c)
+			size ++;
+		i++;
+	}
+	temp = malloc(sizeof(char) * size + 1);
+	if (!temp)
+		exit_error("Error malloc", 20);
+	temp[size--] = '\0';
+	while (--i >= 0)
+	{
+		if (str[i] != c)
+		{
+			temp[size] = str[i];
+			size--;
+		}
+	}
+	free(str);
+	return (temp);
+}

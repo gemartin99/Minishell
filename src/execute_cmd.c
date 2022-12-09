@@ -23,7 +23,8 @@ static char	*str_tolower(char *str)
 		exit_error("Error malloc", 11);
 	while (str[i])
 	{
-		temp[i] = ft_tolower(str[i]);
+		if (str[i] != 34 && str[i] != 39)
+			temp[i] = ft_tolower(str[i]);
 		i++;
 	}
 	return (temp);
@@ -39,7 +40,7 @@ void	cmd_type(t_msh *msh)
 	{
 		temp_cmd = str_tolower(temp->cmd);
 		if (!ft_strncmp(temp_cmd, "echo", 5))
-			printf("%s\n", temp_cmd);
+			ft_echo(&temp);
 		else if (!ft_strncmp(temp_cmd, "cd", 3))
 			printf("%s\n", temp_cmd);
 		else if (!ft_strncmp(temp_cmd, "pwd", 4))
