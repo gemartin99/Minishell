@@ -66,7 +66,7 @@ void	cmd_type(t_msh *msh, char *read_line)
 		else if (!ft_strncmp(temp_cmd, "unset", 6))
 			ft_unset(&temp);
 		else if (!ft_strncmp(temp_cmd, "env", 4))
-			ft_env(msh->env);
+			ft_env(temp);
 		else if (!ft_strncmp(temp_cmd, "exit", 5))
 			printf("%s\n", temp_cmd);
 		else

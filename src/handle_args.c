@@ -83,12 +83,12 @@ static t_cmd	*add_cmd(t_msh *msh, char *read_line)
 		exit_error("Error malloc", 9);
 	temp->cmd = get_comand(msh, read_line + msh->total_chars);
 	temp->num_arg = ft_count_args(read_line + msh->total_chars);
-	if (temp->num_arg == 0)
-		return (temp);
-	temp->arg = ft_get_args(msh, read_line + msh->total_chars, temp);
 	temp->next = NULL;
 	temp->flags = msh->flags;
 	temp->env = msh->env;
+	if (temp->num_arg == 0)
+		return (temp);
+	temp->arg = ft_get_args(msh, read_line + msh->total_chars, temp);
 	return (temp);
 }
 
