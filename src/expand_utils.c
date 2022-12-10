@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: smiro <smiro@student.42barcelona>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/10 00:26:30 by smiro             #+#    #+#             */
+/*   Updated: 2022/12/10 00:26:31 by smiro            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/minishell.h"
 
 int	var_strcmp(char *s1, char *s2) //, t_msh *d) //funcion strcmp modificada para variables de entorno

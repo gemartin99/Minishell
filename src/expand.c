@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: smiro <smiro@student.42barcelona>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/10 00:25:12 by smiro             #+#    #+#             */
+/*   Updated: 2022/12/10 00:25:14 by smiro            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/minishell.h"
 
 int	check_dolar(char *line) //funcion para checkear si hay un dolar en la linea que me mandan
@@ -249,6 +261,8 @@ void	expand(t_cmd **cmd)
 	i = -1;
 	if (!(*cmd)->arg)
 		return ;
+	if (check_dolar((*cmd)->cmd) == 1)
+		(*cmd)->cmd = change_dolar_x_var((*cmd), (*cmd)->cmd);
 	while ((*cmd)->arg[++i])
 	{
 		if (check_dolar((*cmd)->arg[i]) == 1)

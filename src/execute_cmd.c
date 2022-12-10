@@ -15,17 +15,33 @@
 static char	*str_tolower(char *str)
 {
 	int		i;
+	int		j;
 	char	*temp;
+	int		doubles;
+	int		simples;
 
 	i = 0;
+	j = 0;
+	doubles = 1;
+	simples = 1;
+	if (str[i] == 34 || str[i] == 39)
+	{
+		str = remove_quotes(str, str[i]);
+		doubles = -1;
+		simples = -1;
+	}
 	temp = ft_calloc(1, ft_strlen(str) + 1);
 	if (!temp)
 		exit_error("Error malloc", 11);
 	while (str[i])
 	{
-		if (str[i] != 34 && str[i] != 39)
-			temp[i] = ft_tolower(str[i]);
+		while (str[i] == 34 && simples != -1 && i++)
+				doubles *= -1;
+		while (str[i] == 39 && doubles != -1 && i++)
+			simples *= -1;
+		temp[j] = ft_tolower(str[i]);
 		i++;
+		j++;
 	}
 	return (temp);
 }
