@@ -41,7 +41,7 @@ int	check_dolar(char *line) //funcion para checkear si hay un dolar en la linea 
 	return (0);
 }
 
-char	*add_var_value(char *s1) //funcion para añadir el valor de la variable de entorno a nuestra variable result
+static char	*ft_add_var_value(char *s1) //funcion para añadir el valor de la variable de entorno a nuestra variable result
 {
 	int		i;
 	int		j;
@@ -223,7 +223,7 @@ char	*ft_change_var(t_cmd *cmd, char *line, char **var_reminder) //funcion para 
 		if (var_strcmp(name_var, cmd->env->env[i]) == 0)
 		{
 			free(name_var);
-			result = add_var_value(cmd->env->env[i]);
+			result = ft_add_var_value(cmd->env->env[i]);
 			return (change_line_value(line, result));
 		}
 		else if (i + 1 == cmd->env->num_env)

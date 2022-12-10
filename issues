@@ -11,8 +11,16 @@ Bash->"$USER"'smiro'
 
 COMMAND: env ""
 
-Minishell🇦🇷 🧉->muestra las env
+Minishell🇦🇷 🧉->no printa nada
 
 Bash->env: : No such file or directory
+
+/////////////////////////
+
+COMMAND: export "var"=loquesea
+
+Minishell🇦🇷 🧉->zsh: segmentation fault  ./minishell
+
+Bash->no debe pintar nada y crearse la variable de entorno
 
 /////////////////////////

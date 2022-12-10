@@ -12,6 +12,8 @@
 
 #include "../inc/minishell.h"
 
+#include "../inc/minishell.h"
+
 static int	ft_split_args(char *s, char **arg)
 {
 	int	pos;
@@ -143,3 +145,4 @@ void	recive_arguments(t_msh *msh)
 		}
 	}
 }
+
