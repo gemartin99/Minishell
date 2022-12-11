@@ -104,6 +104,8 @@ int position_dolar(char *line);
 int check_special_char(char c);
 int ft_isdigit_special(int i);
 int var_strcmp(char *s1, char *s2);
+char	*str_tolower(char *str);
+char	*str_noquotes(char *str);
 
 
 ////////builtins️////////

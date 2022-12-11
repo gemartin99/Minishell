@@ -57,3 +57,47 @@ char	*remove_quotes(char *str, char c) //Recive un string y lo copia sin el cara
 	free(str);
 	return (temp);
 }
+
+char	*str_tolower(char *str)
+{
+	int i;
+	
+	i = 0;
+	while (str[i])
+	{
+		str[i] = ft_tolower(str[i]);
+		i++;
+	}
+	return (str);
+}
+
+char	*str_noquotes(char *str)
+{
+	int		i;
+	int		j;
+	char	*temp;
+	int		doubles;
+	int		simples;
+
+	i = 0;
+	j = 0;
+	doubles = 1;
+	simples = 1;
+	temp = ft_calloc(1, ft_strlen(str) + 1);
+	if (!temp)
+		exit_error("Error malloc", 11);
+	while (str[i])
+	{
+		if (str[i] == 34 && simples != -1)
+				doubles = -doubles;
+		else if (str[i] == 39 && doubles != -1)
+			simples = -simples;
+		else
+		{
+			temp[j] = str[i];
+			j++;
+		}
+		i++;
+	}
+	return (temp);
+}
