@@ -30,14 +30,22 @@
 # include	<sys/param.h>
 # include "libft/libft.h"
 
-typedef struct s_env
+typedef struct	s_pipe
+{
+	int	fd[2][2];
+	int	in;
+	int	out;
+	int	last;
+}							t_pipe;
+
+typedef struct	s_env
 {
 	char	**env;
 	char	*path;
 	int		num_env;
 }							t_env;
 
-typedef struct s_flags
+typedef struct	s_flags
 {
 	int	quote;
 	int	pipe;
@@ -45,7 +53,7 @@ typedef struct s_flags
 	int	dollar_special;
 }							t_flags;
 
-typedef struct s_cmd
+typedef struct	s_cmd
 {
 	char	*cmd;
 	char	**arg;
@@ -53,10 +61,11 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 	t_env	*env;
 	t_flags	*flags;
+	t_pipe	*pipes;
 }							t_cmd;
 
 
-typedef struct s_msh
+typedef struct	s_msh
 {
 	int	bash_lvl;
 	int	total_chars;
@@ -75,12 +84,18 @@ int		check_null_args(char *s);
 int		get_next_quote(int i, char *str, char c);
 int		ft_check_dquote(char *s, int simple, int doble, t_msh *msh);
 int 	ft_count_args(char *s);
-void	cmd_type(t_msh *msh, char *read_line);
+void	execute_cmd(t_cmd **cmd);
 void 	expand(t_cmd **cmd);
 int 	ft_skip_space(char *s, int i);
 t_cmd	*ft_last(t_cmd **cmd);
 void	ft_echo(t_cmd	**cmd);
 char	*remove_quotes(char *str, char c);
+
+///////////pipes/////////////////
+
+t_pipe	*init_pipes(void);
+void	setfds(t_pipe *pipe, int i);
+void	setpipes(t_pipe *pipes, int i);
 
 ////////expand_utils ⬇️////////
 
@@ -90,10 +105,11 @@ int check_special_char(char c);
 int ft_isdigit_special(int i);
 int var_strcmp(char *s1, char *s2);
 
-////////expand_utils ⬆️////////
+
+////////builtins️////////
 
 
-int	ft_cd(t_cmd **cmd, char *s);
+int	ft_cd(t_cmd **cmd);
 
 int	ft_pwd(int i);
 
@@ -107,11 +123,5 @@ int ft_export(t_cmd **cmd);
 #define YELLOW_T "\x1b[1;33m"
 #define RESET_COLOR    "\x1b[0m"
 #define BLUE_T "\x1b[1;36m"
-
-#define COMMAND 0
-#define FLAG 1
-#define ARG 2
-#define PIPE 3
-#define REDIC 4
 
 #endif

@@ -46,32 +46,69 @@ static char	*str_tolower(char *str)
 	return (temp);
 }
 
-void	cmd_type(t_msh *msh, char *read_line)
+static	int	cmd_type(t_cmd *args)
+{
+	char *cmd;
+	cmd = str_tolower(args->cmd);
+	if (!ft_strncmp(cmd, "echo", 4))
+		ft_echo(&args);
+	else if (!ft_strncmp(cmd, "cd", 2))
+		ft_cd(&args);
+	else if (!ft_strncmp(cmd, "pwd", 3))
+		ft_pwd(0);
+	else if (!ft_strncmp(cmd, "export", 6))
+		ft_export(&args);
+	else if (!ft_strncmp(cmd, "unset", 5))
+		ft_unset(&args);
+	else if (!ft_strncmp(cmd, "env", 3))
+		ft_env(args);
+	else if (!ft_strncmp(cmd, "exit", 5))
+		printf("%s\n", cmd);
+	else
+		printf("1 %s\n", cmd);
+	return (0);
+}
+
+void	execute_cmd(t_cmd **cmd)
 {
 	t_cmd	*temp;
-	char	*temp_cmd;
+	int	pid;
+	int	i;
+	int	ret;//global
 
-	temp = msh->cmd;
+	temp = *cmd;
+	if (temp->flags->pipe == 0)
+	{
+		cmd_type(temp);
+		return ;
+	}
+	i = 1;
 	while (temp)
 	{
-		temp_cmd = str_tolower(temp->cmd);
-		if (!ft_strncmp(temp_cmd, "echo", 5))
-			ft_echo(&temp);
-		else if (!ft_strncmp(temp_cmd, "cd", 3))
-			ft_cd(&temp, read_line);
-		else if (!ft_strncmp(temp_cmd, "pwd", 4))
-			ft_pwd(0);
-		else if (!ft_strncmp(temp_cmd, "export", 7))
-			ft_export(&temp);
-		else if (!ft_strncmp(temp_cmd, "unset", 6))
-			ft_unset(&temp);
-		else if (!ft_strncmp(temp_cmd, "env", 4))
-			ft_env(temp);
-		else if (!ft_strncmp(temp_cmd, "exit", 5))
-			printf("%s\n", temp_cmd);
-		else
-			printf("%s\n", temp_cmd);
+		if (!temp->next)
+			temp->pipes->last = 0;
+		setfds(temp->pipes, i);
+		setpipes(temp->pipes, i);
+		pid = fork();
+		if (pid == -1)
+			exit_error("Error fork", 27);
+		if (pid == 0)
+		{
+			dup2(temp->pipes->in, STDIN_FILENO);
+			dup2(temp->pipes->out, STDOUT_FILENO);
+			close(temp->pipes->in);
+			close(temp->pipes->out);
+			exit(cmd_type(temp));
+		}
 		temp = temp->next;
-		free(temp_cmd);
+		i++;
+	}
+	while (--i)
+	{
+		waitpid(-1, &ret, 0);
+		if (WIFEXITED(ret))
+			ret = WEXITSTATUS(ret);
+		if (ret != 0 && ret != 1)
+			perror(NULL);
 	}
 }

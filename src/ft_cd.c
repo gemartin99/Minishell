@@ -35,7 +35,7 @@ char	*get_path(int i)
 	return (res);
 }
 
-int	ft_cd(t_cmd **cmd, char *s)
+int	ft_cd(t_cmd **cmd)
 {
 	char	*path;
 	int		i;

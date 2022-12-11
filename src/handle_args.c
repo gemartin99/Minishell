@@ -88,6 +88,7 @@ static t_cmd	*add_cmd(t_msh *msh, char *read_line)
 	temp->next = NULL;
 	temp->flags = msh->flags;
 	temp->env = msh->env;
+	temp->pipes = init_pipes();
 	if (temp->num_arg == 0)
 		return (temp);
 	temp->arg = ft_get_args(msh, read_line + msh->total_chars, temp);
@@ -141,7 +142,7 @@ void	recive_arguments(t_msh *msh)
 			add_history(read_line);
 			tokenize(msh, &msh->cmd, read_line);
 			if (msh->flags->quote != 0)
-				cmd_type(msh, read_line);
+				execute_cmd(&(msh->cmd));
 		}
 	}
 }
