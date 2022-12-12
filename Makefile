@@ -17,6 +17,7 @@
 NAME		= minishell
 INC			= ./inc/
 INC_HEADERS	= $(INC)minishell.h
+USER		= $(shell $USER)
 
 FT_INC		= $(FT)/libft.h
 
@@ -27,7 +28,7 @@ FT_LIB		= $(FT)libft.a
 SRC_DIR		= src/
 OBJ_DIR		= obj/
 COMFLAGS = -I/usr/local/opt/readline/include
-LINKFLAGS = -lreadline -L/usr/local/opt/readline/lib
+LINKFLAGS = -lreadline -L/usr/local/opt/readline/lib -L/Users/$(USER)/.brew/opt/readline/lib -I/Users/$(USER)/.brew/opt/readline/include
 CFLAGS		= -I $(INC) -MMD#-Wall -Werror -Wextra -fsanitize=address
 RM			= rm -f
 
@@ -68,7 +69,8 @@ SRC_FILES	=	minishell \
 				ft_export \
 				pipes \
 				ft_execve \
-				ft_exit
+				ft_exit \
+				signals
 
 
 SRC			=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
@@ -83,6 +85,7 @@ OBJF		=	.cache_exists
 
 
 all:
+		echo $USER
 		@$(MAKE) -C $(FT)
 		@$(MAKE) $(NAME)
 

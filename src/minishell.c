@@ -19,6 +19,7 @@ int	main(int ac, char **av, char **ev)
 	if (ac != 1)
 		many_args(av);
 	msh = init(ev);
+	wait_signal();
 	recive_arguments(msh);
 	return (0);
 }

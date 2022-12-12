@@ -122,6 +122,7 @@ static void	tokenize(t_msh *msh, t_cmd **cmd, char *read_line) //
 	while (i--)
 		free(lines[i]);
 	free(lines);
+	free(read_line);
 }
 
 void	recive_arguments(t_msh *msh)

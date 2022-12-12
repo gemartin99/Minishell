@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_execve.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: smiro <smiro@student.42barcelona>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/12 12:55:09 by smiro             #+#    #+#             */
+/*   Updated: 2022/12/12 12:55:13 by smiro            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 //IMPORTANTE cuando esten las redirecciones hechas añadir el mensaje de error: No such file or directory. Ej bash: <to_file_no_exist
 
 #include "../inc/minishell.h"

@@ -13,8 +13,8 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include	<unistd.h>
 # include	<stdio.h>
+# include	<unistd.h>
 # include	<stdlib.h>
 # include	<readline/readline.h>
 # include	<readline/history.h>
@@ -96,6 +96,7 @@ char	*remove_quotes(char *str, char c);
 t_pipe	*init_pipes(void);
 void	setfds(t_pipe *pipe, int i);
 void	setpipes(t_pipe *pipes, int i);
+void	wait_signal(void);
 
 ////////expand_utils ⬇️////////
 
