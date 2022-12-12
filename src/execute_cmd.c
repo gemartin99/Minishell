@@ -12,7 +12,7 @@
 
 #include "../inc/minishell.h"
 
-static	int	cmd_type(t_cmd *args)
+static	int	cmd_type(t_cmd *args, t_cmd *cmddd)
 {
 	char *cmd;
 	cmd = str_noquotes(args->cmd);
@@ -33,12 +33,13 @@ static	int	cmd_type(t_cmd *args)
 	else if (!ft_strncmp(cmd, "cd", 2))
 		return (0);
 	else
-		printf("1 %s\n", cmd);
+		ft_try_to_exec(cmddd);
+	//printf("1 %s\n", cmd);
 	free(cmd);
 	return (0);
 }
 
-static void cmd_process(t_cmd *cmd)
+static void cmd_process(t_cmd *cmd, t_cmd *cmddd)
 {
 	if (dup2(cmd->pipes->in, STDIN_FILENO) == -1)
 		exit_error("Error DUP", 23);
@@ -48,7 +49,7 @@ static void cmd_process(t_cmd *cmd)
 		exit_error("Error close", 25);
 	if (close(cmd->pipes->out) == -1)
 		exit_error("Error close", 26);
-	exit(cmd_type(cmd));
+	exit(cmd_type(cmd, cmddd));
 }
 
 void	execute_cmd(t_cmd **cmd)
@@ -61,7 +62,7 @@ void	execute_cmd(t_cmd **cmd)
 	temp = *cmd;
 	if (temp->flags->pipe == 0)
 	{
-		cmd_type(temp);
+		cmd_type(temp, (*cmd));
 		return ;
 	}
 	i = 1;
@@ -75,7 +76,7 @@ void	execute_cmd(t_cmd **cmd)
 		if (pid == -1)
 			exit_error("Error fork", 27);
 		if (pid == 0)
-			cmd_process(temp);
+			cmd_process(temp, (*cmd));
 		temp = temp->next;
 		i++;
 	}

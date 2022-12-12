@@ -121,6 +121,8 @@ void	ft_unset(t_cmd **cmd);
 
 int ft_export(t_cmd **cmd);
 
+int ft_try_to_exec(t_cmd *cmd);
+
 #define WHITE_T   "\x1b[1;37m"
 #define YELLOW_T "\x1b[1;33m"
 #define RESET_COLOR    "\x1b[0m"
