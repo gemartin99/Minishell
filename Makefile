@@ -26,9 +26,9 @@ FT_LIB		= $(FT)libft.a
 
 SRC_DIR		= src/
 OBJ_DIR		= obj/
-COMFLAGS = -I/usr/local/opt/readline/include
-LINKFLAGS = -lreadline -L/usr/local/opt/readline/lib 
-CFLAGS		= -I $(INC) -MMD#-Wall -Werror -Wextra -fsanitize=address
+COMFLAGS	= -I/Users/$(USER)/.brew/opt/readline/include
+LINKFLAGS	= -L/Users/$(USER)/.brew/opt/readline/lib -lreadline
+CFLAGS		= -I $(INC) -MMD# -Wall -Werror -Wextra #-fsanitize=address
 RM			= rm -f
 
 ################################################################################
@@ -84,7 +84,6 @@ OBJF		=	.cache_exists
 
 
 all:
-		echo $USER
 		@$(MAKE) -C $(FT)
 		@$(MAKE) $(NAME)
 
@@ -94,10 +93,10 @@ $(OBJF):
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(INC_HEADERS) $(FT_LIB) Makefile | $(OBJF)
 			@echo "$(YELLOW)Compiling: $< $(DEF_COLOR)"
-			@$(CC) $(CFLAGS) -c $< -o $@
+			@$(CC) $(CFLAGS) $(COMFLAGS) -c $< -o $@
 
 $(NAME):	$(OBJ)
-			@$(CC) $(CFLAGS) $(OBJ) $(FT_LNK) $(COMFLAGS) $(LINKFLAGS) -o $(NAME)
+			@$(CC) $(CFLAGS) $(OBJ) $(FT_LNK) $(LINKFLAGS) -o $(NAME)
 			@echo "$(GREEN)Minishell compiled!$(DEF_COLOR)"
 
 bonus:		$(B_OBJ) $(NAME)

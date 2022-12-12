@@ -12,33 +12,31 @@
 
 #include "../inc/minishell.h"
 
-static	int	cmd_type(t_cmd *args) //???? Args es CMD
+static	int	cmd_type(t_cmd *cmd, char *temp_cmd)
 {
-	char *cmd;
-	cmd = str_noquotes(args->cmd);
-	if (!ft_strncmp(cmd, "cd", 2))
-		ft_cd(&args);
-	else if (!ft_strncmp(cmd, "export", 6))
-		ft_export(&args);
-	else if (!ft_strncmp(cmd, "unset", 5))
-		ft_unset(&args);
-	else if (!ft_strncmp(cmd, "exit", 5))
-		ft_exit(args);
-	else if (!ft_strncmp(str_tolower(cmd), "pwd", 3))
+	if (!ft_strncmp(temp_cmd, "cd", 2))
+		ft_cd(&cmd);
+	else if (!ft_strncmp(temp_cmd, "export", 6))
+		ft_export(&cmd);
+	else if (!ft_strncmp(temp_cmd, "unset", 5))
+		ft_unset(&cmd);
+	else if (!ft_strncmp(temp_cmd, "exit", 5))
+		ft_exit(cmd);
+	else if (!ft_strncmp(str_tolower(temp_cmd), "pwd", 3))
 		ft_pwd(0);
-	else if (!ft_strncmp(str_tolower(cmd), "env", 3))
-		ft_env(args);
-	else if (!ft_strncmp(str_tolower(cmd), "echo", 4))
-		ft_echo(&args);
-	else if (!ft_strncmp(cmd, "cd", 2)) // Es para cd en mayuscula, probalo en bash
+	else if (!ft_strncmp(str_tolower(temp_cmd), "env", 3))
+		ft_env(cmd);
+	else if (!ft_strncmp(str_tolower(temp_cmd), "echo", 4))
+		ft_echo(&cmd);
+	else if (!ft_strncmp(temp_cmd, "cd", 2))
 		return (0);
 	else
-		ft_try_to_exec(args);
-	free(cmd);
+		ft_try_to_exec(cmd);
+	free(temp_cmd);
 	return (0);
 }
 
-static void cmd_process(t_cmd *cmd)
+static void cmd_process(t_cmd *cmd, char *temp_cmd)
 {
 	if (dup2(cmd->pipes->in, STDIN_FILENO) == -1)
 		exit_error("Error DUP", 23);
@@ -48,7 +46,19 @@ static void cmd_process(t_cmd *cmd)
 		exit_error("Error close", 25);
 	if (close(cmd->pipes->out) == -1)
 		exit_error("Error close", 26);
-	exit(cmd_type(cmd));
+	exit(cmd_type(cmd, temp_cmd));
+}
+
+
+static int	check_nonpipables(t_cmd *cmd, char *temp_cmd)
+{
+	if (cmd->next)
+		return (0);
+	if (!ft_strncmp(temp_cmd, "export", 6))
+			return (1);
+	else if (!ft_strncmp(temp_cmd, "unset", 5))
+			return (1);
+	return (0);
 }
 
 void	execute_cmd(t_cmd **cmd)
@@ -56,12 +66,14 @@ void	execute_cmd(t_cmd **cmd)
 	t_cmd	*temp;
 	int	pid;
 	int	i;
-	int	ret;//global
+	char *temp_cmd;
+	int	ret;
 
 	temp = *cmd;
-	if (temp->flags->pipe == 0)
+	temp_cmd = str_noquotes(temp->cmd);
+	if (check_nonpipables(temp, temp_cmd))
 	{
-		cmd_type(temp);
+		cmd_type(temp, temp_cmd);
 		return ;
 	}
 	i = 1;
@@ -75,10 +87,12 @@ void	execute_cmd(t_cmd **cmd)
 		if (pid == -1)
 			exit_error("Error fork", 27);
 		if (pid == 0)
-			cmd_process(temp);
+			cmd_process(temp ,temp_cmd);
 		temp = temp->next;
 		i++;
 	}
+	
+	// HACER FUNCION WAIT PROCESS Y GET ERRORS
 	while (--i)
 	{
 		waitpid(-1, &ret, 0);

@@ -16,8 +16,6 @@
 # include	<stdio.h>
 # include	<unistd.h>
 # include	<stdlib.h>
-# include	<readline/readline.h>
-# include	<readline/history.h>
 # include	<dirent.h>
 # include	<fcntl.h>
 # include	<sys/types.h>
@@ -29,6 +27,8 @@
 # include	<sys/ioctl.h>
 # include	<sys/param.h>
 # include "libft/libft.h"
+# include	<readline/readline.h>
+# include	<readline/history.h>
 
 typedef struct	s_pipe
 {
