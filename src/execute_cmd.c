@@ -12,7 +12,7 @@
 
 #include "../inc/minishell.h"
 
-static	int	cmd_type(t_cmd *args, t_cmd *cmddd)
+static	int	cmd_type(t_cmd *args, t_cmd *cmddd) //he añadido la cerdada esta de cmddd porque lo necesito para el execve
 {
 	char *cmd;
 	cmd = str_noquotes(args->cmd);
@@ -23,7 +23,7 @@ static	int	cmd_type(t_cmd *args, t_cmd *cmddd)
 	else if (!ft_strncmp(cmd, "unset", 5))
 		ft_unset(&args);
 	else if (!ft_strncmp(cmd, "exit", 5))
-		printf("%s\n", cmd);
+		ft_exit(cmddd);
 	else if (!ft_strncmp(str_tolower(cmd), "pwd", 3))
 		ft_pwd(0);
 	else if (!ft_strncmp(str_tolower(cmd), "env", 3))
