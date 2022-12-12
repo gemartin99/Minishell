@@ -30,8 +30,8 @@ static	int	cmd_type(t_cmd *args, t_cmd *cmddd)
 		ft_env(args);
 	else if (!ft_strncmp(str_tolower(cmd), "echo", 4))
 		ft_echo(&args);
-	else if (!ft_strncmp(cmd, "cd", 2))
-		return (0);
+	//else if (!ft_strncmp(cmd, "cd", 2)) esta arriba el cd (?)
+	//	return (0);
 	else
 		ft_try_to_exec(cmddd);
 	//printf("1 %s\n", cmd);

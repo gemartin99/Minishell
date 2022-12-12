@@ -49,40 +49,6 @@ int path_exist(t_cmd *cmd, char **path_value) //funcion que checkea si existe la
 	return (-1);
 }
 
-/*int path_exist(t_cmd *cmd, char **path_value) //funcion que checkea si existe la var $PATH
-{
-	int i;
-	int j;
-	char *tmp;
-
-	i = -1;
-	j = 0;
-	printf("nenv %d\n", cmd->env->num_env);
-	printf("aaa%s\n", cmd->env->env[0]);
-	printf("%s\n", "hola");
-	while (++i < cmd->env->num_env)
-	{
-		printf("i: %d\n", i);
-		if (cmd->env->env[i] == NULL)
-			;
-		else if (var_strcmp_path("PATH", cmd->env->env[i]) == 0)
-		{
-			tmp = ft_strdup(cmd->env->env[i]);
-			//printf("PATH es: %s\n", *path_value);
-			i = 0;
-			//printf("ppp %c\n", *path_value[j]);
-			while (*path_value[j] && *path_value[j] != '=')
-				j++;
-			printf("aaa1\n");
-			*path_value = ft_substr(*path_value, j + 1, ft_strlen(*path_value) - j);
-			printf("aaa2\n");
-			printf("s: %s\n", *path_value);
-			exit (0);
-		}
-	}
-	return (-1);
-}*/
-
 char *value_dolar_path(char *s) //funcion que muestra el valor de la variable path pero se ira acortando cada vez que se intente ejecutar algo en una de las rutas
 {
 	int i;
@@ -188,31 +154,30 @@ int ft_try_to_exec(t_cmd *cmd) //funcion para intentar hacer execv de lo que me 
 	int status;
 
 	if (path_exist(cmd, &path_value) == -1)
-		printf("$PATH NO EXISTE\n");
-	/*envp_2 = convert_to_env(cmd);
+		printf("$PATH NO EXISTE\n"); //path_value = ft_strdup("poner la path por defecto cuando se borra la $PATH")
+	envp_2 = convert_to_env(cmd);
 	absolute_path = ft_strdup("a");
 	while (absolute_path)
 	{
-		absolute_path = value_dolar_path(d->path_value);
-		d->path_value = increase_pointer(d->path_value);
+		absolute_path = value_dolar_path(path_value);
+		path_value = increase_pointer(path_value);
 		pid = fork();
 		if (pid < 0)
-			ft_free();
+			exit_error("Error pid < 0", 1);
 		else if (pid == 0)
 		{
-			absolute_path = value_dolar_path(d->path_value);
-			d->path_value = increase_pointer(d->path_value);
-			search_path = ft_strjoin(absolute_path, d->argu[0]);
+			absolute_path = value_dolar_path(path_value);
+			path_value = increase_pointer(path_value);
+			search_path = ft_strjoin(absolute_path, cmd->cmd);
 			if (access(search_path, F_OK) != -1)
 			{
 				if (access(search_path, X_OK) != -1)
 				{
-					returnvalue = execve(search_path, d->argu, envp_2); //poner variables de entorno propias para que los comandos que necesiten las env las puedan utilizar
+					returnvalue = execve(search_path, cmd->arg, envp_2); //poner variables de entorno propias para que los comandos que necesiten las env las puedan utilizar
 					exit(0);
 				}
-				printf("bash: %s: Permision denied\n", d->argu[0]);
+				printf("bash: %s: Permision denied\n", cmd->cmd);
 				exit (1);
-
 			}
 			else
 				exit(255);
@@ -227,6 +192,6 @@ int ft_try_to_exec(t_cmd *cmd) //funcion para intentar hacer execv de lo que me 
 		}
 	}
 	if (returnvalue != 0 && returnvalue != 1)
-		printf("bash: %s: Command not found\n", d->argu[0]);*/
+		printf("bash: %s: Command not found\n", cmd->cmd);
 	return (0);
 }
