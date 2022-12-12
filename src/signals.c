@@ -16,7 +16,6 @@ static void	signal_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
-		rl_replace_line("HOLA", 0);
 		write(1, "\n", 1);
 		kill(0, SIGCONT);
 	}
