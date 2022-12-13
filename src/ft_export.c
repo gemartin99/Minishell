@@ -133,19 +133,6 @@ int export_parse(t_cmd *cmd, char *array, int j, int control)
 	return (0);
 }
 
-void	print_export_var(t_cmd *cmd)
-{
-	int i;
-
-	i = 0;
-	while (i < cmd->env->num_env)
-	{
-		if (cmd->env->env[i] != NULL)
-			printf("declare -x %s\n", cmd->env->env[i]);
-		i++;
-	}
-}
-
 void add_new_vars2(t_cmd *cmd, char *binary_array, int i, char **aux) //segunda parte de funcion que calcula cuantas variables nuevas hay para crear la reserva de memoria debida para luego poder hacer el realloc
 {
 	int j;
@@ -410,7 +397,9 @@ int ft_export(t_cmd **cmd)
 	i = -1;
 	if ((*cmd)->num_arg == 0)
 	{
+		printf("ENTRO\n");
 		print_export_var((*cmd));
+		printf("SALGO\n");
 		return (0);
 	}
 	while ((*cmd)->arg[++i] && i <= (*cmd)->num_arg)

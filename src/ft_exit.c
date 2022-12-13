@@ -1,6 +1,12 @@
 #include "../inc/minishell.h"
 
-long long	static ft_special_atoi(const char *str)
+int ft_atoi_error(int *atoi_error)
+{
+	*atoi_error = -1;
+	return (-1);
+}
+
+long long	static ft_special_atoi(const char *str, int *atoi_error)
 {
 	int				i;
 	int				valorfinal;
@@ -19,10 +25,10 @@ long long	static ft_special_atoi(const char *str)
 	{
 		nbr = nbr * 10 + str[i] - '0';
 		i++;
-		/*if (nbr < -LLONG_MIN && valorfinal == -1)
-			return ();
+		if (nbr < -LLONG_MIN && valorfinal == -1)
+			return (ft_atoi_error(atoi_error));
 		if (nbr > LLONG_MAX && valorfinal == 1)
-			return (atoi_error(d));*/
+			return (ft_atoi_error(atoi_error));
 	}
 	return (nbr * valorfinal);
 }
@@ -83,17 +89,19 @@ void	ft_exit(t_cmd *cmd)
 {
 	long long n;
 	char *num_in_string;
+	int atoi_error;
 
 	//hacer funcion que quite las comillas de los args
+	atoi_error = 0;
 	if (cmd->num_arg == 0)
-		exit (0);
+		exit (0); //exit de valor de la variable global
 	else if (cmd->num_arg > 1 && check_only_num(cmd->arg[0]) == 0)
 		return((void)printf("exit\nbash: exit: too many arguments\n"));
 	check_only_num_in_args(cmd);
-	n = ft_special_atoi(cmd->arg[0]);
-	/*printf("AE %d\n", atoi_error);
-	if (n > -9223372036854775807 || n < 9223372036854775807)
-		return_value_exit(n);*/
+	n = ft_special_atoi(cmd->arg[0], &atoi_error);
+	//printf("AE %d\n", atoi_error);
+	if (n > -9223372036854775807 || n < 9223372036854775807 || atoi_error == -1)
+		printf("%s\n", "CAGASTE");
 	//printf("exit\nbash: exit: %s: numeric argument required\n", num_in_string);
 	//hacer funcion para liberar todo
 	//exit (255);

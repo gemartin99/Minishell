@@ -6,7 +6,7 @@
 /*   By: smiro <smiro@student.42barcelona>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 02:22:16 by smiro             #+#    #+#             */
-/*   Updated: 2022/12/07 02:22:19 by smiro            ###   ########.fr       */
+
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ int	ft_env(t_cmd *cmd);
 void	ft_unset(t_cmd **cmd);
 
 int ft_export(t_cmd **cmd);
+void	print_export_var(t_cmd *cmd);
 
 int ft_try_to_exec(t_cmd *cmd);
 

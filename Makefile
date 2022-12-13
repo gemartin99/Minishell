@@ -69,7 +69,8 @@ SRC_FILES	=	minishell \
 				pipes \
 				ft_execve \
 				ft_exit \
-				signals
+				signals \
+				only_export
 
 
 SRC			=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
