@@ -108,7 +108,7 @@ int export_parse(t_cmd *cmd, char *array, int j, int control)
 	int i;
 
 	i = 0;
-	while (cmd->num_arg > i)
+	while (cmd->arg[i])
 	{
 		del_exist_variable(cmd->arg[i], cmd);
 		j = parse_equal(cmd->arg[i], 0);
@@ -177,7 +177,9 @@ int add_new_vars1(t_cmd *cmd, char *binary_array) //primera parte de funcion que
 		i++;
 	}
 	free(cmd->env->env);
+	printf("A %d\n", cmd->env->num_env);
 	cmd->env->num_env = cmd->env->num_env + new_envs;
+	printf("D %d\n", cmd->env->num_env);
 	add_new_vars2(cmd, binary_array, i, aux);
 	return (0);
 }
@@ -229,10 +231,12 @@ char *check_same_var(t_cmd *cmd, char *aux) //funcion para checkear si hay una v
 
 	i = -1;
 	result = NULL;
+	printf("AL PEDO\n");
 	while (++i < cmd->env->num_env)
 	{
 		if (var_string_cmp(aux, cmd->env->env[i]) == 0)
 		{
+			printf("ENTRO\n");
 			result = add_var_value(cmd->env->env[i]);
 			return(result);
 		}
@@ -359,6 +363,7 @@ char *value_var(t_cmd *cmd, char *var) //funcion main para crear una variable nu
 	{
 		if (var[i + j] == '$')
 		{
+			printf("AQUI SI QUE SII\n");
 			result = replace_dolar(cmd, var, j++);
 			break;
 		}
@@ -370,25 +375,6 @@ char *value_var(t_cmd *cmd, char *var) //funcion main para crear una variable nu
 	return (join_value2(var, result));
 }
 
-int check_dolar_export(char *var) //checkear que haya un dolar en cada variable que me manden
-{
-	int i;
-
-	i = 0;
-	while (var[i] && var[i] != '=')
-		i++;
-	while(var[i] && var[++i])
-	{
-		if (var[i] == '$')
-			return (1);
-	}
-	return (0);
-}
-
-/*
-Cuando me mandan el valor de la var entre "" se lia en la funcion check_dolar_export ya que son argumentos diferentes
-*/
-
 int ft_export(t_cmd **cmd)
 {
 	int i;
@@ -397,15 +383,12 @@ int ft_export(t_cmd **cmd)
 	i = -1;
 	if ((*cmd)->num_arg == 0)
 	{
-		printf("ENTRO\n");
 		print_export_var((*cmd));
-		printf("SALGO\n");
 		return (0);
 	}
 	while ((*cmd)->arg[++i] && i <= (*cmd)->num_arg)
 	{
-		if (check_dolar_export((*cmd)->arg[i]) == 1)
-			(*cmd)->arg[i] = value_var((*cmd), (*cmd)->arg[i]);
+		(*cmd)->arg[i] = str_noquotes((*cmd)->arg[i]);
 	}
 	binary_array = malloc(sizeof(char) * (*cmd)->num_arg + 1);
 	if (!binary_array)
@@ -415,3 +398,43 @@ int ft_export(t_cmd **cmd)
 	add_new_vars1((*cmd), binary_array);
 	return (0);
 }
+
+/*
+Cuando me mandan el valor de la var entre "" se lia en la funcion check_dolar_export ya que son argumentos diferentes
+*/
+
+/*int ft_export(t_cmd **cmd)
+{
+	int i;
+	int j;
+	char *binary_array;
+
+	i = -1;
+	j = 0;
+	if ((*cmd)->num_arg == 0)
+	{
+		print_export_var((*cmd));
+		return (0);
+	}
+	while ((*cmd)->arg[++i] && i <= (*cmd)->num_arg)
+	{
+		(*cmd)->arg[i] = remove_quotes((*cmd)->arg[i], 34);
+		(*cmd)->arg[i] = remove_quotes((*cmd)->arg[i], 39);
+		if (check_dolar_export((*cmd)->arg[i]) == 1)
+		{
+			(*cmd)->arg[i] = value_var((*cmd), (*cmd)->arg[i]);
+			j++;
+		}
+		printf("ARG: %s\n", (*cmd)->arg[i]);
+	}
+	if (j == 0)
+		return (0);
+	binary_array = malloc(sizeof(char) * (*cmd)->num_arg + 1);
+	if (!binary_array)
+		exit_error("Error malloc", 21);
+	if (export_parse((*cmd), binary_array, 0, 0) == -1)
+		return (0);
+	add_new_vars1((*cmd), binary_array);
+	return (0);
+}*/
+
