@@ -29,7 +29,7 @@ t_cmd	*ft_last(t_cmd **cmd)
 	return (temp);
 }
 
-char	*remove_quotes(char *str, char c) //Recive un string y lo copia sin el caracter que resive
+char	*remove_quotes(char *str, char c) //Recive un string y le saca el caracter que resive
 {
 	int		i;
 	char	*temp;
@@ -71,7 +71,7 @@ char	*str_tolower(char *str)
 	return (str);
 }
 
-char	*str_noquotes(char *str)
+char	*str_noquotes(char *str) //Recive una string y devuelve una copia sin las comillas que no correspondan
 {
 	int		i;
 	int		j;

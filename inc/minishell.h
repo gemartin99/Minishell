@@ -98,6 +98,14 @@ void	setfds(t_pipe *pipe, int i);
 void	setpipes(t_pipe *pipes, int i);
 void	wait_signal(void);
 
+//////////redirection///////////
+
+int		is_redir(char **arg);
+int		redir_type(char *str);
+int		isdifoperator(char c);
+char	operator_char(int n);
+void	redir(t_cmd	*cmd);
+
 ////////expand_utils ⬇️////////
 
 char *ft_strjoin_special(char *s1, char *s2, size_t i, size_t c);

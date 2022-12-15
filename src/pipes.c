@@ -15,9 +15,9 @@
 static void	newpipe(int *fd)
 {
 	if (close(fd[0]) == -1)
-		exit(2);
+		exit_error("Error close", 37);
 	if (close(fd[1]) == -1)
-		exit(3);
+		exit_error("Error close", 38);
 	pipe(fd);
 }
 
@@ -34,10 +34,10 @@ void	setpipes(t_pipe *pipes, int i)
 static void	duppipe(int *io, int fd)
 {
 	if (close(*io) == -1)
-		exit(4);
+		exit_error("Error close", 39);
 	*io = dup(fd);
 	if (*io == 1)
-		exit(5);
+		exit_error("Error dup", 40);
 }
 
 void	setfds(t_pipe *pipe, int i)
@@ -66,10 +66,16 @@ t_pipe	*init_pipes(void)
 	t_pipe	*pipes;
 
 	pipes = ft_calloc(sizeof(t_pipe), 1);
-	pipe(pipes->fd[0]);
-	pipe(pipes->fd[1]);
+	if (pipe(pipes->fd[0]) == -1)
+		exit_error("Error pipe", 41);
+	if (pipe(pipes->fd[1]) == -1)
+		exit_error("Error pipe", 42);
 	pipes->in = dup(STDIN_FILENO);
+	if (pipes->in == -1)
+		exit_error("Error pipe", 43);
 	pipes->out = dup(STDOUT_FILENO);
+	if (pipes->out == -1)
+		exit_error("Error pipe", 44);
 	pipes->last = 1;
 	return (pipes);
 }

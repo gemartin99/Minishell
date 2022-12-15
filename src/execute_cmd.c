@@ -58,6 +58,8 @@ static int	check_nonpipables(t_cmd *cmd, char *temp_cmd)
 			return (1);
 	else if (!ft_strncmp(temp_cmd, "unset", 5))
 			return (1);
+	else if (!ft_strncmp(temp_cmd, "exit", 4))
+			return (1);
 	return (0);
 }
 
@@ -68,21 +70,31 @@ void	execute_cmd(t_cmd **cmd)
 	int	i;
 	char *temp_cmd;
 	int	ret;
+	t_pipe *pipes;
 
+	pipes = init_pipes();
 	temp = *cmd;
 	temp_cmd = str_noquotes(temp->cmd);
 	if (check_nonpipables(temp, temp_cmd))
 	{
+		if (temp->arg && is_redir(temp->arg) != -1)
+			redir(temp);
 		cmd_type(temp, temp_cmd);
+		free(temp_cmd);
 		return ;
 	}
 	i = 1;
 	while (temp)
 	{
+		free(temp_cmd);
+		temp_cmd = str_noquotes(temp->cmd);
 		if (!temp->next)
-			temp->pipes->last = 0;
-		setfds(temp->pipes, i);
-		setpipes(temp->pipes, i);
+			pipes->last = 0;
+		setfds(pipes, i);
+		setpipes(pipes, i);
+		temp->pipes = pipes;
+		if (temp->arg && is_redir(temp->arg) != -1)
+			redir(temp);
 		pid = fork();
 		if (pid == -1)
 			exit_error("Error fork", 27);
@@ -91,7 +103,7 @@ void	execute_cmd(t_cmd **cmd)
 		temp = temp->next;
 		i++;
 	}
-	
+	free(pipes);
 	// HACER FUNCION WAIT PROCESS Y GET ERRORS
 	while (--i)
 	{

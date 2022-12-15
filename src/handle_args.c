@@ -12,8 +12,6 @@
 
 #include "../inc/minishell.h"
 
-#include "../inc/minishell.h"
-
 static int	ft_split_args(char *s, char **arg)
 {
 	int	pos;
@@ -88,7 +86,6 @@ static t_cmd	*add_cmd(t_msh *msh, char *read_line)
 	temp->next = NULL;
 	temp->flags = msh->flags;
 	temp->env = msh->env;
-	temp->pipes = init_pipes();
 	if (temp->num_arg == 0)
 		return (temp);
 	temp->arg = ft_get_args(msh, read_line + msh->total_chars, temp);

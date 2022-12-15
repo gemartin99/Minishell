@@ -54,7 +54,7 @@ static void	special_putstr(char *str, char *next)
 			simples *= -1;
 		if (str[i] == ';' && next && i++)
 			printf(" ");
-		if (str[i] != ';')
+		if (str[i] != ';' && ft_isprint(str[i]))
 			printf("%c", str[i]);
 		i++;
 	}

@@ -14,53 +14,6 @@
 
 #include "../inc/minishell.h"
 
-static int var_strcmp_path(char *s1, char *s2) //funcion strcmp modificada para variables de entorno path
-{
-	int i;
-
-	i = 0;
-	if (!s1 || !s2)
-		return (1);
-	while (s2[i] && s2[i] != '=')
-		i++;
-	if (ft_strlen(s1) != (size_t)i)
-		return (1);
-	i = 0;
-	while (s1[i] && s2[i] && s2[i] != '=')
-	{
-		if (s1[i] != s2[i])
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-
-int path_exist(t_cmd *cmd, char **path_value) //funcion que checkea si existe la var $PATH
-{
-	int i;
-	char *tmp;
-
-	i = -1;
-	while (++i < cmd->env->num_env)
-	{
-		if (cmd->env->env[i] == NULL)
-			;
-		else if (var_strcmp_path("PATH", cmd->env->env[i]) == 0)
-		{
-			tmp = ft_strdup(cmd->env->env[i]);
-			i = 0;
-			while (*tmp && *tmp != '=')
-				tmp++;
-			tmp++;
-			*path_value = tmp;
-			//free(tmp);
-			return (0);
-		}
-	}
-	return (-1);
-}
-
 char *value_dolar_path(char *s) //funcion que muestra el valor de la variable path pero se ira acortando cada vez que se intente ejecutar algo en una de las rutas
 {
 	int i;
@@ -86,41 +39,16 @@ char *value_dolar_path(char *s) //funcion que muestra el valor de la variable pa
 	return (res);
 }
 
-char *increase_pointer(char *s) //funcion que incrementa el indice de la variable path hacia todas las rutas
-{
-	size_t i;
-	size_t j;
-	char *res;
-
-	i = 0;
-	if (!s)
-		return (NULL);
-	j = ft_strlen(s);
-	while (s[i] && s[i] != ':')
-		i++;
-	res = malloc(sizeof(char) * j - i + 1);
-	if (!res)
-		exit_error("Error malloc", 26);
-	j = 0;
-	while (res && s[++i])
-	{
-		res[j] = s[i];
-		j++;
-	}
-	res[j] = '\0';
-	return (res);
-}
-
-int ft_count_env(t_cmd *cmd) //funcion para contar todas las variables de entorno que no sean nulas.
+static int ft_count_env(char **arg, int len) //funcion para contar todas las variables de entorno que no sean nulas.
 {
 	int i;
 	int j;
 
 	i = 0;
 	j = 0;
-	while(i + j < cmd->env->num_env)
+	while(i + j < len)
 	{
-		if (cmd->env->env[i + j])
+		if (arg[i + j])
 			i++;
 		else
 			j++;
@@ -128,23 +56,24 @@ int ft_count_env(t_cmd *cmd) //funcion para contar todas las variables de entorn
 	return (i - j);
 }
 
-char **convert_to_env(t_cmd *cmd) //funcion que retorna una variable que guarde todas las variables de entorno actuales.
+char **convert_to_env(char **arg, int len) //funcion que retorna una variable que guarde todas las variables de entorno actuales.
 {
 	int i;
 	int j;
 	char **res;
 
-	i = ft_count_env(cmd);
-	res = malloc(sizeof(char *) * i + 1);
+	res = malloc(sizeof(char *) * ft_count_env(arg, len) + 1);
 	if (!res)
 		exit_error("Error malloc", 27);
 	i = -1;
 	j = 0;
-	while (++i < cmd->env->num_env)
+	while (++i < len)
 	{
-		if (cmd->env->env[i])
+		if (arg[i])
 		{
-			res[j] = cmd->env->env[i];
+			res[j] = ft_strdup(arg[i]);
+			if (!res[j])
+				exit_error("Error malloc", 35);
 			j++;
 		}
 	}
@@ -152,58 +81,62 @@ char **convert_to_env(t_cmd *cmd) //funcion que retorna una variable que guarde 
 	return (res);
 }
 
+char	**arg_with_command(t_cmd *cmd)
+{
+	char **res;
+	int i;
+
+	i = 0;
+	if (!cmd->arg)
+	{
+		res = ft_calloc(sizeof(char *), 2);
+		if (!res)
+			exit_error("Error malloc", 36);
+	}
+	else
+	{
+		while (cmd->arg[i])
+			i++;
+		res = ft_calloc(sizeof(char *), i + 2);
+		if (!res)
+			exit_error("Error malloc", 37);
+		while (i > 0)
+		{
+			res[i] = str_noquotes(cmd->arg[i - 1]);
+			res[i] = remove_quotes(res[i], ';');
+			i--;
+		}
+	}
+	res[0] = cmd->cmd;
+	return (res);
+}
 
 int ft_try_to_exec(t_cmd *cmd) //funcion para intentar hacer execv de lo que me manden
 {
 	//CHECKEAR SI ME MANDAN PATH ABSOLUTA Y SI LO HACEN EJECUTAR ESO DIRECTAMENTE
 
-	int returnvalue = EXIT_FAILURE;
 	char *absolute_path;
 	char *search_path;
-	char *path_value;
-	char **envp_2; //variable creada porque se asignan variables a NULL (en vez de borrar) cuando se hace unset entonces no funcionaria execve correctamente con el ent_var de la estructura
-	pid_t pid;
-	int status;
+	t_env	*env;
 
-	if (path_exist(cmd, &path_value) == -1)
-		printf("$PATH NO EXISTE\n"); //path_value = ft_strdup("poner la path por defecto cuando se borra la $PATH")
-	envp_2 = convert_to_env(cmd);
-	absolute_path = ft_strdup("a");
+	env = cmd->env;
+	cmd->cmd = ft_strtrim(str_noquotes(cmd->cmd), " ");
+	absolute_path = value_dolar_path(env->path);
 	while (absolute_path)
 	{
-		absolute_path = value_dolar_path(path_value);
-		path_value = increase_pointer(path_value);
-		pid = fork();
-		if (pid < 0)
-			exit_error("Error pid < 0", 1);
-		else if (pid == 0)
+		search_path = ft_strjoin(absolute_path, cmd->cmd);
+		if (access(search_path, F_OK) != -1)
 		{
-			absolute_path = value_dolar_path(path_value);
-			path_value = increase_pointer(path_value);
-			search_path = ft_strjoin(absolute_path, cmd->cmd);
-			if (access(search_path, F_OK) != -1)
-			{
-				if (access(search_path, X_OK) != -1)
-				{
-					returnvalue = execve(search_path, cmd->arg, envp_2); //poner variables de entorno propias para que los comandos que necesiten las env las puedan utilizar
-					exit(0);
-				}
-				printf("bash: %s: Permision denied\n", cmd->cmd);
-				exit (1);
-			}
-			else
-				exit(255);
+			if (access(search_path, X_OK) != -1)
+				execve(search_path, arg_with_command(cmd), convert_to_env(env->env, env->num_env)); //poner variables de entorno propias para que los comandos que necesiten las env las puedan utilizar
+			printf("bash: %s: Permision denired\n", cmd->cmd);
 		}
-		else
-		{
-			waitpid(pid, &status, 0);
-			if (WIFEXITED(status))
-				returnvalue = WEXITSTATUS(status);
-			if (returnvalue == 0 || returnvalue == 1)
-				break;
-		}
+		free(search_path);
+		env->path = ft_strchr(env->path, ':');
+		if (env->path)
+			env->path++;
+		absolute_path = value_dolar_path(env->path);
 	}
-	if (returnvalue != 0 && returnvalue != 1)
-		printf("bash: %s: Command not found\n", cmd->cmd);
+	printf("bash: %s: comand not found\n", str_noquotes(cmd->cmd));
 	return (0);
 }
