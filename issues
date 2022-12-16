@@ -28,3 +28,16 @@ Bash->no debe pintar nada y crearse la variable de entorno
 cd
 
 /////////////////////////
+
+comando || comando
+		y
+| comando
+
+segfault
+
+/////////////////////////
+
+echo $? 
+que printee g_error
+
+/////////////////////////
