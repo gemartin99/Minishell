@@ -24,10 +24,12 @@ int	redir_type(char *str)
 	int	i;
 	int	error;
 
-	i = 0;
+	i = -1;
 	error = 0;
-	while (str[i])
+	while (str[++i])
 	{
+		if (str[i] == 34 || str[i] == 39)
+			i = get_next_quote(i + 1, str, str[i]);
 		if (str[i] == '>' && str[i + 1] != '>'
 			&& !isdifoperator(str[i + 1]) && !error)
 			return (1);
@@ -42,7 +44,6 @@ int	redir_type(char *str)
 			return (4);
 		if (isdifoperator(str[i]))
 			error = -1;
-		i++;
 	}
 	return (error);
 }
@@ -58,7 +59,7 @@ int	is_redir(char **arg)
 			return (i);
 		i++;
 	}
-	return(-1);
+	return (-1);
 }
 
 char	operator_char(int n)
@@ -68,4 +69,11 @@ char	operator_char(int n)
 	else if (n == 3 || n == 4)
 		return ('<');
 	return (0);
+}
+
+int	get_next_diff(int i, char *str)
+{
+	while (str[i] && !isdifoperator(str[i]))
+		i++;
+	return (i);
 }

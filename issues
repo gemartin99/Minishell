@@ -24,3 +24,7 @@ Minishell🇦🇷 🧉->zsh: segmentation fault  ./minishell
 Bash->no debe pintar nada y crearse la variable de entorno
 
 /////////////////////////
+
+cd
+
+/////////////////////////

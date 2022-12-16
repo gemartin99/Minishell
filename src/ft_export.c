@@ -387,14 +387,12 @@ int ft_export(t_cmd **cmd)
 		return (0);
 	}
 	while ((*cmd)->arg[++i] && i <= (*cmd)->num_arg)
-	{
 		(*cmd)->arg[i] = str_noquotes((*cmd)->arg[i]);
-	}
 	binary_array = malloc(sizeof(char) * (*cmd)->num_arg + 1);
 	if (!binary_array)
 		exit_error("Error malloc", 21);
 	if (export_parse((*cmd), binary_array, 0, 0) == -1)
-		return (0);
+		return (1);
 	add_new_vars1((*cmd), binary_array);
 	return (0);
 }

@@ -18,9 +18,7 @@ static int	is_flag(char *str)
 	char	*temp;
 
 	i = 0;
-	temp = ft_strdup(str);
-	temp = remove_quotes(temp, 34);
-	temp = remove_quotes(temp, 39);
+	temp = str_noquotes(ft_strdup(str));
 	if (str[i++] != '-')
 		return (0);
 	while (str[i] == 'n')
@@ -40,18 +38,8 @@ static void	special_putstr(char *str, char *next)
 	i = 0;
 	doubles = 1;
 	simples = 1;
-	if (str[i] == 34 || str[i] == 39)
-	{
-		str = remove_quotes(str, str[i]);
-		doubles = -1;
-		simples = -1;
-	}
 	while (str[i])
 	{
-		if (str[i] == 34 && simples != -1 && i++)
-				doubles *= -1;
-		if (str[i] == 39 && doubles != -1 && i++)
-			simples *= -1;
 		if (str[i] == ';' && next && i++)
 			printf(" ");
 		if (str[i] != ';' && ft_isprint(str[i]))
@@ -60,15 +48,16 @@ static void	special_putstr(char *str, char *next)
 	}
 	if (next)
 		printf(" ");
+	free(str);
 }
 
-void	ft_echo(t_cmd	**cmd)
+int	ft_echo(t_cmd	**cmd)
 {
 	int	i;
 	int	n;
 
 	if (!(*cmd)->arg && printf("\n"))
-		return ;
+		return (0);
 	i = 0;
 	n = 1;
 	while ((*cmd)->arg[i] && is_flag((*cmd)->arg[i]))
@@ -78,9 +67,10 @@ void	ft_echo(t_cmd	**cmd)
 	}
 	while ((*cmd)->arg[i])
 	{
-		special_putstr((*cmd)->arg[i], (*cmd)->arg[i + 1]);
+		special_putstr(str_noquotes((*cmd)->arg[i]), (*cmd)->arg[i + 1]);
 		i++;
 	}
 	if (n)
 		printf("\n");
+	return (0);
 }

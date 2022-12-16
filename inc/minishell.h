@@ -30,6 +30,8 @@
 # include	<readline/readline.h>
 # include	<readline/history.h>
 
+int	g_error;
+
 typedef struct	s_pipe
 {
 	int	fd[2][2];
@@ -84,12 +86,12 @@ int		check_null_args(char *s);
 int		get_next_quote(int i, char *str, char c);
 int		ft_check_dquote(char *s, int simple, int doble, t_msh *msh);
 int 	ft_count_args(char *s);
-void	execute_cmd(t_cmd **cmd);
+void	execute_cmd(t_cmd **cmd, t_pipe *pipes);
 void 	expand(t_cmd **cmd);
 int 	ft_skip_space(char *s, int i);
 t_cmd	*ft_last(t_cmd **cmd);
-void	ft_echo(t_cmd	**cmd);
 char	*remove_quotes(char *str, char c);
+void	get_input(t_cmd *cmd, char *stop);
 
 ///////////pipes/////////////////
 
@@ -105,6 +107,11 @@ int		redir_type(char *str);
 int		isdifoperator(char c);
 char	operator_char(int n);
 void	redir(t_cmd	*cmd);
+int		get_next_diff(int i, char *str);
+void	put_in_file(int type, t_cmd *cmd, char *file);
+void	get_from_file(t_cmd *cmd, char *file);
+int		check_nonpipables(t_cmd *cmd, char *temp_cmd);
+void	execute_nonpipe(t_cmd *cmd, char *temp_cmd);
 
 ////////expand_utils ⬇️////////
 
@@ -126,7 +133,7 @@ int	ft_pwd(int i);
 
 int	ft_env(t_cmd *cmd);
 
-void	ft_unset(t_cmd **cmd);
+int	ft_unset(t_cmd **cmd);
 
 int ft_export(t_cmd **cmd);
 void	print_export_var(t_cmd *cmd);
@@ -134,6 +141,8 @@ void	print_export_var(t_cmd *cmd);
 int ft_try_to_exec(t_cmd *cmd);
 
 void	ft_exit(t_cmd *cmd);
+
+int		ft_echo(t_cmd	**cmd);
 
 #define WHITE_T   "\x1b[1;37m"
 #define YELLOW_T "\x1b[1;33m"

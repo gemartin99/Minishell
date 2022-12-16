@@ -12,7 +12,7 @@
 
 #include "../inc/minishell.h"
 
-static int ft_check_wrong_let(char c, char *s)
+static int	ft_check_wrong_let(char c, char *s)
 {
 	if (c == '=' || c == '?' || c == '!' || c == '.'
 		|| c == '+' || c == '}' || c == '{' || c == '-' || c == 92
@@ -65,7 +65,7 @@ void	ft_unset_strcmp(char *s, t_env *env)
 	}
 }
 
-void	ft_unset(t_cmd **cmd)
+int	ft_unset(t_cmd **cmd)
 {
 	int	i;
 
@@ -75,4 +75,5 @@ void	ft_unset(t_cmd **cmd)
 		ft_unset_strcmp((*cmd)->arg[i], (*cmd)->env);
 		i++;
 	}
+	return (0);
 }

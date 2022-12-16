@@ -54,3 +54,13 @@ t_msh	*init(char **env) //init estructura general
 		exit_error("Error malloc", 4);
 	return (msh);
 }
+
+t_cmd	*ft_last(t_cmd **cmd)
+{
+	t_cmd	*temp;
+
+	temp = *cmd;
+	while (temp->next)
+		temp = temp->next;
+	return (temp);
+}

@@ -10,14 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-//IMPORTANTE cuando esten las redirecciones hechas añadir el mensaje de error: No such file or directory. Ej bash: <to_file_no_exist
-
 #include "../inc/minishell.h"
 
-char *value_dolar_path(char *s) //funcion que muestra el valor de la variable path pero se ira acortando cada vez que se intente ejecutar algo en una de las rutas
+char	*value_dolar_path(char *s)//funcion que muestra el valor de la variable path pero se ira acortando cada vez que se intente ejecutar algo en una de las rutas
 {
-	int i;
-	char *res;
+	int		i;
+	char	*res;
 
 	i = 0;
 	if (!s || !s[i])
@@ -39,14 +37,14 @@ char *value_dolar_path(char *s) //funcion que muestra el valor de la variable pa
 	return (res);
 }
 
-static int ft_count_env(char **arg, int len) //funcion para contar todas las variables de entorno que no sean nulas.
+static int	ft_count_env(char **arg, int len)//funcion para contar todas las variables de entorno que no sean nulas.
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
-	while(i + j < len)
+	while (i + j < len)
 	{
 		if (arg[i + j])
 			i++;
@@ -56,11 +54,11 @@ static int ft_count_env(char **arg, int len) //funcion para contar todas las var
 	return (i - j);
 }
 
-char **convert_to_env(char **arg, int len) //funcion que retorna una variable que guarde todas las variables de entorno actuales.
+char	**convert_to_env(char **arg, int len)//funcion que retorna una variable que guarde todas las variables de entorno actuales.
 {
-	int i;
-	int j;
-	char **res;
+	int		i;
+	int		j;
+	char	**res;
 
 	res = malloc(sizeof(char *) * ft_count_env(arg, len) + 1);
 	if (!res)
@@ -83,8 +81,8 @@ char **convert_to_env(char **arg, int len) //funcion que retorna una variable qu
 
 char	**arg_with_command(t_cmd *cmd)
 {
-	char **res;
-	int i;
+	char	**res;
+	int		i;
 
 	i = 0;
 	if (!cmd->arg)
@@ -102,8 +100,7 @@ char	**arg_with_command(t_cmd *cmd)
 			exit_error("Error malloc", 37);
 		while (i > 0)
 		{
-			res[i] = str_noquotes(cmd->arg[i - 1]);
-			res[i] = remove_quotes(res[i], ';');
+			res[i] = str_noquotes(remove_quotes(cmd->arg[i - 1], ';'));
 			i--;
 		}
 	}
@@ -111,32 +108,43 @@ char	**arg_with_command(t_cmd *cmd)
 	return (res);
 }
 
-int ft_try_to_exec(t_cmd *cmd) //funcion para intentar hacer execv de lo que me manden
+int	check_access(char *path, t_cmd *cmd, t_env *env)
 {
-	//CHECKEAR SI ME MANDAN PATH ABSOLUTA Y SI LO HACEN EJECUTAR ESO DIRECTAMENTE
+	if (access(path, F_OK) != -1)
+	{
+		if (access(path, X_OK) != -1)
+			execve(path, arg_with_command(cmd),
+				convert_to_env(env->env, env->num_env));
+		printf("bash: %s: Permision denied\n", cmd->cmd);
+		return (1);
+	}
+	return (0);
+}
 
-	char *absolute_path;
-	char *search_path;
-	t_env	*env;
+int	ft_try_to_exec(t_cmd *cmd)//funcion para intentar hacer execv de lo que me manden
+{
+	char	*absolute_path;
+	char	*search_path;
 
-	env = cmd->env;
-	cmd->cmd = ft_strtrim(str_noquotes(cmd->cmd), " ");
-	absolute_path = value_dolar_path(env->path);
-	while (absolute_path)
+	cmd->cmd = ft_strtrim(str_noquotes((cmd->cmd)), " ");
+	absolute_path = value_dolar_path(cmd->env->path);
+	if (cmd->cmd[0] == '.' || cmd->cmd[0] == '/')
+	{
+		if (!check_access(cmd->cmd, cmd, cmd->env))
+			printf("bash: %s: No such file or directory\n", cmd->cmd);
+		return (1);
+	}
+	while (absolute_path && cmd->cmd[0])
 	{
 		search_path = ft_strjoin(absolute_path, cmd->cmd);
-		if (access(search_path, F_OK) != -1)
-		{
-			if (access(search_path, X_OK) != -1)
-				execve(search_path, arg_with_command(cmd), convert_to_env(env->env, env->num_env)); //poner variables de entorno propias para que los comandos que necesiten las env las puedan utilizar
-			printf("bash: %s: Permision denired\n", cmd->cmd);
-		}
+		if (check_access(search_path, cmd, cmd->env))
+			return (1);
 		free(search_path);
-		env->path = ft_strchr(env->path, ':');
-		if (env->path)
-			env->path++;
-		absolute_path = value_dolar_path(env->path);
+		cmd->env->path = ft_strchr(cmd->env->path, ':');
+		if (cmd->env->path)
+			cmd->env->path++;
+		absolute_path = value_dolar_path(cmd->env->path);
 	}
-	printf("bash: %s: comand not found\n", str_noquotes(cmd->cmd));
-	return (0);
+	printf("bash: %s: comand not found\n", cmd->cmd);
+	return (1);
 }

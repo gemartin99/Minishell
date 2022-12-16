@@ -63,13 +63,17 @@ static char	*get_comand(t_msh *msh, char *read_line)
 		i++;
 	start = i;
 	while (read_line[i] && read_line[i] != 32
-		&& !(read_line[i] >= 9 && read_line[i] <= 13))
+		&& !(read_line[i] >= 9 && read_line[i] <= 13)
+		&& !isdifoperator(read_line[i]))
 	{
 		if (read_line[i] == 34 || read_line[i] == 39)
 			i = get_next_quote(i + 1, read_line, read_line[i]);
 		i++;
 	}
-	str = ft_substr(read_line, start, i);
+	if (i)
+		str = ft_substr(read_line, start, i);
+	else
+		str = ft_strdup("CD");
 	msh->total_chars += i;
 	return (str);
 }
@@ -140,7 +144,12 @@ void	recive_arguments(t_msh *msh)
 			add_history(read_line);
 			tokenize(msh, &msh->cmd, read_line);
 			if (msh->flags->quote != 0)
-				execute_cmd(&(msh->cmd));
+			{
+				if (check_nonpipables(msh->cmd, str_noquotes(msh->cmd->cmd)))
+					execute_nonpipe(msh->cmd, str_noquotes(msh->cmd->cmd));
+				else
+					execute_cmd(&(msh->cmd), init_pipes());
+			}
 		}
 	}
 }

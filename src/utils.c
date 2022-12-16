@@ -19,16 +19,6 @@ int	ft_skip_space(char *s, int i)
 	return (i);
 }
 
-t_cmd	*ft_last(t_cmd **cmd)
-{
-	t_cmd	*temp;
-
-	temp = *cmd;
-	while (temp->next)
-		temp = temp->next;
-	return (temp);
-}
-
 char	*remove_quotes(char *str, char c) //Recive un string y le saca el caracter que resive
 {
 	int		i;
@@ -100,4 +90,17 @@ char	*str_noquotes(char *str) //Recive una string y devuelve una copia sin las c
 		i++;
 	}
 	return (temp);
+}
+
+int	check_nonpipables(t_cmd *cmd, char *temp_cmd)
+{
+	if (cmd->next)
+		return (0);
+	if (!ft_strncmp(temp_cmd, "export", 6))
+		return (1);
+	else if (!ft_strncmp(temp_cmd, "unset", 5))
+		return (1);
+	else if (!ft_strncmp(temp_cmd, "exit", 4))
+		return (1);
+	return (0);
 }

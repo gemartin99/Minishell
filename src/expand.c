@@ -20,13 +20,8 @@ int	check_dolar(char *line) //funcion para checkear si hay un dolar en la linea 
 	while (line[i])
 	{
 		if (line[i] == 39)
-		{
-			i++;
-			while (line[i] && line[i] != 39)
-			i++;
-			i++;
-		}
-		if (line [i] == 34)
+			i = get_next_quote(i + 1, line, line[i]);
+		if (line[i] == 34)
 		{
 			while (line[++i] && line[i] != 34)
 			{
@@ -50,7 +45,7 @@ static char	*ft_add_var_value(char *s1) //funcion para añadir el valor de la va
 	i = 0;
 	j = 0;
 	while (s1[i] && s1[i] != '=')
-	i++;
+		i++;
 	result = malloc(sizeof(char) * ft_strlen(s1) - i + 1);
 	if (!result)
 		exit_error("Error malloc", 17);
@@ -68,9 +63,9 @@ char	*ft_craft_result(char *line_final, char *line, char *var, int c)
 	i = -1;
 	j = -1;
 	while (line[++i] && line[i] != '$')
-	line_final[i] = line[i];
+		line_final[i] = line[i];
 	while (var[++j])
-	line_final[i + j] = var[j];
+		line_final[i + j] = var[j];
 	while (line[i + c])
 	{
 		line_final[i + j] = line[i + c];
@@ -90,13 +85,13 @@ char	*change_line_value(char *line, char *var) //funcion que cambia el valor de 
 	i = 0;
 	j = 0;
 	while (line[i] != '$' && line[i])
-	i++;
+		i++;
 	c = i;
 	while (line[i + j] && line[i + j] != ' '
 		&& line[i + j] != 34 && line[i + j] != 39)
 			j++;
 	while (line[i + j])
-	i++;
+		i++;
 	line_final = malloc(sizeof(char) * i + ft_strlen(var));
 	if (!line_final)
 		exit_error("Error malloc", 18);
@@ -121,7 +116,7 @@ char	*quit_dollar_and_digit(char *s) //funcion recursiva para ir quitando todos 
 			if (!res)
 				exit_error("Error malloc", 15);
 			while (++j < i)
-			res[j] = s[j];
+				res[j] = s[j];
 			i++;
 			while (s[++i])
 			{
@@ -182,7 +177,7 @@ char	*ft_split_var(char *line, int i, t_cmd *cmd) //funcion que retorna el resto
 	cmd->flags->dollar_special = 1;
 	j = i;
 	while (line[i])
-	i++;
+		i++;
 	res = malloc(sizeof(char) * i - j + 1);
 	if (!res)
 		exit_error("Error malloc", 17);
@@ -259,10 +254,10 @@ void	expand(t_cmd **cmd)
 	int	i;
 
 	i = -1;
-	if (!(*cmd)->arg)
-		return ;
 	if (check_dolar((*cmd)->cmd) == 1)
 		(*cmd)->cmd = change_dolar_x_var((*cmd), (*cmd)->cmd);
+	if (!(*cmd)->arg)
+		return ;
 	while ((*cmd)->arg[++i])
 	{
 		if (check_dolar((*cmd)->arg[i]) == 1)
