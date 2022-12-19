@@ -14,7 +14,6 @@
 
 int	ft_cd(t_cmd **cmd)
 {
-	char	*path;
 	int		i;
 
 	i = 0;

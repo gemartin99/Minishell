@@ -186,7 +186,7 @@ int add_new_vars1(t_cmd *cmd, char *binary_array) //primera parte de funcion que
 
 static int var_string_cmp(char *s1, char *s2) //funcion strcmp modificada para variables de entorno
 {
-	int i;
+	size_t i;
 
 	i = 0;
 	if (!s1 || !s2)

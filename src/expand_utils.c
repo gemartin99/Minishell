@@ -14,7 +14,7 @@
 
 int	var_strcmp(char *s1, char *s2) //, t_msh *d) //funcion strcmp modificada para variables de entorno
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	if (!s1 || !s2)
@@ -48,20 +48,6 @@ int	check_special_char(char c) //funcion para checkear si despues de la variable
 		|| c == '}' || c == '[' || c == ']' || c == '!' || c == '~'
 		|| c == '%' || c == '^' || c == '=' || c == '*' || c == '/' || c == '$')
 		return (-1);
-	return (0);
-}
-
-int	position_dolar(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] == '$' && line[i + 1])
-			return (++i);
-		i++;
-	}
 	return (0);
 }
 

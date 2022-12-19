@@ -14,21 +14,21 @@
 
 static	int	cmd_type(t_cmd *cmd, char *temp_cmd)
 {
-	if (!ft_strncmp(temp_cmd, "cd", 2))
+	if (!ft_strncmp(temp_cmd, "cd", 3))
 		return (ft_cd(&cmd));
-	else if (!ft_strncmp(temp_cmd, "export", 6))
+	else if (!ft_strncmp(temp_cmd, "export", 7))
 		return (ft_export(&cmd));
-	else if (!ft_strncmp(temp_cmd, "unset", 5))
+	else if (!ft_strncmp(temp_cmd, "unset", 6))
 		return (ft_unset(&cmd));
 	else if (!ft_strncmp(temp_cmd, "exit", 5))
 		ft_exit(cmd);
-	else if (!ft_strncmp(str_tolower(temp_cmd), "pwd", 3))
+	else if (!ft_strncmp(str_tolower(temp_cmd), "pwd", 4))
 		return (ft_pwd(0));
-	else if (!ft_strncmp(str_tolower(temp_cmd), "env", 3))
+	else if (!ft_strncmp(str_tolower(temp_cmd), "env", 4))
 		return (ft_env(cmd));
-	else if (!ft_strncmp(str_tolower(temp_cmd), "echo", 4))
+	else if (!ft_strncmp(str_tolower(temp_cmd), "echo", 5))
 		return (ft_echo(&cmd));
-	else if (!ft_strncmp(temp_cmd, "cd", 2))
+	else if (!ft_strncmp(temp_cmd, "cd", 3))
 		return (0);
 	else
 		return (ft_try_to_exec(cmd));
@@ -49,8 +49,13 @@ static void	cmd_process(t_cmd *cmd, char *temp_cmd)
 	exit(cmd_type(cmd, temp_cmd));
 }
 
-static void	wait_exit(int i)
+static void	wait_exit(t_pipe *pipes, int i)
 {
+	if (close(pipes->in) == -1)
+		exit_error("Error close", 51);
+	if (close(pipes->out) == -1)
+		exit_error("Error close", 52);
+	free(pipes);
 	while (--i)
 	{
 		waitpid(-1, &g_error, 0);
@@ -77,13 +82,13 @@ void	execute_cmd(t_cmd **cmd, t_pipe *pipes)
 	char		*temp_cmd;
 
 	i = 1;
-	while ((*cmd) && i++)
+	while ((*cmd) && i)
 	{
 		temp_cmd = str_noquotes((*cmd)->cmd);
 		if (!(*cmd)->next)
 			pipes->last = 0;
 		setfds(pipes, i);
-		setpipes(pipes, i);
+		setpipes(pipes, i++);
 		(*cmd)->pipes = pipes;
 		if ((*cmd)->arg && is_redir((*cmd)->arg) != -1)
 			redir((*cmd));
@@ -95,7 +100,5 @@ void	execute_cmd(t_cmd **cmd, t_pipe *pipes)
 		(*cmd) = (*cmd)->next;
 		free(temp_cmd);
 	}
-	free(pipes);
-	wait_signal();
-	wait_exit(i);
+	wait_exit(pipes, i);
 }

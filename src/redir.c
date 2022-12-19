@@ -105,7 +105,6 @@ void	redir(t_cmd	*cmd)
 {
 	int		i;
 	char	*file;
-	char	c;
 
 	i = 0;
 	while (is_redir((cmd->arg) + i) != -1)
@@ -116,8 +115,8 @@ void	redir(t_cmd	*cmd)
 		file = str_noquotes(cmd->arg[i + 1]);
 		if (redir_type(cmd->arg[i]) == 1 || redir_type(cmd->arg[i]) == 2)
 			put_in_file(redir_type(cmd->arg[i]), cmd, file);
-		else if (redir_type(cmd->arg[i]) == 3)
-			get_from_file(cmd, file);
+		else if (redir_type(cmd->arg[i]) == 3 && get_from_file(cmd, file))
+			return ;
 		else if (redir_type(cmd->arg[i]) == 4)
 			get_input(cmd, file);
 		cmd->arg = remove_one(cmd->arg, i);

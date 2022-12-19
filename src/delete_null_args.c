@@ -15,7 +15,6 @@
 //mirar segfault con casos raros
 static char	*quit_null(char *s, int i) //funcion para quitar argumentos nulos sin espacios antes y despues
 {
-	int		j;
 	char	*res;
 
 	s[i] = 27;

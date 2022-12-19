@@ -12,23 +12,27 @@
 
 #include "../inc/minishell.h"
 
-static void	newpipe(int *fd)
+static void	newpipe(int *fd, int last)
 {
 	if (close(fd[0]) == -1)
 		exit_error("Error close", 37);
 	if (close(fd[1]) == -1)
 		exit_error("Error close", 38);
-	pipe(fd);
+	if (last)
+		pipe(fd);
 }
 
 void	setpipes(t_pipe *pipes, int i)
 {
-	if (i == 0)
-		return ;
+	if (!pipes->last)
+	{
+		newpipe(pipes->fd[0], pipes->last);
+		newpipe(pipes->fd[1], pipes->last);
+	}
 	else if (i % 2)
-		newpipe(pipes->fd[1]);
+		newpipe(pipes->fd[1], pipes->last);
 	else
-		newpipe(pipes->fd[0]);
+		newpipe(pipes->fd[0], pipes->last);
 }
 
 static void	duppipe(int *io, int fd)

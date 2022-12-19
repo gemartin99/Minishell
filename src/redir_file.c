@@ -28,10 +28,11 @@ void	put_in_file(int type, t_cmd *cmd, char *file)
 		exit_error("Error open", 44);
 	if (dup2(fd, cmd->pipes->out) == -1)
 		exit_error("Error dup", 45);
+	free(temp);
 	close(fd);
 }
 
-void	get_from_file(t_cmd *cmd, char *file)
+int	get_from_file(t_cmd *cmd, char *file)
 {
 	int		fd;
 	char	*temp;
@@ -44,13 +45,17 @@ void	get_from_file(t_cmd *cmd, char *file)
 	{
 		write(2, "bash: ", 6);
 		write(2, file, ft_strlen(file));
-		write(2, ":", 1);
+		write(2, ": ", 2);
 		perror(NULL);
+		if (dup2(cmd->pipes->fd[0][0], cmd->pipes->out) == -1)
+			exit_error("Error dup", 50);
+		return (1);
 	}
 	else if (dup2(fd, cmd->pipes->in) == -1)
 		exit_error("Error dup", 45);
 	free(temp);
 	close(fd);
+	return (0);
 }
 
 void	get_input(t_cmd *cmd, char *stop)

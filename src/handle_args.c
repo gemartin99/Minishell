@@ -23,7 +23,7 @@ static int	ft_split_args(char *s, char **arg)
 	i = -1;
 	while (s[++i])
 	{
-		if (s[i] == ' ' || (s[i] >= 9 && s[i] <= 13) && s[i + 1] && s[i + 1] != ' ')
+		if ((s[i] == ' ' || (s[i] >= 9 && s[i] <= 13)) && s[i + 1] && s[i + 1] != ' ')
 			start = i + 1;
 		if (s[i] == 34 || s[i] == 39)
 			i = get_next_quote(i + 1, s, s[i]);

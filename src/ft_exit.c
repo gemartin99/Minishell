@@ -88,7 +88,6 @@ void check_only_num_in_args(t_cmd *cmd) //funcion para comprobar que todos los a
 void	ft_exit(t_cmd *cmd)
 {
 	long long n;
-	char *num_in_string;
 	int atoi_error;
 
 	//hacer funcion que quite las comillas de los args
@@ -100,7 +99,7 @@ void	ft_exit(t_cmd *cmd)
 	check_only_num_in_args(cmd);
 	n = ft_special_atoi(cmd->arg[0], &atoi_error);
 	//printf("AE %d\n", atoi_error);
-	if (n > -9223372036854775807 || n < 9223372036854775807 || atoi_error == -1)
+	if ((n > -9223372036854775807 && n < 9223372036854775807) || atoi_error == -1)
 		printf("%s\n", "CAGASTE");
 	//printf("exit\nbash: exit: %s: numeric argument required\n", num_in_string);
 	//hacer funcion para liberar todo

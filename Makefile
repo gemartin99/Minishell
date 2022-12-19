@@ -28,7 +28,7 @@ SRC_DIR		= src/
 OBJ_DIR		= obj/
 COMFLAGS	= -I/Users/$(USER)/.brew/opt/readline/include
 LINKFLAGS	= -L/Users/$(USER)/.brew/opt/readline/lib -lreadline
-CFLAGS		= -I $(INC) -MMD# -Wall -Werror -Wextra #-fsanitize=address
+CFLAGS		= -I $(INC) -MMD -Wall -Werror -Wextra #-fsanitize=address
 RM			= rm -f
 
 ################################################################################

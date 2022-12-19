@@ -15,20 +15,16 @@
 int	check_dolar(char *line) //funcion para checkear si hay un dolar en la linea que me mandan
 {
 	int	i;
+	int	doubles;
 
 	i = 0;
+	doubles = 1;
 	while (line[i])
 	{
-		if (line[i] == 39)
+		if (line[i] == 39 && doubles == 1)
 			i = get_next_quote(i + 1, line, line[i]);
 		if (line[i] == 34)
-		{
-			while (line[++i] && line[i] != 34)
-			{
-				if (line[i] == '$' && line[i + 1])
-					return (1);
-			}
-		}
+			doubles *= -1;
 		if (line[i] == '$' && line[i + 1])
 			return (1);
 		i++;
@@ -150,12 +146,12 @@ char	*ft_name_var(char *line) //funcion que crea una variable con el nombre que 
 	int		i;
 	char	*result;
 
-	i = position_dolar(line);
+	i = get_next_quote(0, line, '$') + 1;
 	j = 0;
 	while (line[i + j] && line[i + j] != ' ' && line[i + j] != '"'
 		&& line[i + j] != 39 && check_special_char(line[i + j]) == 0)
 		j++;
-	result = malloc(sizeof(char) * j + 1);
+	result = ft_calloc(sizeof(char), j + 1);
 	if (!result)
 		exit_error("Error malloc", 16);
 	j = 0;
@@ -165,7 +161,6 @@ char	*ft_name_var(char *line) //funcion que crea una variable con el nombre que 
 		result[j] = line[i + j];
 		j++;
 	}
-	result[j] = '\0';
 	return (result);
 }
 
@@ -200,8 +195,7 @@ char	*ft_change_var(t_cmd *cmd, char *line, char **var_reminder) //funcion para 
 
 	i = 0;
 	name_var = ft_name_var(line);
-	while (line[i] && line[i] != '$')
-		i++;
+	line = ft_strchr(line, '$');
 	while (line[++i] && line[i] != ' ')
 	{
 		if (check_special_char(line[i]) == -1)
