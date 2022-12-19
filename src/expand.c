@@ -231,9 +231,7 @@ char	*change_dolar_x_var(t_cmd *cmd, char *s)
 	if (check_dolar(s) == 0)
 		return (s);
 	cmd->flags->dollar_special = 0;
-	printf("1:%s\n",s);
 	s = ft_change_var(cmd, s, &var_reminder);
-	printf("2:%s\n",s);
 	if (check_dolar(s) == 1)
 		s = change_dolar_x_var(cmd, s);
 	if (cmd->flags->dollar_special == 1)
