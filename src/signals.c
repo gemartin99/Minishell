@@ -20,6 +20,7 @@ static void	signal_handler(int signal)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
+		kill(0, SIGTERM);
 	}
 	return ;
 }
@@ -32,4 +33,5 @@ void	wait_signal(void)
 
 	sigaction(SIGINT, &sa, NULL);
 	sigaction(SIGQUIT, &sa, NULL);
+	sigaction(SIGTERM, &sa, NULL);
 }

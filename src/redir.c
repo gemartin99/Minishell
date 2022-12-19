@@ -12,7 +12,7 @@
 
 #include "../inc/minishell.h"
 
-static char	**get_filename(char **arg, int j, char c);
+static char	**get_filename(char **arg, int j, char c, int k);
 
 static char	**remove_one(char **arg, int i)
 {
@@ -68,19 +68,15 @@ static char	**keep_arg(char **arg, int j, char c)
 {
 	char	*temp;
 
-	if (arg[j + 1])
-		arg = add_one(arg, ft_substr(arg[j],
-					0, get_next_diff(0, arg[j])), j + 2);
-	else
-		arg = add_one(arg, ft_substr(arg[j],
-					0, get_next_diff(0, arg[j])), j + 1);
+	arg = add_one(arg, ft_substr(arg[j],
+				0, get_next_diff(0, arg[j])), j + 1);
 	temp = ft_strdup(ft_strchr(arg[j], c));
 	free(arg[j]);
 	arg[j] = temp;
-	return (get_filename(arg, j, c));
+	return (get_filename(arg, j, c, 2));
 }
 
-static char	**get_filename(char **arg, int j, char c)
+static char	**get_filename(char **arg, int j, char c, int k)
 {
 	int		i;
 
@@ -91,12 +87,12 @@ static char	**get_filename(char **arg, int j, char c)
 		return (arg);
 	if (i == 0)
 		return (keep_arg(arg, j, c));
-	arg = add_one(arg, ft_substr(arg[j], 0, i), j + 1);
+	arg = add_one(arg, ft_substr(arg[j], 0, i), j + k++);
 	arg = add_one(arg, ft_substr(arg[j], i,
-				get_next_diff(i, arg[j]) - i), j + 2);
+				get_next_diff(i, arg[j]) - i), j + k++);
 	i = get_next_diff(i, arg[j]);
 	if (arg[j][i])
-		arg = add_one(arg, ft_substr(arg[j], i, ft_strlen(arg[j]) - i), j + 3);
+		arg = add_one(arg, ft_substr(arg[j], i, ft_strlen(arg[j]) - i), j + k++);
 	arg = remove_one(arg, j);
 	return (arg);
 }
@@ -111,7 +107,12 @@ void	redir(t_cmd	*cmd)
 	{
 		i = is_redir((cmd->arg) + i) + i;
 		cmd->arg = get_filename(cmd->arg, i,
-				operator_char(redir_type(cmd->arg[i])));
+				operator_char(redir_type(cmd->arg[i])), 1);
+		if (!redir_type(cmd->arg[i]))
+			i++;
+		if (redir_type(cmd->arg[i + 1]))
+			cmd->arg = get_filename(cmd->arg, i + 1,
+					operator_char(redir_type(cmd->arg[i + 1])), 1);
 		file = str_noquotes(cmd->arg[i + 1]);
 		if (redir_type(cmd->arg[i]) == 1 || redir_type(cmd->arg[i]) == 2)
 			put_in_file(redir_type(cmd->arg[i]), cmd, file);
