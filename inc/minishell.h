@@ -109,14 +109,13 @@ char	operator_char(int n);
 void	redir(t_cmd	*cmd);
 int		get_next_diff(int i, char *str);
 void	put_in_file(int type, t_cmd *cmd, char *file);
-void	get_from_file(t_cmd *cmd, char *file);
+int	get_from_file(t_cmd *cmd, char *file);
 int		check_nonpipables(t_cmd *cmd, char *temp_cmd);
 void	execute_nonpipe(t_cmd *cmd, char *temp_cmd);
 
 ////////expand_utils ⬇️////////
 
 char *ft_strjoin_special(char *s1, char *s2, size_t i, size_t c);
-int position_dolar(char *line);
 int check_special_char(char c);
 int ft_isdigit_special(int i);
 int var_strcmp(char *s1, char *s2);
