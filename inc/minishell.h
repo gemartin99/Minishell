@@ -99,6 +99,7 @@ t_pipe	*init_pipes(void);
 void	setfds(t_pipe *pipe, int i);
 void	setpipes(t_pipe *pipes, int i);
 void	wait_signal(void);
+char	**ft_split_pipes(char *s);
 
 //////////redirection///////////
 

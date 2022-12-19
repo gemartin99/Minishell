@@ -107,11 +107,9 @@ static void	tokenize(t_msh *msh, t_cmd **cmd, char *read_line) //
 	if (msh->flags->quote == 0)
 		return ;
 	msh->flags->pipe = ft_count_pipes(read_line);
-	lines = ft_split(read_line, '|');
+	lines = ft_split_pipes(read_line);
 	*cmd = add_cmd(msh, lines[0]);
 	expand(cmd);
-	if (!lines)
-		exit_error("Error malloc", 16);
 	while (++i <= msh->flags->pipe)
 	{
 		msh->total_chars = 0;

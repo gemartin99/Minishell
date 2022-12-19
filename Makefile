@@ -73,7 +73,8 @@ SRC_FILES	=	minishell \
 				only_export \
 				redir \
 				redir_utils \
-				redir_file
+				redir_file \
+				utils_pipes
 
 
 SRC			=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
