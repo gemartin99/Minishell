@@ -96,11 +96,13 @@ int	check_nonpipables(t_cmd *cmd, char *temp_cmd)
 {
 	if (cmd->next)
 		return (0);
-	if (!ft_strncmp(temp_cmd, "export", 6))
+	if (!ft_strncmp(temp_cmd, "export", 7))
 		return (1);
-	else if (!ft_strncmp(temp_cmd, "unset", 5))
+	else if (!ft_strncmp(temp_cmd, "unset", 6))
 		return (1);
-	else if (!ft_strncmp(temp_cmd, "exit", 4))
+	else if (!ft_strncmp(temp_cmd, "exit", 5))
+		return (1);
+	else if (!ft_strncmp(temp_cmd, "cd", 3))
 		return (1);
 	return (0);
 }

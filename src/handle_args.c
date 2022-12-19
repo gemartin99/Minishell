@@ -153,4 +153,3 @@ void	recive_arguments(t_msh *msh)
 		}
 	}
 }
-

@@ -109,7 +109,7 @@ char	operator_char(int n);
 void	redir(t_cmd	*cmd);
 int		get_next_diff(int i, char *str);
 void	put_in_file(int type, t_cmd *cmd, char *file);
-int	get_from_file(t_cmd *cmd, char *file);
+int		get_from_file(t_cmd *cmd, char *file);
 int		check_nonpipables(t_cmd *cmd, char *temp_cmd);
 void	execute_nonpipe(t_cmd *cmd, char *temp_cmd);
 
