@@ -63,7 +63,6 @@ char	*str_tolower(char *str)
 
 char	*str_noquotes(char *str) //Recive una string y devuelve una copia sin las comillas que no correspondan
 {
-	//revisar esta funcion, ej: echo '"$USER"'"""'$USER'"   en lo que devuelve quita la primera comilla y no la que cierra
 	int		i;
 	int		j;
 	char	*temp;

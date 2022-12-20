@@ -73,15 +73,15 @@ int parse_equal(char *s, int i) //funcion que controla si hay caracteres o combi
 	return (0);
 }
 
-void del_exist_variable(char *full_var, t_cmd *cmd)
+void del_exist_variable(char *full_var, t_cmd *cmd, int i)
 {
-	int i;
 	char *var;
 	int len;
 	int j;
 
-	i = 0;
 	len = 0;
+	if (full_var[0] == '=')
+		return ;
 	while (full_var[len] && full_var[len] != '=')
 		len++;
 	while (i < cmd->env->num_env)
@@ -110,7 +110,7 @@ int export_parse(t_cmd *cmd, char *array, int j, int control)
 	i = 0;
 	while (cmd->arg[i])
 	{
-		del_exist_variable(cmd->arg[i], cmd);
+		del_exist_variable(cmd->arg[i], cmd, 0);
 		j = parse_equal(cmd->arg[i], 0);
 		if (j == -2)
 		{
@@ -177,9 +177,7 @@ int add_new_vars1(t_cmd *cmd, char *binary_array) //primera parte de funcion que
 		i++;
 	}
 	free(cmd->env->env);
-	//printf("A %d\n", cmd->env->num_env);
 	cmd->env->num_env = cmd->env->num_env + new_envs;
-	//printf("D %d\n", cmd->env->num_env);
 	add_new_vars2(cmd, binary_array, i, aux);
 	return (0);
 }

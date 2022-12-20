@@ -18,7 +18,10 @@ int	ft_env(t_cmd *cmd)
 
 	i = 0;
 	if (cmd->arg)
-		return (1);
+	{
+		printf("env: %s: No such file or directory\n", cmd->arg[0]);
+		return (1); //retornar 127 , nose porque tira undefined error
+	}
 	while (i < cmd->env->num_env)
 	{
 		if (cmd->env->env[i] != NULL)
