@@ -194,6 +194,8 @@ char	*ft_change_var(t_cmd *cmd, char *line, char **var_reminder) //funcion para 
 	char	*result;
 
 	i = 0;
+	if (ft_strnstr(line, "$?", ft_strlen(line)) != 0)
+		line = ft_replace_value(line);
 	name_var = ft_name_var(line);
 	while (line[i] && line[i] != '$')
 		i++;

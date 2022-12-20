@@ -123,6 +123,7 @@ int ft_isdigit_special(int i);
 int var_strcmp(char *s1, char *s2);
 char	*str_tolower(char *str);
 char	*str_noquotes(char *str);
+char *ft_replace_value(char *s);
 
 
 ////////builtins️////////

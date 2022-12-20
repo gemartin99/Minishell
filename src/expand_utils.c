@@ -12,6 +12,41 @@
 
 #include "../inc/minishell.h"
 
+char *ft_replace_value2(char *s, int i)
+{
+	char *res;
+	char *tmp;
+	int j;
+
+	j = -1;
+	res = malloc(sizeof(char) * ((ft_strlen(s) - 1) + ft_strlen(ft_itoa(g_error))));
+	if (!res)
+		exit_error("Error malloc", 55);
+	tmp = ft_substr(s, 0, i);
+	tmp = ft_strjoin(tmp, ft_itoa(g_error)); //mirar leaks de esta funcion
+	j = -1;
+	while (tmp[++j])
+		res[j] = tmp[j];
+	while (s[++i] && s[i + 1])
+		res[j++] = s[i + 1];
+	res[j] = '\0';
+	return(res);
+}
+
+char *ft_replace_value(char *s)
+{
+	int i;
+
+	i = get_next_quote(0, s, '$');
+	while (s[i])
+	{
+		if (s[i] == '$' && s[i + 1] && s[i + 1] == '?')
+			s = ft_replace_value2(s, i);
+		i = get_next_quote(0, s, '$');
+	}
+	return (s);
+}
+
 int	var_strcmp(char *s1, char *s2) //, t_msh *d) //funcion strcmp modificada para variables de entorno
 {
 	size_t	i;
