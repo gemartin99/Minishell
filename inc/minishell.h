@@ -92,6 +92,7 @@ int 	ft_skip_space(char *s, int i);
 t_cmd	*ft_last(t_cmd **cmd);
 char	*remove_quotes(char *str, char c);
 void	get_input(t_cmd *cmd, char *stop);
+int		start_line(t_msh **msh, char *read_line, char ***lines);
 
 ///////////pipes/////////////////
 

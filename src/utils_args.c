@@ -74,3 +74,17 @@ int	ft_check_dquote(char *s, int simple, int doble, t_msh *msh)
 	}
 	return (1);
 }
+
+int		start_line(t_msh **msh, char *read_line, char ***lines)
+{
+	(*msh)->flags->quote = ft_check_dquote(read_line, 2, 2, (*msh));
+	if ((*msh)->flags->quote == 0)
+		return (1);
+	(*msh)->flags->pipe = ft_count_pipes(read_line);
+	if ((*msh)->flags->pipe == -1)
+		return (1);
+	*lines = ft_split_pipes(read_line);
+	if (!(*lines))
+		return (1);
+	return (0);
+}

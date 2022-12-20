@@ -96,18 +96,16 @@ static t_cmd	*add_cmd(t_msh *msh, char *read_line)
 	return (temp);
 }
 
-static void	tokenize(t_msh *msh, t_cmd **cmd, char *read_line) //
+static int	tokenize(t_msh *msh, t_cmd **cmd, char *read_line) //
 {
 	int		i;
 	t_cmd	*temp;
 	char	**lines;
 
 	i = 0;
-	msh->flags->quote = ft_check_dquote(read_line, 2, 2, msh);
-	if (msh->flags->quote == 0)
-		return ;
-	msh->flags->pipe = ft_count_pipes(read_line);
-	lines = ft_split_pipes(read_line);
+	lines = NULL;
+	if (start_line(&msh, read_line, &lines))
+		return (0);
 	*cmd = add_cmd(msh, lines[0]);
 	expand(cmd);
 	while (++i <= msh->flags->pipe)
@@ -122,6 +120,7 @@ static void	tokenize(t_msh *msh, t_cmd **cmd, char *read_line) //
 		free(lines[i]);
 	free(lines);
 	free(read_line);
+	return (1);
 }
 
 void	recive_arguments(t_msh *msh)
@@ -140,8 +139,7 @@ void	recive_arguments(t_msh *msh)
 		{
 			msh->total_chars = 0;
 			add_history(read_line);
-			tokenize(msh, &msh->cmd, read_line);
-			if (msh->flags->quote != 0)
+			if (tokenize(msh, &msh->cmd, read_line) && msh->flags->quote != 0)
 			{
 				if (check_nonpipables(msh->cmd, str_noquotes(msh->cmd->cmd)))
 					execute_nonpipe(msh->cmd, str_noquotes(msh->cmd->cmd));
