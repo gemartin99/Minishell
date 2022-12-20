@@ -115,7 +115,7 @@ int	check_access(char *path, t_cmd *cmd, t_env *env)
 		if (access(path, X_OK) != -1)
 			execve(path, arg_with_command(cmd),
 				convert_to_env(env->env, env->num_env));
-		printf("bash: %s: Permision denied\n", cmd->cmd);
+		put_error("bash", cmd->cmd, "Permision denied");
 		return (1);
 	}
 	return (0);
@@ -131,7 +131,7 @@ int	ft_try_to_exec(t_cmd *cmd)//funcion para intentar hacer execv de lo que me m
 	if (cmd->cmd[0] == '.' || cmd->cmd[0] == '/')
 	{
 		if (!check_access(cmd->cmd, cmd, cmd->env))
-			printf("bash: %s: No such file or directory\n", cmd->cmd);
+			put_error("bash", cmd->cmd, "No such file or directory");
 		return (1);
 	}
 	while (absolute_path && cmd->cmd[0])
@@ -145,6 +145,6 @@ int	ft_try_to_exec(t_cmd *cmd)//funcion para intentar hacer execv de lo que me m
 			cmd->env->path++;
 		absolute_path = value_dolar_path(cmd->env->path);
 	}
-	printf("bash: %s: comand not found\n", cmd->cmd);
+	put_error("bash", cmd->cmd, "comand not found");
 	return (1);
 }

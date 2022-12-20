@@ -93,6 +93,7 @@ t_cmd	*ft_last(t_cmd **cmd);
 char	*remove_quotes(char *str, char c);
 void	get_input(t_cmd *cmd, char *stop);
 int		start_line(t_msh **msh, char *read_line, char ***lines);
+void	put_error(char *bash, char *file, char *error);
 
 ///////////pipes/////////////////
 

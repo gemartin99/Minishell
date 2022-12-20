@@ -63,12 +63,12 @@ int check_only_num(char *s)
 	{
 		if ((s[i] < '0' || s[i] > '9'))
 		{
-			printf("exit\nbash: exit: %s: numeric argument required\n", s);
+			put_error("exit\nbash: exit", s, "numeric argument required");
 			exit (255);
 		}
 		i++;
 	}
-	return (0);
+	return (1);
 }
 
 void check_only_num_in_args(t_cmd *cmd) //funcion para comprobar que todos los argumentos contengan solo digitos
@@ -92,10 +92,10 @@ void	ft_exit(t_cmd *cmd)
 
 	//hacer funcion que quite las comillas de los args
 	atoi_error = 0;
-	if (cmd->num_arg == 0)
+	if (cmd->num_arg == 0 || !cmd->arg[0])
 		exit (0); //exit de valor de la variable global
-	else if (cmd->num_arg > 1 && check_only_num(cmd->arg[0]) == 0)
-		return((void)printf("exit\nbash: exit: too many arguments\n"));
+	else if (cmd->arg[1] && check_only_num(cmd->arg[0]))
+		return(put_error("exit\nbash", "exit", "too many arguments"));
 	check_only_num_in_args(cmd);
 	n = ft_special_atoi(cmd->arg[0], &atoi_error);
 	//printf("AE %d\n", atoi_error);

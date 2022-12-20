@@ -20,14 +20,24 @@ void	many_args(char **argv) //funcion para si cuando vas a correr el programa po
 	if (ft_strlen(argv[0]) < ft_strlen(argv[1]))
 		len = ft_strlen(argv[1]);
 	if (ft_strncmp(argv[0], argv[1], len) == 0)
-		printf("%s: %s: cannot execute binary file\n", argv[0], argv[1]);
+		put_error(argv[0], argv[1], "cannot execute binary file");
 	else
-		printf("%s: %s: No such file or directory\n", argv[0], argv[1]);
-	exit(7);
+		put_error(argv[0], argv[1], "No such file or directory");
+	exit(127);
 }
 
 void	exit_error(char *str, int n)
 {
 	printf("%s\n", str);
 	exit(n);
+}
+
+void	put_error(char *bash, char *file, char *error)
+{
+	ft_putstr_fd(bash, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(file, 2);
+	ft_putstr_fd(": ", 2);
+	if (error)
+		ft_putendl_fd(error, 2);
 }

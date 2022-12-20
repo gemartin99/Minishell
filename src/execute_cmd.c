@@ -61,17 +61,31 @@ static void	wait_exit(t_pipe *pipes, int i)
 		waitpid(-1, &g_error, 0);
 		if (WIFEXITED(g_error))
 			g_error = WEXITSTATUS(g_error);
-		if (g_error != 0 && g_error != 1)
+		if (g_error != 0 && g_error != 1 && g_error != 127)
 			perror(NULL);
 	}
 }
 
 void	execute_nonpipe(t_cmd *cmd, char *temp_cmd)
 {
+	int	io[2];
+
+	cmd->pipes = init_pipes();
+	cmd->pipes->last = 0;
+	setfds(cmd->pipes, 1);
+	setpipes(cmd->pipes, 1);
+	if (dup2(STDIN_FILENO, io[0]) == -1 || dup2(STDOUT_FILENO, io[1]) == -1)
+		exit_error("Error DUP", 23);
 	if (cmd->arg && is_redir(cmd->arg) != -1)
 		redir(cmd);
+	if (dup2(cmd->pipes->in, STDIN_FILENO) == -1
+			|| dup2(cmd->pipes->out, STDOUT_FILENO) == -1)
+		exit_error("Error DUP", 24);
+	if (close(cmd->pipes->in) == -1 || close(cmd->pipes->out) == -1)
+		exit_error("Error close", 26);
 	g_error = cmd_type(cmd, temp_cmd);
-	free(temp_cmd);
+	if (dup2(io[0], STDIN_FILENO) == -1 || dup2(io[1], STDOUT_FILENO) == -1)
+		exit_error("Error DUP", 24);
 	return ;
 }
 

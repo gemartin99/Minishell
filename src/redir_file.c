@@ -36,24 +36,25 @@ int	get_from_file(t_cmd *cmd, char *file)
 {
 	int		fd;
 	char	*temp;
+	int		pfd[2];
 
 	temp = ft_calloc(sizeof(char), (MAXPATHLEN + 1));
 	getcwd(temp, MAXPATHLEN);
 	temp = ft_strjoin(temp, "/");
+	free(temp);
 	fd = open(ft_strjoin(temp, file), O_RDONLY);
 	if (fd == -1)
 	{
-		write(2, "bash: ", 6);
-		write(2, file, ft_strlen(file));
-		write(2, ": ", 2);
-		perror(NULL);
-		if (dup2(cmd->pipes->fd[0][0], cmd->pipes->out) == -1)
+		put_error("bash", file, NULL);
+		pipe(pfd);
+		if (dup2(pfd[1], cmd->pipes->out) == -1)
 			exit_error("Error dup", 50);
+		if (close(pfd[0]) == -1 || close(pfd[1]) == -1)
+			exit_error("Error close", 51);
 		return (1);
 	}
 	else if (dup2(fd, cmd->pipes->in) == -1)
 		exit_error("Error dup", 45);
-	free(temp);
 	close(fd);
 	return (0);
 }

@@ -26,9 +26,9 @@ int	ft_cd(t_cmd **cmd)
 	}
 	else
 	{
-		if (chdir((*cmd)->arg[0]) == -1)
+		if ((*cmd)->arg[0] && chdir((*cmd)->arg[0]) == -1)
 		{
-			printf("bash: cd: %s: No such file or directory\n", (*cmd)->arg[0]);
+			put_error("bash: cd", (*cmd)->arg[0], "No such file or directory");
 			return (1);
 		}
 		else

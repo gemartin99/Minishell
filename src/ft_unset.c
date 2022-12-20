@@ -19,7 +19,7 @@ static int	ft_check_wrong_let(char c, char *s)
 		|| c == '[' || c == ']' || c == '@' || c == '*' || c == '#'
 		|| c == '^')
 	{
-		printf("bash: unset: `%s': not a valid identifier\n", s);
+		put_error("bash: unset", s, "not a valid identifier\n");
 		return (-1);
 	}
 	return (0);
@@ -39,20 +39,20 @@ int	ft_special_strcmp(char *s1, char *s2)
 	return (((unsigned char *)s1)[i] - ((unsigned char *)s2)[i]);
 }
 
-void	ft_unset_strcmp(char *s, t_env *env)
+int	ft_unset_strcmp(char *s, t_env *env)
 {
 	int	i;
 
 	i = -1;
 	if (!s[0] || s[0] == '=' || s[0] == '?' || s[0] == '!')
 	{
-		printf("bash: unset: `%s': not a valid identifier\n", s);
-		return ;
+		put_error("bash: unset", s, "not a valid identifier\n");
+		return (1);
 	}
 	while (s[++i])
 	{
 		if (ft_check_wrong_let(s[i], s) == -1)
-			return ;
+			return (1);
 	}
 	while (++i < env->num_env)
 	{
@@ -63,6 +63,7 @@ void	ft_unset_strcmp(char *s, t_env *env)
 			break ;
 		}
 	}
+	return (0);
 }
 
 int	ft_unset(t_cmd **cmd)
@@ -72,7 +73,8 @@ int	ft_unset(t_cmd **cmd)
 	i = 0;
 	while (i < (*cmd)->num_arg)
 	{
-		ft_unset_strcmp((*cmd)->arg[i], (*cmd)->env);
+		if (ft_unset_strcmp((*cmd)->arg[i], (*cmd)->env))
+			return (1);
 		i++;
 	}
 	return (0);
