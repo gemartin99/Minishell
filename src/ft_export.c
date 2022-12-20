@@ -59,7 +59,7 @@ int parse_equal(char *s, int i) //funcion que controla si hay caracteres o combi
 			printf("bash: %s: event not found\n", s);
 			return (-1);
 		}
-		else if (ft_check_wrong_let_export(s[i]) == 1 || ft_isdigit(s[0]) == 1)
+		else if (ft_check_wrong_let_export(s[i]) == 1 || ft_isdigit(s[0]) == 1 || s[0] == '=')
 		{
 			printf("bash: export: `%s': not a valid identifier\n", s);
 			return (-1);
@@ -116,19 +116,19 @@ int export_parse(t_cmd *cmd, char *array, int j, int control)
 		{
 			cmd->arg[i] = ft_quit_last_char(cmd->arg[i], 0);
 			ft_export(&cmd);
-			return (-1);
+			return (-2);
 		}
 		else if (j == -1)
-			array[i] = '0';
-		else
 		{
-			array[i] = '1';
+			array[i] = '0';
 			control++;
 		}
+		else
+			array[i] = '1';
 		i++;
 	}
 	array[i] = '\0';
-	if (control == 0)
+	if (control != 0)
 		return(-1);
 	return (0);
 }
@@ -177,9 +177,9 @@ int add_new_vars1(t_cmd *cmd, char *binary_array) //primera parte de funcion que
 		i++;
 	}
 	free(cmd->env->env);
-	printf("A %d\n", cmd->env->num_env);
+	//printf("A %d\n", cmd->env->num_env);
 	cmd->env->num_env = cmd->env->num_env + new_envs;
-	printf("D %d\n", cmd->env->num_env);
+	//printf("D %d\n", cmd->env->num_env);
 	add_new_vars2(cmd, binary_array, i, aux);
 	return (0);
 }
@@ -391,10 +391,11 @@ int ft_export(t_cmd **cmd)
 	binary_array = malloc(sizeof(char) * (*cmd)->num_arg + 1);
 	if (!binary_array)
 		exit_error("Error malloc", 21);
+	i = 0;
 	if (export_parse((*cmd), binary_array, 0, 0) == -1)
-		return (1);
+		i = 1;
 	add_new_vars1((*cmd), binary_array);
-	return (0);
+	return (i);
 }
 
 /*

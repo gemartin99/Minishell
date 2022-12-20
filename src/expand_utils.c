@@ -36,13 +36,17 @@ char *ft_replace_value2(char *s, int i)
 char *ft_replace_value(char *s)
 {
 	int i;
+	int j;
 
 	i = get_next_quote(0, s, '$');
 	while (s[i])
 	{
 		if (s[i] == '$' && s[i + 1] && s[i + 1] == '?')
 			s = ft_replace_value2(s, i);
+		j = i;
 		i = get_next_quote(0, s, '$');
+		if (j == i)
+			break ;
 	}
 	return (s);
 }

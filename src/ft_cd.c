@@ -20,11 +20,19 @@ int	ft_cd(t_cmd **cmd)
 	//hacer que variable entorno $OLDPWD tenga el valor de la ruta actual 
 	//antes de hacer algun CD siempre y cuando el CD no sea hacia $OLDPWD
 	if ((*cmd)->num_arg == 0)
+	{
 		chdir(getenv("HOME"));
+		return (0);
+	}
 	else
 	{
 		if (chdir((*cmd)->arg[0]) == -1)
+		{
 			printf("bash: cd: %s: No such file or directory\n", (*cmd)->arg[0]);
+			return (1);
+		}
+		else
+			return (0);
 	}
 	return (0);
 }
