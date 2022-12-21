@@ -20,7 +20,8 @@ int	ft_pwd(int i) //funcion para saber mi ruta actual
 	s = malloc(sizeof(char) * (MAXPATHLEN + 1));
 	if (!s)
 		exit_error("Error malloc", 22);
-	getcwd(s, MAXPATHLEN);
+	if (!getcwd(s, MAXPATHLEN))
+		return (10);
 	while (s[i])
 		i++;
 	res = malloc(sizeof(char) * i + 1);

@@ -187,16 +187,42 @@ char	*ft_split_var(char *line, int i, t_cmd *cmd) //funcion que retorna el resto
 	return (res);
 }
 
+int search_next_char(char *s, char c) //funcion para buscar el siguiente caracter que no este entre comillas
+{
+	int	i;
+
+	i = -1;
+	printf("%s\n", s);
+	while (s[++i])
+	{
+		if (s[i] == 34)
+		{
+			while(s[++i] != 34)
+			if (s[i] == '$')
+				return (i);
+		}
+		if (s[i] == 39)
+		{
+			i++;
+			i = get_next_quote(i, s, 39);
+		}
+		if (s[i] == c)
+			return (i);
+	}
+	return (0);
+}
+
 char	*ft_change_var(t_cmd *cmd, char *line, char **var_reminder) //funcion para detectar y cambiar el valor a la linea y que si hay un caracter especial despues de $var se concatene. Ej: $USER/aaa 
 {
 	char	*name_var;
 	int		i;
 	char	*result;
 
-	i = 0;
 	if (ft_strnstr(line, "$?", ft_strlen(line)) != 0)
 		line = ft_replace_value(line);
 	name_var = ft_name_var(line);
+	i = search_next_char(line, '$');
+	printf("i:%d\n", i);
 	while (line[++i] && line[i] != ' ')
 	{
 		if (check_special_char(line[i]) == -1)
