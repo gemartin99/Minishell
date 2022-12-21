@@ -12,11 +12,8 @@
 
 #include "../inc/minishell.h"
 
-int search_next_char(char *s, char c) //funcion para buscar el siguiente caracter que no este entre comillas
+int search_next_char(char *s, char c, int i) //funcion para buscar el siguiente caracter que no este entre comillas
 {
-	int	i;
-
-	i = -1;
 	while (s[++i])
 	{
 		if (s[i] == 34)
@@ -83,7 +80,7 @@ char	*ft_craft_result(char *line_final, char *line, char *var, int c)
 
 	i = -1;
 	j = -1;
-	k = search_next_char(line, '$');
+	k = search_next_char(line, '$', -1);
 	if ((size_t)k == ft_strlen(line))
 		return(line);
 	while (++i < k)
@@ -107,7 +104,7 @@ char	*change_line_value(char *line, char *var) //funcion que cambia el valor de 
 	int		c;
 
 	j = 0;
-	i = search_next_char(line, '$');
+	i = search_next_char(line, '$', -1);
 	c = i;
 	while (line[i + j] && line[i + j] != ' '
 		&& line[i + j] != 34 && line[i + j] != 39)
@@ -222,10 +219,10 @@ char	*ft_change_var(t_cmd *cmd, char *line, char **var_reminder) //funcion para 
 	if (ft_strnstr(line, "$?", ft_strlen(line)) != 0)
 		line = ft_replace_value(line);
 	name_var = ft_name_var(line);
-	i = search_next_char(line, '$');
+	i = search_next_char(line, '$', -1);
 	while (line[++i] && line[i] != ' ')
 	{
-		if (check_special_char(line[i]) == -1) //&& line[i] != '$')
+		if ((check_special_char(line[i]) == -1 && line[i] != '$') || (line[i] == '$' && i == search_next_char(line, '$', search_next_char(line, '$', -1) + 1)))
 		{
 			*var_reminder = ft_split_var(line, i, cmd);
 			break ;
