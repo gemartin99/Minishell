@@ -230,6 +230,8 @@ char	*ft_change_var(t_cmd *cmd, char *line, char **var_reminder) //funcion para 
 	}
 	if (!name_var)
 		return (NULL);
+	if (!name_var[0])
+		return (line);
 	i = -1;
 	while (++i < cmd->env->num_env)
 	{

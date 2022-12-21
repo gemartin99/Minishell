@@ -31,11 +31,14 @@ static void	create_env(t_env *env, char **ev) // incializar env
 		if (ft_strncmp(temp[i], "PATH=", 5) == 0)
 			env->path = ft_substr(temp[i], 5, ft_strlen(temp[i]) - 5);
 		if (ft_strncmp(temp[i], "SHLVL=", 6) == 0)
-			temp[i] = ft_strjoin("SHLVL=" ,ft_itoa(ft_atoi(ft_strchr(temp[i], '=') + 1) + 1));
+		{	
+			free(temp[i]);
+			temp[i] = ft_strjoin("SHLVL=" ,ft_itoa(ft_atoi(ft_strchr(ev[i], '=') + 1) + 1));
+		}
 		i--;
 	}
 	if (!env->path)
-		env->path = ft_strdup("/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.");
+		env->path = ft_strdup("./");
 	env->env = temp;
 }
 

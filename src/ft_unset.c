@@ -44,6 +44,8 @@ int	ft_unset_strcmp(char *s, t_env *env)
 	int	i;
 
 	i = -1;
+	if (ft_strncmp(s, "PATH", 5) == 0)
+		env->path = "./";
 	if (!s[0] || s[0] == '=' || s[0] == '?' || s[0] == '!')
 	{
 		put_error("bash: unset", s, "not a valid identifier\n");
