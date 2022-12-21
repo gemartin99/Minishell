@@ -11,7 +11,7 @@ int	ft_count_pipes(char *s) //funcion que retorna la cantidad de pipes que hay e
 	{
 		if (s[i] == '|' && (s[i + 1] == '|' || s[i + 1] == '\0'))
 		{
-			printf("bash: syntax error near unexpected token `|'\n");
+			put_error("bash", NULL, "syntax error near unexpected token `|'");
 			g_error = 258;
 			return (-1);
 		}
@@ -65,7 +65,7 @@ int check_pipe_arg(char *s)
 			res = 0;
 	}
 	if (res == -1)
-		printf("bash: syntax error near unexpected token `|'\n");
+		put_error("bash", NULL, "syntax error near unexpected token `|'");
 	return (res);
 }
 
@@ -77,7 +77,7 @@ int	check_redir(char **arg, int i)
 	j = 0;
 	if (redir_type(arg[i]) == -1)
 	{
-		printf("bash: syntax error near unexpected token `>'\n");
+		put_error("bash", NULL, "syntax error near unexpected token `|'");
 		return (-1);
 	}
 	temp = ft_strchr(arg[i], operator_char(redir_type(arg[i])));
@@ -88,7 +88,7 @@ int	check_redir(char **arg, int i)
 			j++;
 		if (redir_type(arg[i]) && !temp[j])
 		{
-			printf("bash: syntax error near unexpected token `>'\n");
+			put_error("bash", NULL, "syntax error near unexpected token `|'");
 			return (-1);
 		}
 		temp = ft_strchr(temp + j, operator_char(redir_type(temp + j)));

@@ -40,11 +40,6 @@ char *ft_quit_last_char(char *s, int i)
 	return (res);
 }
 
-/*int ft_check_conditions(char *s, int i)
-{
-
-}*/
-
 int parse_equal(char *s, int i) //funcion que controla si hay caracteres o combinaciones de caracteres que provoquen que no se pueda realizar el export
 {
 	int correct;
@@ -182,27 +177,6 @@ int add_new_vars1(t_cmd *cmd, char *binary_array) //primera parte de funcion que
 	return (0);
 }
 
-// static int var_string_cmp(char *s1, char *s2) //funcion strcmp modificada para variables de entorno
-// {
-// 	size_t i;
-
-// 	i = 0;
-// 	if (!s1 || !s2)
-// 		return (1);
-// 	while (s2[i] && s2[i] != '=')
-// 		i++;
-// 	if (ft_strlen(s1) != i)
-// 		return (1);
-// 	i = 0;
-// 	while (s1[i] && s2[i] && s2[i] != '=')
-// 	{
-// 		if (s1[i] != s2[i])
-// 			return (1);
-// 		i++;
-// 	}
-// 	return (0);
-// }
-
 char *add_var_value(char *s1) //funcion para añadir el valor de la variable de entorno a nuestra variable result
 {
 	int i;
@@ -221,157 +195,6 @@ char *add_var_value(char *s1) //funcion para añadir el valor de la variable de 
 	result[j] = '\0';
 	return (result);
 }
-
-// char *check_same_var(t_cmd *cmd, char *aux) //funcion para checkear si hay una variable de entorno igual que lo que me han mandado por parametro
-// {
-// 	int i;
-// 	char *result;
-
-// 	i = -1;
-// 	result = NULL;
-// 	printf("AL PEDO\n");
-// 	while (++i < cmd->env->num_env)
-// 	{
-// 		if (var_string_cmp(aux, cmd->env->env[i]) == 0)
-// 		{
-// 			printf("ENTRO\n");
-// 			result = add_var_value(cmd->env->env[i]);
-// 			return(result);
-// 		}
-// 	}
-// 	return(NULL);
-// }
-
-// char *replace_dolar(t_cmd *cmd, char *var, int i) //funcion para añadir una string que sea lo que va despues del $
-// {
-// 	char *aux;
-// 	int j;
-
-// 	j = 0;
-// 	while (var[i] && var[i] != '$')
-// 		i++;
-// 	i++;
-// 	while (var[i + j] && var[i + j] != 34 && var[i + j] != 39)
-// 		j++;
-// 	aux = malloc(sizeof(char) * j + 1);
-// 	if (!aux)
-// 		exit_error("Error malloc", 26);
-// 	j = -1;
-// 	while (var[++j + i] && var[i + j] != 34 && var[i + j] != 39)
-// 		aux[j] = var[i + j];
-// 	aux[j] = '\0';
-// 	aux = check_same_var(cmd, aux);
-// 	return(aux);
-// }
-
-// char *join_value3(char *s1) //lo mismo que la 1 y 2 pero esta aplica a $var que no existen
-// {
-// 	int i;
-// 	char *result;
-// 	int c;
-// 	int j;
-
-// 	i = 0;
-// 	c = -1;
-// 	j = 0;
-// 	while (s1[i] && s1[i] != '$')
-// 		i++;
-// 	if (!s1[i + 1])
-// 		return (s1);
-// 	result = malloc(sizeof(char) * i + 1);
-// 	if (!result)
-// 		exit_error("Error malloc", 27);
-// 	i = 0;
-// 	while(s1[i] && s1[i] != '$')
-// 	{
-// 		result[i] = s1[i];
-// 		i++;
-// 	}
-// 	result[i] = '\0';
-// 	return (result);
-// }
-
-
-// char *join_value2(char *s1, char *s2) //lo mismo que la 1 pero es para cuando hay caracteres antes de la variable $VAR
-// {
-// 	int i;
-// 	char *result;
-// 	int c;
-// 	int j;
-
-// 	i = 0;
-// 	c = -1;
-// 	j = 0;
-// 	while (s1[i] && s1[i] != '$')
-// 		i++;
-// 	result = malloc(sizeof(char) *  i + ft_strlen(s2) + 1);
-// 	if (!result)
-// 		exit_error("Error malloc", 28);
-// 	while (s1[j] && s1[j] != '$')
-// 	{
-// 		result[j] = s1[j];
-// 		j++;
-// 	}
-// 	while (s2[++c])
-// 		result[j + c] = s2[c];
-// 	result[j + c] = '\0';
-// 	return (result);
-// }
-
-// char *join_value(char *s1, char *s2) //funcion para juntar el nombre de la nueva variable con su valor
-// {
-// 	int i;
-// 	char *result;
-// 	int c;
-// 	int j;
-
-// 	i = 0;
-// 	c = 0;
-// 	j = -1;
-// 	while (s1[i] && s1[i] != '=')
-// 		i++;
-// 	result = malloc(sizeof(char) *  i + ft_strlen(s2) + 2);
-// 	if (!result)
-// 		exit_error("Error malloc", 29);
-// 	while (s1[++j] && s1[j] != '=')
-// 		result[j] = s1[j];
-// 	result[j] = s1[j];
-// 	j++;
-// 	while (s2[c])
-// 	{
-// 		result[j + c] = s2[c];
-// 		c++;
-// 	}
-// 	result[j + c] = '\0';
-// 	return (result);
-// }
-
-// char *value_var(t_cmd *cmd, char *var) //funcion main para crear una variable nueva que contenga un $variable. Ej a=abc b=$a  el valor de $b es abc.
-// {
-// 	char *result;
-// 	int i;
-// 	int j;
-
-// 	result = NULL;
-// 	j = 0;
-// 	i = 0;
-// 	while (var[j] && var[j] != '=')
-// 		j++;
-// 	while(var[i + j] && var[++i + j])
-// 	{
-// 		if (var[i + j] == '$')
-// 		{
-// 			printf("AQUI SI QUE SII\n");
-// 			result = replace_dolar(cmd, var, j++);
-// 			break;
-// 		}
-// 	}
-// 	if (result == NULL) 
-// 		return (join_value3(var));
-// 	if (var[j] == '$')
-// 		return (join_value(var, result));
-// 	return (join_value2(var, result));
-// }
 
 int ft_export(t_cmd **cmd)
 {
@@ -395,43 +218,3 @@ int ft_export(t_cmd **cmd)
 	add_new_vars1((*cmd), binary_array);
 	return (i);
 }
-
-/*
-Cuando me mandan el valor de la var entre "" se lia en la funcion check_dolar_export ya que son argumentos diferentes
-*/
-
-/*int ft_export(t_cmd **cmd)
-{
-	int i;
-	int j;
-	char *binary_array;
-
-	i = -1;
-	j = 0;
-	if ((*cmd)->num_arg == 0)
-	{
-		print_export_var((*cmd));
-		return (0);
-	}
-	while ((*cmd)->arg[++i] && i <= (*cmd)->num_arg)
-	{
-		(*cmd)->arg[i] = remove_quotes((*cmd)->arg[i], 34);
-		(*cmd)->arg[i] = remove_quotes((*cmd)->arg[i], 39);
-		if (check_dolar_export((*cmd)->arg[i]) == 1)
-		{
-			(*cmd)->arg[i] = value_var((*cmd), (*cmd)->arg[i]);
-			j++;
-		}
-		printf("ARG: %s\n", (*cmd)->arg[i]);
-	}
-	if (j == 0)
-		return (0);
-	binary_array = malloc(sizeof(char) * (*cmd)->num_arg + 1);
-	if (!binary_array)
-		exit_error("Error malloc", 21);
-	if (export_parse((*cmd), binary_array, 0, 0) == -1)
-		return (0);
-	add_new_vars1((*cmd), binary_array);
-	return (0);
-}*/
-
