@@ -30,6 +30,8 @@ static void	create_env(t_env *env, char **ev) // incializar env
 		temp[i] = ft_strdup(ev[i]);
 		if (ft_strncmp(temp[i], "PATH=", 5) == 0)
 			env->path = ft_substr(temp[i], 5, ft_strlen(temp[i]) - 5);
+		if (ft_strncmp(temp[i], "SHLVL=", 6) == 0)
+			temp[i] = ft_strjoin("SHLVL=" ,ft_itoa(ft_atoi(ft_strchr(temp[i], '=') + 1) + 1));
 		i--;
 	}
 	if (!env->path)

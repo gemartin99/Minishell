@@ -1,47 +1,4 @@
-
 /////////////////////////
 
-COMMAND: echo '"$USER"'"""'$USER'"
-
-Minishell🇦🇷 🧉->"smiro""smiro"
-
-Bash->"$USER"'smiro'
 
 /////////////////////////
-
-COMMAND: env ""
-
-Minishell🇦🇷 🧉->no printa nada
-
-Bash->env: : No such file or directory
-
-/////////////////////////
-
-COMMAND: export "var"=loquesea
-
-Minishell🇦🇷 🧉->zsh: segmentation fault  ./minishell
-
-Bash->no debe pintar nada y crearse la variable de entorno
-
-/////////////////////////
-
-cd
-
-/////////////////////////
-
-comando || comando
-		y
-| comando
-
-segfault
-
-/////////////////////////
-
-echo $? 
-que printee g_error
-
-/////////////////////////
-
-Minishell🇦🇷 🧉->echo '"$USER"'"$USER"
-
-"smiro"smirosmiro

@@ -51,7 +51,6 @@ WHITE = \033[0;97m
 
 SRC_FILES	=	minishell \
 				init \
-				export \
 				error_manager \
 				handle_args \
 				utils_args \
