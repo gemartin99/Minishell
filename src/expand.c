@@ -12,6 +12,30 @@
 
 #include "../inc/minishell.h"
 
+int search_next_char(char *s, char c) //funcion para buscar el siguiente caracter que no este entre comillas
+{
+	int	i;
+
+	i = -1;
+	while (s[++i])
+	{
+		if (s[i] == 34)
+		{
+			while(s[++i] != 34)
+			if (s[i] == '$')
+				return (i);
+		}
+		if (s[i] == 39)
+		{
+			i++;
+			i = get_next_quote(i, s, 39);
+		}
+		if (s[i] == c)
+			return (i);
+	}
+	return (0);
+}
+
 int	check_dolar(char *line) //funcion para checkear si hay un dolar en la linea que me mandan
 {
 	int	i;
@@ -55,10 +79,14 @@ char	*ft_craft_result(char *line_final, char *line, char *var, int c)
 {
 	int	i;
 	int	j;
+	int k;
 
 	i = -1;
 	j = -1;
-	while (line[++i] && line[i] != '$')
+	k = search_next_char(line, '$');
+	if ((size_t)k == ft_strlen(line))
+		return(line);
+	while (++i < k)
 		line_final[i] = line[i];
 	while (var[++j])
 		line_final[i + j] = var[j];
@@ -78,10 +106,8 @@ char	*change_line_value(char *line, char *var) //funcion que cambia el valor de 
 	char	*line_final;
 	int		c;
 
-	i = 0;
 	j = 0;
-	while (line[i] != '$' && line[i])
-		i++;
+	i = search_next_char(line, '$');
 	c = i;
 	while (line[i + j] && line[i + j] != ' '
 		&& line[i + j] != 34 && line[i + j] != 39)
@@ -187,31 +213,6 @@ char	*ft_split_var(char *line, int i, t_cmd *cmd) //funcion que retorna el resto
 	return (res);
 }
 
-int search_next_char(char *s, char c) //funcion para buscar el siguiente caracter que no este entre comillas
-{
-	int	i;
-
-	i = -1;
-	printf("%s\n", s);
-	while (s[++i])
-	{
-		if (s[i] == 34)
-		{
-			while(s[++i] != 34)
-			if (s[i] == '$')
-				return (i);
-		}
-		if (s[i] == 39)
-		{
-			i++;
-			i = get_next_quote(i, s, 39);
-		}
-		if (s[i] == c)
-			return (i);
-	}
-	return (0);
-}
-
 char	*ft_change_var(t_cmd *cmd, char *line, char **var_reminder) //funcion para detectar y cambiar el valor a la linea y que si hay un caracter especial despues de $var se concatene. Ej: $USER/aaa 
 {
 	char	*name_var;
@@ -222,10 +223,9 @@ char	*ft_change_var(t_cmd *cmd, char *line, char **var_reminder) //funcion para 
 		line = ft_replace_value(line);
 	name_var = ft_name_var(line);
 	i = search_next_char(line, '$');
-	printf("i:%d\n", i);
 	while (line[++i] && line[i] != ' ')
 	{
-		if (check_special_char(line[i]) == -1)
+		if (check_special_char(line[i]) == -1) //&& line[i] != '$')
 		{
 			*var_reminder = ft_split_var(line, i, cmd);
 			break ;
