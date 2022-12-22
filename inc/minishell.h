@@ -124,6 +124,14 @@ char	*str_tolower(char *str);
 char	*str_noquotes(char *str);
 char *ft_replace_value(char *s);
 int	check_dolar(char *line);
+int	check_dolar_and_digit(char *s);
+char	*ft_name_var(char *line);
+char	*ft_split_var(char *line, int i, t_cmd *cmd);
+char	*ft_change_var(t_cmd *cmd, char *line, char **var_reminder);
+char	*change_dolar_x_var(t_cmd *cmd, char *s);
+char	*ft_add_var_value(char *s1);
+char	*change_line_value(char *line, char *var);
+char	*quit_dollar_and_digit(char *s, int i, int j);
 
 ////////env_utils///////////
 
@@ -135,6 +143,7 @@ int		ft_isdigit_special(int i);
 int		check_special_char(char c);
 int		ft_skip_space(char *s, int i);
 char	*remove_quotes(char *str, char c);
+int	search_next_char(char *s, char c, int i);
 
 ////////builtins️////////
 

@@ -60,6 +60,7 @@ SRC_FILES	=	minishell \
 				utils2 \
 				expand \
 				expand_utils \
+				expand_var \
 				ft_echo \
 				ft_cd \
 				ft_pwd \

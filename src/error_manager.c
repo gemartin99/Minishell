@@ -12,7 +12,9 @@
 
 #include	"../inc/minishell.h"
 
-void	many_args(char **argv) //funcion para si cuando vas a correr el programa por primera vez y introduces ciertos args se muestre esto
+//funcion para si cuando vas a correr el programa
+//por primera vez y introduces ciertos args se muestre esto
+void	many_args(char **argv)
 {
 	size_t	len;
 

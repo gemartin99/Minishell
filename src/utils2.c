@@ -12,6 +12,43 @@
 
 #include "../inc/minishell.h"
 
+//funcion para detectar si hay un digito despues de un dolar 
+//para posteriormente quitarlo, tanto el dolar como el numero
+int	check_dolar_and_digit(char *s)
+{
+	int	i;
+
+	i = -1;
+	while (s[++i] && s[i] != '$')
+		;
+	if (s[i] && s[i] == '$' && s[i + 1] && ft_isdigit_special(s[i + 1]) == 1)
+		return (0);
+	else
+		return (1);
+}
+
+//funcion para buscar el siguiente caracter que no este entre comillas
+int	search_next_char(char *s, char c, int i)
+{
+	while (s[++i])
+	{
+		if (s[i] == 34)
+		{
+			while (s[++i] != 34)
+				if (s[i] == '$')
+					return (i);
+		}
+		if (s[i] == 39)
+		{
+			i++;
+			i = get_next_quote(i, s, 39);
+		}
+		if (s[i] == c)
+			return (i);
+	}
+	return (0);
+}
+
 //funcion que checkea si es un numero o caracter especial
 int	ft_isdigit_special(int i)
 {
