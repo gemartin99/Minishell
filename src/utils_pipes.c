@@ -21,18 +21,14 @@ int	ft_count_pipes(char *s)
 	res = 0;
 	while (s[++i])
 	{
+		if (s[i] == 34 || s[i] == 39)
+			i = get_next_quote(i + 1, s, s[i]);
 		if (s[i] == '|' && (s[i + 1] == '|' || s[i + 1] == '\0'))
 		{
 			put_error("bash", NULL, "syntax error near unexpected token `|'");
 			g_error = 258;
 			return (-1);
 		}
-		if (s[i] && s[i] == 34)
-			while (s[++i] && s[i] != 34)
-				;
-		if (s[i] && s[i] == 39)
-			while (s[++i] && s[i] != 39)
-				;
 		if (s[i] == '|')
 			res++;
 	}
@@ -50,6 +46,8 @@ char	**fill_memory(char *s, char **res)
 	pos = 0;
 	while (s[++i])
 	{
+		if (s[i] == 34 || s[i] == 39)
+			i = get_next_quote(i + 1, s, s[i]);
 		if ((s[i + 1] == '|' || s[i + 1] == '\0') && s[i] != '|')
 		{
 			res[pos] = ft_substr(s, start, i - start + 1);
@@ -89,7 +87,7 @@ int	check_redir(char **arg, int i)
 	j = 0;
 	if (redir_type(arg[i]) == -1)
 	{
-		put_error("bash", NULL, "syntax error near unexpected token `|'");
+		put_error("bash", NULL, "syntax error near unexpected token `>'");
 		return (-1);
 	}
 	temp = ft_strchr(arg[i], operator_char(redir_type(arg[i])));
@@ -100,7 +98,7 @@ int	check_redir(char **arg, int i)
 			j++;
 		if (redir_type(arg[i]) && !temp[j])
 		{
-			put_error("bash", NULL, "syntax error near unexpected token `|'");
+			put_error("bash", NULL, "syntax error near unexpected token `>'");
 			return (-1);
 		}
 		temp = ft_strchr(temp + j, operator_char(redir_type(temp + j)));

@@ -19,11 +19,11 @@ static int	is_flag(char *str)
 
 	i = 0;
 	temp = str_noquotes(ft_strdup(str));
-	if (str[i++] != '-')
+	if (temp[i++] != '-')
 		return (0);
-	while (str[i] == 'n')
+	while (temp[i] == 'n')
 		i++;
-	if (str[i])
+	if (temp[i])
 		return (0);
 	free(temp);
 	return (1);

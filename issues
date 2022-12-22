@@ -23,7 +23,7 @@ Comados simples y la variable global
 Argumentos e historial
 ✅
 Echo
-✅⚠️ Todo ok menos caso rebuscado con -n
+✅ Todo ok menos caso rebuscado con -n
 exit
 ✅
 Valor de retorno de un proceso
@@ -31,9 +31,9 @@ Valor de retorno de un proceso
 Señales
 ❌⚠️ Problemas Ctrl + \ y otros casos
 Comillas dobles
-❌⚠️ echo "cat lol.c | cat > lol.c" (probablemente venga de split pipes o count pipes)
+✅
 Comillas simples
-❌⚠️ echo 'hola | adios' (no imprime como texto plano)
+✅️
 env
 ✅
 export
@@ -41,7 +41,7 @@ export
 unset
 ✅
 cd
-✅ Aunque cd . Nidea de que hace pero hace lo mismo que el bash
+✅
 pwd
 ✅
 Rutas relativas
