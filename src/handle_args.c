@@ -72,7 +72,7 @@ static char	*get_comand(t_msh *msh, char *read_line)
 			i = get_next_quote(i + 1, read_line, read_line[i]);
 		i++;
 	}
-	if (i)
+	if (i && !isdifoperator(read_line[i]))
 		str = ft_substr(read_line, start, i);
 	else
 		str = ft_strdup("CD");
