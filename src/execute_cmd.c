@@ -38,7 +38,6 @@ static	int	cmd_type(t_cmd *cmd, char *temp_cmd)
 
 static void	cmd_process(t_cmd *cmd, char *temp_cmd)
 {
-	child_wait_signal();
 	if (dup2(cmd->pipes->in, STDIN_FILENO) == -1)
 		exit_error("Error DUP", 23);
 	if (dup2(cmd->pipes->out, STDOUT_FILENO) == -1)
@@ -62,10 +61,13 @@ static void	wait_exit(t_pipe *pipes, int i)
 		waitpid(-1, &g_error, 0);
 		if (WIFEXITED(g_error))
 			g_error = WEXITSTATUS(g_error);
-		if (g_error != 0 && g_error != 1
-			&& g_error != 127 && g_error != 2)
+		if (g_error == 2 || g_error == 3)
+			g_error = g_error + 128;
+		else if (g_error != 0 && g_error != 1
+			&& g_error != 127 && g_error != 13)
 			perror(NULL);
 	}
+	wait_signal(1);
 }
 
 void	execute_nonpipe(t_cmd *cmd, char *temp_cmd)
@@ -98,6 +100,7 @@ void	execute_cmd(t_cmd **cmd, t_pipe *pipes)
 	char		*temp_cmd;
 
 	i = 1;
+	wait_signal(0);
 	while ((*cmd) && i)
 	{
 		temp_cmd = str_noquotes((*cmd)->cmd);

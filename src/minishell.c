@@ -49,7 +49,7 @@ int	main(int ac, char **av, char **ev)
 		many_args(av);
 	g_error = 0;
 	msh = init(ev);
-	wait_signal();
+	wait_signal(1);
 	recive_arguments(msh);
 	return (0);
 }

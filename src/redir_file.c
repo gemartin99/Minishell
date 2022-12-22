@@ -45,7 +45,7 @@ int	get_from_file(t_cmd *cmd, char *file)
 	fd = open(ft_strjoin(temp, file), O_RDONLY);
 	if (fd == -1)
 	{
-		put_error("bash", file, NULL);
+		put_error("bash", file, "No such file or directory");
 		pipe(pfd);
 		if (dup2(pfd[1], cmd->pipes->out) == -1)
 			exit_error("Error dup", 50);

@@ -93,14 +93,13 @@ int		start_line(t_msh **msh, char *read_line, char ***lines);
 void	put_error(char *bash, char *file, char *error);
 int		export_parse(t_cmd *cmd, char *array, int j, int control);
 int		tokenize(t_msh *msh, t_cmd **cmd, char *read_line);
-void	child_wait_signal(void);
 
 ///////////pipes/////////////////
 
 t_pipe	*init_pipes(void);
 void	setfds(t_pipe *pipe, int i);
 void	setpipes(t_pipe *pipes, int i);
-void	wait_signal(void);
+void	wait_signal(int i);
 char	**ft_split_pipes(char *s);
 
 //////////redirection///////////

@@ -20,7 +20,6 @@ static void	signal_handler(int signal)
 		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_redisplay();
-		// kill(0, SIGTERM);
 		g_error = 1;
 	}
 	else if (signal == SIGQUIT)
@@ -33,27 +32,26 @@ static void	signal_handler(int signal)
 
 static void	child_handler(int signal)
 {
-	if (signal == SIGQUIT)
-		return ;
+	if (signal == SIGINT)
+		g_error = 130;
+	else if (signal == SIGQUIT)
+	{
+		write(1, "Quit: 3\n", 10);
+		g_error = 131;
+	}
 	return ;
 }
 
-void	wait_signal(void)
+void	wait_signal(int i)
 {
 	struct sigaction	sa;
 
-	sa.sa_handler = &signal_handler;
+	if (i)
+		sa.sa_handler = &signal_handler;
+	else
+		sa.sa_handler = &child_handler;
 	sa.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &sa, NULL);
 	sigaction(SIGQUIT, &sa, NULL);
 	sigaction(SIGTERM, &sa, NULL);
-}
-
-void	child_wait_signal(void)
-{
-	struct sigaction	sa;
-
-	sa.sa_handler = &child_handler;
-	sa.sa_flags = SA_RESTART;
-	sigaction(SIGQUIT, &sa, NULL);
 }
