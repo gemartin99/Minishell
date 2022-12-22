@@ -82,6 +82,8 @@ static char	**get_filename(char **arg, int j, char c, int k)
 	int		i;
 
 	i = 0;
+	if (arg[j][i] == '2' && arg[j][i + 1] == '>')
+		i++;
 	while (arg[j][i] == c)
 		i++;
 	if (!arg[j][i])
@@ -116,7 +118,8 @@ void	redir(t_cmd	*cmd)
 			cmd->arg = get_filename(cmd->arg, i + 1,
 					operator_char(redir_type(cmd->arg[i + 1])), 1);
 		file = str_noquotes(cmd->arg[i + 1]);
-		if (redir_type(cmd->arg[i]) == 1 || redir_type(cmd->arg[i]) == 2)
+		if (redir_type(cmd->arg[i]) == 1 || redir_type(cmd->arg[i]) == 2
+			|| redir_type(cmd->arg[i]) == 5 || redir_type(cmd->arg[i]) == 6)
 			put_in_file(redir_type(cmd->arg[i]), cmd, file);
 		else if (redir_type(cmd->arg[i]) == 3 && get_from_file(cmd, file))
 			return ;

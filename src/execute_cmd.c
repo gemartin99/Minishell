@@ -39,6 +39,8 @@ static	int	cmd_type(t_cmd *cmd, char *temp_cmd)
 
 static void	cmd_process(t_cmd *cmd, char *temp_cmd)
 {
+	if (dup2(cmd->pipes->out_error, STDERR_FILENO) == -1)
+		exit_error("Error DUP", 23);
 	if (dup2(cmd->pipes->in, STDIN_FILENO) == -1)
 		exit_error("Error DUP", 23);
 	if (dup2(cmd->pipes->out, STDOUT_FILENO) == -1)

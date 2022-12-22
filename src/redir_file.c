@@ -21,14 +21,22 @@ void	put_in_file(int type, t_cmd *cmd, char *file)
 	temp = ft_calloc(sizeof(char), (MAXPATHLEN + 1));
 	getcwd(temp, MAXPATHLEN);
 	temp = ft_strjoin(temp, "/");
-	if (type == 1)
+	if (type == 1 || type == 5)
 		fd = open(ft_strjoin(temp, file), O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	else
 		fd = open(ft_strjoin(temp, file), O_CREAT | O_WRONLY | O_APPEND, 0644);
 	if (fd == -1)
 		exit_error("Error open", 44);
-	if (dup2(fd, cmd->pipes->out) == -1)
-		exit_error("Error dup", 45);
+	if (type == 5 || type == 6)
+	{
+		if (dup2(fd, cmd->pipes->out_error) == -1)
+			exit_error("Error dup", 45);
+	}
+	else
+	{
+		if (dup2(fd, cmd->pipes->out) == -1)
+			exit_error("Error dup", 45);
+	}
 	free(temp);
 	close(fd);
 }

@@ -82,5 +82,6 @@ t_pipe	*init_pipes(void)
 	if (pipes->out == -1)
 		exit_error("Error pipe", 44);
 	pipes->last = 1;
+	pipes->out_error = STDERR_FILENO;
 	return (pipes);
 }

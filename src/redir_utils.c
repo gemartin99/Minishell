@@ -30,18 +30,22 @@ int	redir_type(char *str)
 	{
 		if (str[i] == 34 || str[i] == 39)
 			i = get_next_quote(i + 1, str, str[i]);
-		if (str[i] == '>' && str[i + 1] != '>'
-			&& !isdifoperator(str[i + 1]) && !error)
+		if (str[i] == '>' && !isdifoperator(str[i + 1]) && !error)
 			return (1);
 		if (str[i] == '>' && str[i + 1] == '>'
 			&& !isdifoperator(str[i + 2]) && !error)
 			return (2);
-		if (str[i] == '<' && str[i + 1] != '<'
-			&& !isdifoperator(str[i + 1]) && !error)
+		if (str[i] == '<' && !isdifoperator(str[i + 1]) && !error)
 			return (3);
 		if (str[i] == '<' && str[i + 1] == '<'
 			&& !isdifoperator(str[i + 2]) && !error)
 			return (4);
+		if (str[i] == '2' && str[i + 1] == '>'
+			&& !isdifoperator(str[i + 2]) && !error)
+			return (5);
+		if (str[i] == '2' && str[i + 1] == '>'
+			&& str[i + 2] == '>' && !error)
+			return (6);
 		if (isdifoperator(str[i]))
 			error = -1;
 	}
@@ -64,7 +68,7 @@ int	is_redir(char **arg)
 
 char	operator_char(int n)
 {
-	if (n == 1 || n == 2)
+	if (n == 1 || n == 2 || n == 5 || n == 6)
 		return ('>');
 	else if (n == 3 || n == 4)
 		return ('<');

@@ -37,6 +37,7 @@ typedef struct s_pipe
 	int	in;
 	int	out;
 	int	last;
+	int	out_error;
 }							t_pipe;
 
 typedef struct s_env
