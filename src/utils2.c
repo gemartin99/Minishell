@@ -69,3 +69,23 @@ int	check_special_char(char c)
 		return (-1);
 	return (0);
 }
+
+char	*cmp_name_var(t_cmd *cmd, char *line, char *name_var)
+{
+	int		i;
+	char	*result;
+
+	i = -1;
+	while (++i < cmd->env->num_env)
+	{
+		if (var_strcmp(name_var, cmd->env->env[i]) == 0)
+		{
+			free(name_var);
+			result = ft_add_var_value(cmd->env->env[i]);
+			return (change_line_value(line, result));
+		}
+		else if (i + 1 == cmd->env->num_env)
+			return (change_line_value(line, ft_strdup("")));
+	}
+	return (0);
+}

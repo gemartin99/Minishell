@@ -6,13 +6,11 @@
 /*   By: smiro <smiro@student.42barcelona>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 00:25:12 by smiro             #+#    #+#             */
-/*   Updated: 2022/12/10 00:25:14 by smiro            ###   ########.fr       */
+/*   Updated: 2022/12/22 11:45:06 by smiro            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-
 //funcion que crea una variable con el nombre que tiene el argumento que me
 //manden cn $ para luego comprarlo con las variables de entorno
 char	*ft_name_var(char *line)
@@ -70,7 +68,6 @@ char	*ft_change_var(t_cmd *cmd, char *line, char **var_reminder)
 {
 	char	*name_var;
 	int		i;
-	char	*result;
 
 	if (ft_strnstr(line, "$?", ft_strlen(line)) != 0)
 		line = ft_replace_value(line);
@@ -78,7 +75,10 @@ char	*ft_change_var(t_cmd *cmd, char *line, char **var_reminder)
 	i = search_next_char(line, '$', -1);
 	while (line[++i] && line[i] != ' ')
 	{
-		if ((check_special_char(line[i]) == -1 && line[i] != '$') || (line[i] == '$' && i == search_next_char(line, '$', search_next_char(line, '$', -1) + 1)))
+		if ((check_special_char(line[i]) == -1
+				&& line[i] != '$') || (line[i] == '$'
+				&& i == search_next_char(line, '$',
+					search_next_char(line, '$', -1) + 1)))
 		{
 			*var_reminder = ft_split_var(line, i, cmd);
 			break ;
@@ -88,19 +88,7 @@ char	*ft_change_var(t_cmd *cmd, char *line, char **var_reminder)
 		return (NULL);
 	if (!name_var[0])
 		return (line);
-	i = -1;
-	while (++i < cmd->env->num_env)
-	{
-		if (var_strcmp(name_var, cmd->env->env[i]) == 0)
-		{
-			free(name_var);
-			result = ft_add_var_value(cmd->env->env[i]);
-			return (change_line_value(line, result));
-		}
-		else if (i + 1 == cmd->env->num_env)
-			return (change_line_value(line, ft_strdup("")));
-	}
-	return (0);
+	return (cmp_name_var(cmd, line, name_var));
 }
 
 char	*change_dolar_x_var(t_cmd *cmd, char *s)

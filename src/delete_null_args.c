@@ -57,12 +57,9 @@ char	*change_null_args(char *s, t_cmd *cmd)
 	i = -1;
 	while (s[++i])
 	{
-		if (s[i] == 34 && s[i + 1] && s[i + 1] != 34)
-			while (s[++i] && s[i] != 34)
-				;
-		else if (s[i] == 39 && s[i + 1] && s[i + 1] != 39)
-			while (s[++i] && s[i] != 39)
-				;
+		if ((s[i] == 34 && s[i + 1] && s[i + 1] != 34)
+			|| (s[i] == 39 && s[i + 1] && s[i + 1] != 39))
+				i = get_next_quote(i + 1, s, s[i]);
 		if (s[i] == ' ' && s[i + 1] && (s[i + 1] == 34 || s[i + 1] == 39)
 			&& s[i + 2] && (s[i + 2] == 34 || s[i + 2] == 39)
 			&& (s[i + 3] == ' ' || s[i + 3] == '\0'))

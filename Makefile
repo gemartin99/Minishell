@@ -72,6 +72,7 @@ SRC_FILES	=	minishell \
 				ft_exit \
 				signals \
 				only_export \
+				export_parse \
 				redir \
 				redir_utils \
 				redir_file \

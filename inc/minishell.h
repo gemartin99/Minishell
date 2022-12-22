@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: smiro <smiro@student.42barcelona>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/07 02:22:16 by smiro             #+#    #+#             */
-
+/*   Created: 2022/12/22 11:35:29 by smiro             #+#    #+#             */
+/*   Updated: 2022/12/22 11:35:33 by smiro            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 
 int	g_error;
 
-typedef struct	s_pipe
+typedef struct s_pipe
 {
 	int	fd[2][2];
 	int	in;
@@ -40,14 +40,14 @@ typedef struct	s_pipe
 	int	last;
 }							t_pipe;
 
-typedef struct	s_env
+typedef struct s_env
 {
 	char	**env;
 	char	*path;
 	int		num_env;
 }							t_env;
 
-typedef struct	s_flags
+typedef struct s_flags
 {
 	int	quote;
 	int	pipe;
@@ -55,24 +55,23 @@ typedef struct	s_flags
 	int	dollar_special;
 }							t_flags;
 
-typedef struct	s_cmd
+typedef struct s_cmd
 {
-	char	*cmd;
-	char	**arg;
-	int		num_arg;
 	struct s_cmd	*next;
-	t_env	*env;
-	t_flags	*flags;
-	t_pipe	*pipes;
+	t_env			*env;
+	t_flags			*flags;
+	t_pipe			*pipes;
+	char			*cmd;
+	char			**arg;
+	int				num_arg;
 }							t_cmd;
 
-
-typedef struct	s_msh
+typedef struct s_msh
 {
-	int	bash_lvl;
-	int	total_chars;
+	int		bash_lvl;
+	int		total_chars;
 	t_cmd	*cmd;
-	t_env		*env;
+	t_env	*env;
 	t_flags	*flags;
 }							t_msh;
 
@@ -80,18 +79,20 @@ void	exit_error(char *str, int n);
 t_msh	*init(char **env);
 void	many_args(char **argv);
 void	recive_arguments(t_msh *msh);
-int 	ft_count_pipes(char *s);
+int		ft_count_pipes(char *s);
 char	*change_null_args(char *s, t_cmd *cmd);
 int		check_null_args(char *s);
 int		get_next_quote(int i, char *str, char c);
 int		ft_check_dquote(char *s, int simple, int doble, t_msh *msh);
-int 	ft_count_args(char *s);
+int		ft_count_args(char *s);
 void	execute_cmd(t_cmd **cmd, t_pipe *pipes);
-void 	expand(t_cmd **cmd);
+void	expand(t_cmd **cmd);
 t_cmd	*ft_last(t_cmd **cmd);
 void	get_input(t_cmd *cmd, char *stop);
 int		start_line(t_msh **msh, char *read_line, char ***lines);
 void	put_error(char *bash, char *file, char *error);
+int		export_parse(t_cmd *cmd, char *array, int j, int control);
+int		tokenize(t_msh *msh, t_cmd **cmd, char *read_line);
 
 ///////////pipes/////////////////
 
@@ -116,15 +117,15 @@ void	execute_nonpipe(t_cmd *cmd, char *temp_cmd);
 
 ////////expand_utils ⬇️////////
 
-char *ft_strjoin_special(char *s1, char *s2, size_t i, size_t c);
-int check_special_char(char c);
-int ft_isdigit_special(int i);
-int var_strcmp(char *s1, char *s2);
+char	*ft_strjoin_special(char *s1, char *s2, size_t i, size_t c);
+int		check_special_char(char c);
+int		ft_isdigit_special(int i);
+int		var_strcmp(char *s1, char *s2);
 char	*str_tolower(char *str);
 char	*str_noquotes(char *str);
-char *ft_replace_value(char *s);
-int	check_dolar(char *line);
-int	check_dolar_and_digit(char *s);
+char	*ft_replace_value(char *s);
+int		check_dolar(char *line);
+int		check_dolar_and_digit(char *s);
 char	*ft_name_var(char *line);
 char	*ft_split_var(char *line, int i, t_cmd *cmd);
 char	*ft_change_var(t_cmd *cmd, char *line, char **var_reminder);
@@ -132,10 +133,11 @@ char	*change_dolar_x_var(t_cmd *cmd, char *s);
 char	*ft_add_var_value(char *s1);
 char	*change_line_value(char *line, char *var);
 char	*quit_dollar_and_digit(char *s, int i, int j);
+char	*cmp_name_var(t_cmd *cmd, char *line, char *name_var);
 
 ////////env_utils///////////
 
-int	ft_count_env(char **arg, int len);
+int		ft_count_env(char **arg, int len);
 
 ////////utils////////////
 
@@ -143,31 +145,30 @@ int		ft_isdigit_special(int i);
 int		check_special_char(char c);
 int		ft_skip_space(char *s, int i);
 char	*remove_quotes(char *str, char c);
-int	search_next_char(char *s, char c, int i);
+int		search_next_char(char *s, char c, int i);
 
 ////////builtins️////////
 
+int		ft_cd(t_cmd **cmd);
 
-int	ft_cd(t_cmd **cmd);
+int		ft_pwd(int i);
 
-int	ft_pwd(int i);
+int		ft_env(t_cmd *cmd);
 
-int	ft_env(t_cmd *cmd);
+int		ft_unset(t_cmd **cmd);
 
-int	ft_unset(t_cmd **cmd);
-
-int ft_export(t_cmd **cmd);
+int		ft_export(t_cmd **cmd);
 void	print_export_var(t_cmd *cmd);
 
-int ft_try_to_exec(t_cmd *cmd);
+int		ft_try_to_exec(t_cmd *cmd);
 
 void	ft_exit(t_cmd *cmd);
 
 int		ft_echo(t_cmd	**cmd);
 
-#define WHITE_T   "\x1b[1;37m"
-#define YELLOW_T "\x1b[1;33m"
-#define RESET_COLOR    "\x1b[0m"
-#define BLUE_T "\x1b[1;36m"
+# define WHITE_T   "\x1b[1;37m"
+# define YELLOW_T "\x1b[1;33m"
+# define RESET_COLOR    "\x1b[0m"
+# define BLUE_T "\x1b[1;36m"
 
 #endif

@@ -98,7 +98,7 @@ static t_cmd	*add_cmd(t_msh *msh, char *read_line)
 	return (temp);
 }
 
-static int	tokenize(t_msh *msh, t_cmd **cmd, char *read_line)
+int	tokenize(t_msh *msh, t_cmd **cmd, char *read_line)
 {
 	int		i;
 	t_cmd	*temp;
@@ -123,31 +123,4 @@ static int	tokenize(t_msh *msh, t_cmd **cmd, char *read_line)
 	free(lines);
 	free(read_line);
 	return (1);
-}
-
-void	recive_arguments(t_msh *msh)
-{
-	char	*read_line;
-
-	while (1)
-	{
-		read_line = readline(BLUE_T "Mi" WHITE_T "ni" YELLOW_T "s"
-				WHITE_T "he" BLUE_T "ll" "🇦🇷 🧉->" RESET_COLOR);
-		if (!read_line)
-			exit_error("exit", 0);
-		if (read_line[0] == '\0')
-			printf("");
-		else
-		{
-			msh->total_chars = 0;
-			add_history(read_line);
-			if (tokenize(msh, &msh->cmd, read_line) && msh->flags->quote != 0)
-			{
-				if (check_nonpipables(msh->cmd, str_noquotes(msh->cmd->cmd)))
-					execute_nonpipe(msh->cmd, str_noquotes(msh->cmd->cmd));
-				else
-					execute_cmd(&(msh->cmd), init_pipes());
-			}
-		}
-	}
 }

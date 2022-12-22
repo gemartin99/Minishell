@@ -27,6 +27,9 @@ long long	static	ft_special_atoi(const char *str, int *atoi_error)
 	nbr = 0;
 	i = 0;
 	valorfinal = 1;
+	if (ft_strncmp("−9223372036854775807", str, 23) < 0
+		|| ft_strncmp("9223372036854775807", str, 22) < 0)
+		return (ft_atoi_error(atoi_error));
 	if (str[i] && (str[i] == '-' || str[i] == '+'))
 	{
 		if (str[i] == '-')
@@ -37,24 +40,8 @@ long long	static	ft_special_atoi(const char *str, int *atoi_error)
 	{
 		nbr = nbr * 10 + str[i] - '0';
 		i++;
-		if (nbr < -LLONG_MIN && valorfinal == -1)
-			return (ft_atoi_error(atoi_error));
-		if (nbr > LLONG_MAX && valorfinal == 1)
-			return (ft_atoi_error(atoi_error));
 	}
 	return (nbr * valorfinal);
-}
-
-void	return_value_exit(long long n)
-{
-	while (n > 255)
-		n = n - 256;
-	while (n < -255)
-		n = n + 256;
-	if (n < 0)
-		n = n + 256;
-	printf("exit\n");
-	exit (n);
 }
 
 int	check_only_num(char *s)
@@ -82,7 +69,7 @@ void	ft_exit(t_cmd *cmd)
 	int			atoi_error;
 	int			i;
 
-	if (cmd->arg[0])
+	if (cmd->arg && cmd->arg[0])
 		cmd->arg[0] = str_noquotes(cmd->arg[0]);
 	atoi_error = 0;
 	if (cmd->num_arg == 0 || !cmd->arg[0])
@@ -98,5 +85,6 @@ void	ft_exit(t_cmd *cmd)
 		printf("exit\nbash: exit: %s: numeric argument required\n", cmd->arg[0]);
 		exit (255);
 	}
-	return_value_exit (n);
+	printf("exit\n");
+	exit ((unsigned char)n);
 }
