@@ -12,8 +12,8 @@
 
 #include "../inc/minishell.h"
 
-//mirar segfault con casos raros
-static char	*quit_null(char *s, int i) //funcion para quitar argumentos nulos sin espacios antes y despues
+//funcion para quitar argumentos nulos sin espacios antes y despues
+static char	*quit_null(char *s, int i)
 {
 	char	*res;
 
@@ -23,7 +23,9 @@ static char	*quit_null(char *s, int i) //funcion para quitar argumentos nulos si
 	return (remove_quotes(res, 27));
 }
 
-static char	*quit_null_space(char *s, int i) //funcion para quitar argumentos nulos si hay espacios antes y despues del argumento
+//funcion para quitar argumentos nulos si 
+//hay espacios antes y despues del argumento
+static char	*quit_null_space(char *s, int i)
 {
 	int		j;
 	char	*res;
@@ -47,7 +49,8 @@ static char	*quit_null_space(char *s, int i) //funcion para quitar argumentos nu
 	return (res);
 }
 
-char	*change_null_args(char *s, t_cmd *cmd) //funcion que quita o modifica (para posteriormente quitar) los argumentos nulos
+//funcion que quita o modifica (para posteriormente quitar) los argumentos nulos
+char	*change_null_args(char *s, t_cmd *cmd)
 {
 	int	i;
 
@@ -79,7 +82,8 @@ char	*change_null_args(char *s, t_cmd *cmd) //funcion que quita o modifica (para
 	return (s);
 }
 
-int	check_null_args(char *s) //funcion que comprueba si hay null args
+//funcion que comprueba si hay null args
+int	check_null_args(char *s)
 {
 	int	i;
 	int	doubles;

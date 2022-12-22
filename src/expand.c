@@ -12,15 +12,16 @@
 
 #include "../inc/minishell.h"
 
-int search_next_char(char *s, char c, int i) //funcion para buscar el siguiente caracter que no este entre comillas
+//funcion para buscar el siguiente caracter que no este entre comillas
+int	search_next_char(char *s, char c, int i)
 {
 	while (s[++i])
 	{
 		if (s[i] == 34)
 		{
-			while(s[++i] != 34)
-			if (s[i] == '$')
-				return (i);
+			while (s[++i] != 34)
+				if (s[i] == '$')
+					return (i);
 		}
 		if (s[i] == 39)
 		{
@@ -33,7 +34,8 @@ int search_next_char(char *s, char c, int i) //funcion para buscar el siguiente 
 	return (0);
 }
 
-int	check_dolar(char *line) //funcion para checkear si hay un dolar en la linea que me mandan
+//funcion para checkear si hay un dolar en la linea que me mandan
+int	check_dolar(char *line)
 {
 	int	i;
 	int	doubles;
@@ -53,7 +55,8 @@ int	check_dolar(char *line) //funcion para checkear si hay un dolar en la linea 
 	return (0);
 }
 
-static char	*ft_add_var_value(char *s1) //funcion para añadir el valor de la variable de entorno a nuestra variable result
+//funcion para añadir el valor de la variable de entorno a nuestra variable result
+static char	*ft_add_var_value(char *s1)
 {
 	int		i;
 	int		j;
@@ -76,13 +79,13 @@ char	*ft_craft_result(char *line_final, char *line, char *var, int c)
 {
 	int	i;
 	int	j;
-	int k;
+	int	k;
 
 	i = -1;
 	j = -1;
 	k = search_next_char(line, '$', -1);
 	if ((size_t)k == ft_strlen(line))
-		return(line);
+		return (line);
 	while (++i < k)
 		line_final[i] = line[i];
 	while (var[++j])
@@ -96,7 +99,8 @@ char	*ft_craft_result(char *line_final, char *line, char *var, int c)
 	return (line_final);
 }
 
-char	*change_line_value(char *line, char *var) //funcion que cambia el valor de la linea y sustituye el $var por el valor de la variable si esa variable existe
+//funcion que cambia el valor de la linea y sustituye el $var por el valor de la variable si esa variable existe
+char	*change_line_value(char *line, char *var)
 {
 	int		i;
 	int		j;
@@ -118,7 +122,8 @@ char	*change_line_value(char *line, char *var) //funcion que cambia el valor de 
 	return (line_final);
 }
 
-char	*quit_dollar_and_digit(char *s) //funcion recursiva para ir quitando todos los digitos y dolares sobrantes. ej: $1aaa $2bb. Quedaria asi aaa bb
+//funcion recursiva para ir quitando todos los digitos y dolares sobrantes. ej: $1aaa $2bb. Quedaria asi aaa bb
+char	*quit_dollar_and_digit(char *s)
 {
 	char	*res;
 	int		i;
@@ -150,7 +155,8 @@ char	*quit_dollar_and_digit(char *s) //funcion recursiva para ir quitando todos 
 	return (s);
 }
 
-int	check_dolar_and_digit(char *s) //funcion para detectar si hay un digito despues de un dolar para posteriormente quitarlo , tanto el dolar como el numero
+//funcion para detectar si hay un digito despues de un dolar para posteriormente quitarlo , tanto el dolar como el numero
+int	check_dolar_and_digit(char *s)
 {
 	int	i;
 
@@ -163,7 +169,8 @@ int	check_dolar_and_digit(char *s) //funcion para detectar si hay un digito desp
 		return (1);
 }
 
-char	*ft_name_var(char *line) //funcion que crea una variable con el nombre que tiene el argumento que me manden cn $ para luego comprarlo con las variables de entorno
+//funcion que crea una variable con el nombre que tiene el argumento que me manden cn $ para luego comprarlo con las variables de entorno
+char	*ft_name_var(char *line)
 {
 	int		j;
 	int		i;
@@ -187,7 +194,8 @@ char	*ft_name_var(char *line) //funcion que crea una variable con el nombre que 
 	return (result);
 }
 
-char	*ft_split_var(char *line, int i, t_cmd *cmd) //funcion que retorna el resto de una variable si hay caracteres especiales. Ej: echo "$USER@hola" esta funcion retornara @hola
+//funcion que retorna el resto de una variable si hay caracteres especiales. Ej: echo "$USER@hola" esta funcion retornara @hola
+char	*ft_split_var(char *line, int i, t_cmd *cmd)
 {
 	int		j;
 	char	*res;
@@ -210,7 +218,8 @@ char	*ft_split_var(char *line, int i, t_cmd *cmd) //funcion que retorna el resto
 	return (res);
 }
 
-char	*ft_change_var(t_cmd *cmd, char *line, char **var_reminder) //funcion para detectar y cambiar el valor a la linea y que si hay un caracter especial despues de $var se concatene. Ej: $USER/aaa 
+//funcion para detectar y cambiar el valor a la linea y que si hay un caracter especial despues de $var se concatene. Ej: $USER/aaa 
+char	*ft_change_var(t_cmd *cmd, char *line, char **var_reminder)
 {
 	char	*name_var;
 	int		i;

@@ -1,6 +1,6 @@
 #include "../inc/minishell.h"
 
-static int ft_check_wrong_let_export(char c)
+static int	ft_check_wrong_let_export(char c)
 {
 	if (c == '?' || c == '!' || c == '.'
 		|| c == '+' || c == '}' || c == '{' || c == '-' || c == 92
@@ -12,10 +12,10 @@ static int ft_check_wrong_let_export(char c)
 	return (0);
 }
 
-char *ft_quit_last_char(char *s, int i)
+char	*ft_quit_last_char(char *s, int i)
 {
-	char *res;
-	int j;
+	char	*res;
+	int		j;
 
 	j = -1;
 	while (s[i])
@@ -30,7 +30,7 @@ char *ft_quit_last_char(char *s, int i)
 	while (++j <= i)
 		res[j] = s[j];
 	i++;
-	while(s[++i])
+	while (s[++i])
 	{
 		res[j] = s[i];
 		j++;
@@ -40,9 +40,9 @@ char *ft_quit_last_char(char *s, int i)
 	return (res);
 }
 
-int parse_equal(char *s, int i) //funcion que controla si hay caracteres o combinaciones de caracteres que provoquen que no se pueda realizar el export
+int	parse_equal(char *s, int i) //funcion que controla si hay caracteres o combinaciones de caracteres que provoquen que no se pueda realizar el export
 {
-	int correct;
+	int	correct;
 
 	correct = 0;
 	while (s[i])
@@ -68,11 +68,11 @@ int parse_equal(char *s, int i) //funcion que controla si hay caracteres o combi
 	return (0);
 }
 
-void del_exist_variable(char *full_var, t_cmd *cmd, int i)
+void	del_exist_variable(char *full_var, t_cmd *cmd, int i)
 {
-	char *var;
-	int len;
-	int j;
+	char	*var;
+	int		len;
+	int		j;
 
 	len = 0;
 	if (full_var[0] == '=')
@@ -84,7 +84,7 @@ void del_exist_variable(char *full_var, t_cmd *cmd, int i)
 		while (cmd->env->env[i] == NULL && i < cmd->env->num_env)
 			i++;
 		if (i >= cmd->env->num_env)
-			break;
+			break ;
 		var = cmd->env->env[i];
 		j = -1;
 		while (++j != len)
@@ -98,9 +98,9 @@ void del_exist_variable(char *full_var, t_cmd *cmd, int i)
 
 //⚠️implementar valor variables de otras variables con $ , pero sobretodo el que una nueva variable tenga el valor de 2 o mas variables de entorno⚠️
 
-int export_parse(t_cmd *cmd, char *array, int j, int control)
+int	export_parse(t_cmd *cmd, char *array, int j, int control)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (cmd->arg[i])
@@ -124,13 +124,13 @@ int export_parse(t_cmd *cmd, char *array, int j, int control)
 	}
 	array[i] = '\0';
 	if (control != 0)
-		return(-1);
+		return (-1);
 	return (0);
 }
 
-void add_new_vars2(t_cmd *cmd, char *binary_array, int i, char **aux) //segunda parte de funcion que calcula cuantas variables nuevas hay para crear la reserva de memoria debida para luego poder hacer el realloc
+void	add_new_vars2(t_cmd *cmd, char *binary_array, int i, char **aux) //segunda parte de funcion que calcula cuantas variables nuevas hay para crear la reserva de memoria debida para luego poder hacer el realloc
 {
-	int j;
+	int	j;
 
 	j = -1;
 	while (binary_array[++j])
@@ -149,11 +149,11 @@ void add_new_vars2(t_cmd *cmd, char *binary_array, int i, char **aux) //segunda 
 		cmd->env->env[i] = aux[i];
 }
 
-int add_new_vars1(t_cmd *cmd, char *binary_array) //primera parte de funcion que calcula cuantas variables nuevas hay para crear la reserva de memoria debida para luego poder hacer el realloc
+int	add_new_vars1(t_cmd *cmd, char *binary_array) //primera parte de funcion que calcula cuantas variables nuevas hay para crear la reserva de memoria debida para luego poder hacer el realloc
 {
-	char **aux;
-	int i;
-	int new_envs;
+	char	**aux;
+	int		i;
+	int		new_envs;
 
 	i = -1;
 	new_envs = 0;
@@ -177,11 +177,11 @@ int add_new_vars1(t_cmd *cmd, char *binary_array) //primera parte de funcion que
 	return (0);
 }
 
-char *add_var_value(char *s1) //funcion para añadir el valor de la variable de entorno a nuestra variable result
+char	*add_var_value(char *s1) //funcion para añadir el valor de la variable de entorno a nuestra variable result
 {
-	int i;
-	int j;
-	char *result;
+	int		i;
+	int		j;
+	char	*result;
 
 	i = 0;
 	j = 0;
@@ -190,16 +190,16 @@ char *add_var_value(char *s1) //funcion para añadir el valor de la variable de 
 	result = malloc(sizeof(char) * ft_strlen(s1) - i);
 	if (!result)
 		exit_error("Error malloc", 25);
-	while(s1[++j])
+	while (s1[++j])
 		result[j - 1] = s1[i + j];
 	result[j] = '\0';
 	return (result);
 }
 
-int ft_export(t_cmd **cmd)
+int	ft_export(t_cmd **cmd)
 {
-	int i;
-	char *binary_array;
+	int		i;
+	char	*binary_array;
 
 	i = -1;
 	if (!(*cmd)->arg || !(*cmd)->arg[0])

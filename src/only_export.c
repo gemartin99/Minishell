@@ -1,15 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redir.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: smiro <smiro@student.42barcelona>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/12 23:41:33 by smiro             #+#    #+#             */
+/*   Updated: 2022/12/12 23:41:57 by smiro            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/minishell.h"
 
-char *search_lowest(char **env2) //funcion para buscar la primera variable de entorno (alfabeticamente)
+//funcion para buscar la primera variable de entorno (alfabeticamente)
+char	*search_lowest(char **env2)
 {
-	int i;
-	int j;
-	char *res;
+	int		i;
+	int		j;
+	char	*res;
 
 	i = -1;
 	j = 0;
-	//while (env2[++i])
-	//	printf("LE LLEGA: %s\n", env2[i]);
 	i = 0;
 	res = env2[0];
 	if (!env2[i + 1])
@@ -28,10 +39,11 @@ char *search_lowest(char **env2) //funcion para buscar la primera variable de en
 	return (res);
 }
 
-char **dup_env(char **env2, t_cmd *cmd) //funcion que duplica las variables de entorno actuales
+//funcion que duplica las variables de entorno actuales
+char	**dup_env(char **env2, t_cmd *cmd)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
@@ -49,10 +61,10 @@ char **dup_env(char **env2, t_cmd *cmd) //funcion que duplica las variables de e
 	return (env2);
 }
 
-char **ft_ord_env(char **res, t_cmd *cmd)
+char	**ft_ord_env(char **res, t_cmd *cmd)
 {
-	int i;
-	char **env2;
+	int		i;
+	char	**env2;
 
 	env2 = malloc(sizeof(char *) * cmd->env->num_env + 1);
 	if (!env2)
@@ -66,8 +78,8 @@ char **ft_ord_env(char **res, t_cmd *cmd)
 
 void	print_export_var(t_cmd *cmd)
 {
-	int i;
-	char **res;
+	int		i;
+	char	**res;
 
 	i = 0;
 	res = malloc(sizeof(char *) * cmd->env->num_env + 1);

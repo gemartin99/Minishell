@@ -12,11 +12,11 @@
 
 #include "../inc/minishell.h"
 
-char *ft_replace_value2(char *s, int i)
+char	*ft_replace_value2(char *s, int i)
 {
-	char *res;
-	char *tmp;
-	int j;
+	char	*res;
+	char	*tmp;
+	int		j;
 
 	j = -1;
 	res = malloc(sizeof(char) * ((ft_strlen(s) - 1) + ft_strlen(ft_itoa(g_error))));
@@ -30,13 +30,13 @@ char *ft_replace_value2(char *s, int i)
 	while (s[++i] && s[i + 1])
 		res[j++] = s[i + 1];
 	res[j] = '\0';
-	return(res);
+	return (res);
 }
 
-char *ft_replace_value(char *s)
+char	*ft_replace_value(char *s)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = get_next_quote(0, s, '$');
 	while (s[i])

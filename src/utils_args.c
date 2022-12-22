@@ -12,7 +12,8 @@
 
 #include "../inc/minishell.h"
 
-int	ft_count_args(char *s) //funcion que cuenta el numero de argumentos que me mandan
+//funcion que cuenta el numero de argumentos que me mandan
+int	ft_count_args(char *s)
 {
 	int	i;
 	int	res;
@@ -34,7 +35,8 @@ int	ft_count_args(char *s) //funcion que cuenta el numero de argumentos que me m
 	return (res);
 }
 
-int	get_next_quote(int i, char *str, char c) //Devuelve la posicion de la siguiente quote
+//Devuelve la posicion de la siguiente quote
+int	get_next_quote(int i, char *str, char c)
 {
 	while (str[i] && str[i] != c)
 		i++;
@@ -75,7 +77,7 @@ int	ft_check_dquote(char *s, int simple, int doble, t_msh *msh)
 	return (1);
 }
 
-int		start_line(t_msh **msh, char *read_line, char ***lines)
+int	start_line(t_msh **msh, char *read_line, char ***lines)
 {
 	(*msh)->flags->quote = ft_check_dquote(read_line, 2, 2, (*msh));
 	if ((*msh)->flags->quote == 0)

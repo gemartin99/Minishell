@@ -16,7 +16,7 @@ static void	signal_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
-		write(1,"\n", 1);
+		write(1, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
@@ -27,10 +27,10 @@ static void	signal_handler(int signal)
 
 void	wait_signal(void)
 {
-	struct	sigaction sa;
+	struct sigaction	sa;
+
 	sa.sa_handler = &signal_handler;
 	sa.sa_flags = SA_RESTART;
-
 	sigaction(SIGINT, &sa, NULL);
 	sigaction(SIGQUIT, &sa, NULL);
 	sigaction(SIGTERM, &sa, NULL);

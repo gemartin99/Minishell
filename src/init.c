@@ -12,7 +12,8 @@
 
 #include "../inc/minishell.h"
 
-static void	create_env(t_env *env, char **ev) // incializar env
+// incializar env
+static void	create_env(t_env *env, char **ev)
 {
 	char	**temp;
 	int		i;
@@ -24,8 +25,7 @@ static void	create_env(t_env *env, char **ev) // incializar env
 	temp = ft_calloc(i, sizeof(char *));
 	if (!temp)
 		exit_error("Error malloc", 3);
-	i--;
-	while (i >= 0)
+	while (--i >= 0)
 	{
 		temp[i] = ft_strdup(ev[i]);
 		if (ft_strncmp(temp[i], "PATH=", 5) == 0)
@@ -33,16 +33,17 @@ static void	create_env(t_env *env, char **ev) // incializar env
 		if (ft_strncmp(temp[i], "SHLVL=", 6) == 0)
 		{	
 			free(temp[i]);
-			temp[i] = ft_strjoin("SHLVL=" ,ft_itoa(ft_atoi(ft_strchr(ev[i], '=') + 1) + 1));
+			temp[i] = ft_strjoin("SHLVL=", ft_itoa
+					(ft_atoi(ft_strchr(ev[i], '=') + 1) + 1));
 		}
-		i--;
 	}
 	if (!env->path)
 		env->path = ft_strdup("./");
 	env->env = temp;
 }
 
-t_msh	*init(char **env) //init estructura general
+//init estructura general
+t_msh	*init(char **env)
 {
 	t_msh	*msh;
 

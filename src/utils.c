@@ -19,7 +19,8 @@ int	ft_skip_space(char *s, int i)
 	return (i);
 }
 
-char	*remove_quotes(char *str, char c) //Recive un string y le saca el caracter que resive
+//Recive un string y le saca el caracter que resive
+char	*remove_quotes(char *str, char c)
 {
 	int		i;
 	char	*temp;
@@ -50,8 +51,8 @@ char	*remove_quotes(char *str, char c) //Recive un string y le saca el caracter 
 
 char	*str_tolower(char *str)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	while (str[i])
 	{
@@ -61,7 +62,8 @@ char	*str_tolower(char *str)
 	return (str);
 }
 
-char	*str_noquotes(char *str) //Recive una string y devuelve una copia sin las comillas que no correspondan
+//Recive una string y devuelve una copia sin las comillas que no correspondan
+char	*str_noquotes(char *str)
 {
 	int		i;
 	int		j;
@@ -69,25 +71,21 @@ char	*str_noquotes(char *str) //Recive una string y devuelve una copia sin las c
 	int		doubles;
 	int		simples;
 
-	i = 0;
-	j = 0;
+	i = -1;
+	j = -1;
 	doubles = 1;
 	simples = 1;
 	temp = ft_calloc(1, ft_strlen(str) + 1);
 	if (!temp)
 		exit_error("Error malloc", 11);
-	while (str[i])
+	while (str[++i])
 	{
 		if (str[i] == 34 && simples != -1)
 				doubles = -doubles;
 		else if (str[i] == 39 && doubles != -1)
 			simples = -simples;
 		else
-		{
-			temp[j] = str[i];
-			j++;
-		}
-		i++;
+			temp[++j] = str[i];
 	}
 	return (temp);
 }

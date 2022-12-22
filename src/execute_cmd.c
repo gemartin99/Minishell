@@ -79,7 +79,7 @@ void	execute_nonpipe(t_cmd *cmd, char *temp_cmd)
 	if (cmd->arg && is_redir(cmd->arg) != -1)
 		redir(cmd);
 	if (dup2(cmd->pipes->in, STDIN_FILENO) == -1
-			|| dup2(cmd->pipes->out, STDOUT_FILENO) == -1)
+		|| dup2(cmd->pipes->out, STDOUT_FILENO) == -1)
 		exit_error("Error DUP", 24);
 	if (close(cmd->pipes->in) == -1 || close(cmd->pipes->out) == -1)
 		exit_error("Error close", 26);

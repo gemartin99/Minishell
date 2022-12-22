@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_args.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: smiro <smiro@student.42barcelona>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/08 02:21:33 by smiro             #+#    #+#             */
+/*   Updated: 2022/12/08 02:21:37 by smiro            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/minishell.h"
 
-int	ft_count_pipes(char *s) //funcion que retorna la cantidad de pipes que hay en la linea
+int	ft_count_pipes(char *s)
 {
 	int	i;
 	int	res;
@@ -27,11 +39,11 @@ int	ft_count_pipes(char *s) //funcion que retorna la cantidad de pipes que hay e
 	return (res);
 }
 
-char **fill_memory(char *s, char **res)
+char	**fill_memory(char *s, char **res)
 {
-	int i;
-	int start;
-	int pos;
+	int	i;
+	int	start;
+	int	pos;
 
 	i = -1;
 	start = 0;
@@ -52,10 +64,10 @@ char **fill_memory(char *s, char **res)
 	return (res);
 }
 
-int check_pipe_arg(char *s)
+int	check_pipe_arg(char *s)
 {
-	int i;
-	int res;
+	int	i;
+	int	res;
 
 	i = -1;
 	res = -1;
@@ -84,7 +96,7 @@ int	check_redir(char **arg, int i)
 	while (temp && redir_type(temp + j))
 	{
 		j = 0;
-		while (temp[j] && (temp[j]  == 32 || isdifoperator(temp[j])))
+		while (temp[j] && (temp[j] == 32 || isdifoperator(temp[j])))
 			j++;
 		if (redir_type(arg[i]) && !temp[j])
 		{
@@ -97,13 +109,13 @@ int	check_redir(char **arg, int i)
 }
 
 //check pipe y despues null
-char **ft_split_pipes(char *s)
+char	**ft_split_pipes(char *s)
 {
-	char **res;
-	int i;
+	char	**res;
+	int		i;
 
 	i = -1;
-	res = ft_calloc(sizeof(char *) , (ft_count_pipes(s) + 2));
+	res = ft_calloc(sizeof(char *), (ft_count_pipes(s) + 2));
 	if (!res)
 		exit_error("Error malloc", 54);
 	res = fill_memory(s, res);

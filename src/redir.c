@@ -92,7 +92,8 @@ static char	**get_filename(char **arg, int j, char c, int k)
 				get_next_diff(i, arg[j]) - i), j + k++);
 	i = get_next_diff(i, arg[j]);
 	if (arg[j][i])
-		arg = add_one(arg, ft_substr(arg[j], i, ft_strlen(arg[j]) - i), j + k++);
+		arg = add_one(arg, ft_substr
+				(arg[j], i, ft_strlen(arg[j]) - i), j + k++);
 	arg = remove_one(arg, j);
 	return (arg);
 }
