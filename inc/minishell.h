@@ -138,6 +138,7 @@ char	*cmp_name_var(t_cmd *cmd, char *line, char *name_var);
 ////////env_utils///////////
 
 int		ft_count_env(char **arg, int len);
+int		check_only_space(char *s);
 
 ////////utils////////////
 

@@ -87,7 +87,6 @@ char	*quit_dollar_and_digit(char *s, int i, int j)
 {
 	char	*res;
 
-	printf("1\n");
 	while (s[++i])
 	{
 		if (s[i] && s[i] == '$' && s[i + 1]
@@ -110,7 +109,6 @@ char	*quit_dollar_and_digit(char *s, int i, int j)
 			s = quit_dollar_and_digit(res, -1, -1);
 		}
 	}
-	printf("2\n");
 	return (s);
 }
 

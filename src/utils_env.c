@@ -12,6 +12,27 @@
 
 #include "../inc/minishell.h"
 
+//funcionar que checkea que en la linea que te llega
+//haya algun caracter que no sea un espacio
+int	check_only_space(char *s)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	j = 0;
+	while (s[++i])
+	{
+		if (s[i] == '\t' || s[i] == '\n'
+			|| s[i] == '\v' || s[i] == '\f'
+			|| s[i] == '\r' || s[i] == ' ')
+			j++;
+	}
+	if (j == i)
+		return (-1);
+	return (0);
+}
+
 //funcion para contar todas las variables de entorno que no sean nulas.
 int	ft_count_env(char **arg, int len)
 {

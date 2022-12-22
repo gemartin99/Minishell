@@ -24,6 +24,8 @@ void	recive_arguments(t_msh *msh)
 			exit_error("exit", g_error);
 		if (read_line[0] == '\0')
 			printf("");
+		if (check_only_space(read_line) == -1)
+			printf("");
 		else
 		{
 			msh->total_chars = 0;
