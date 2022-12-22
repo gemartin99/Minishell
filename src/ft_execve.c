@@ -12,7 +12,9 @@
 
 #include "../inc/minishell.h"
 
-char	*value_dolar_path(char *s)//funcion que muestra el valor de la variable path pero se ira acortando cada vez que se intente ejecutar algo en una de las rutas
+//funcion que muestra el valor de la variable path pero se 
+//ira acortando cada vez que se intente ejecutar algo en una de las rutas
+char	*value_dolar_path(char *s)
 {
 	int		i;
 	char	*res;
@@ -37,24 +39,9 @@ char	*value_dolar_path(char *s)//funcion que muestra el valor de la variable pat
 	return (res);
 }
 
-static int	ft_count_env(char **arg, int len)//funcion para contar todas las variables de entorno que no sean nulas.
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (i + j < len)
-	{
-		if (arg[i + j])
-			i++;
-		else
-			j++;
-	}
-	return (i - j);
-}
-
-char	**convert_to_env(char **arg, int len)//funcion que retorna una variable que guarde todas las variables de entorno actuales.
+//funcion que retorna una variable que 
+//guarde todas las variables de entorno actuales
+char	**convert_to_env(char **arg, int len)
 {
 	int		i;
 	int		j;
@@ -121,7 +108,8 @@ int	check_access(char *path, t_cmd *cmd, t_env *env)
 	return (0);
 }
 
-int	ft_try_to_exec(t_cmd *cmd)//funcion para intentar hacer execv de lo que me manden
+//funcion para intentar hacer execv de lo que me manden
+int	ft_try_to_exec(t_cmd *cmd)
 {
 	char	*absolute_path;
 	char	*search_path;

@@ -12,6 +12,28 @@
 
 #include "../inc/minishell.h"
 
+//funcion para checkear si hay un dolar en la linea que me mandan
+int	check_dolar(char *line)
+{
+	int	i;
+	int	doubles;
+
+	i = 0;
+	doubles = 1;
+	while (line[i])
+	{
+		if (line[i] == 39 && doubles == 1)
+			i = get_next_quote(i + 1, line, line[i]);
+		if (line[i] == 34)
+			doubles *= -1;
+		if (line[i] == '$' && line[i + 1])
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+//linea 27 mirar leaks
 char	*ft_replace_value2(char *s, int i)
 {
 	char	*res;
@@ -19,11 +41,12 @@ char	*ft_replace_value2(char *s, int i)
 	int		j;
 
 	j = -1;
-	res = malloc(sizeof(char) * ((ft_strlen(s) - 1) + ft_strlen(ft_itoa(g_error))));
+	res = malloc(sizeof(char) * ((ft_strlen(s) - 1) + ft_strlen
+				(ft_itoa(g_error))));
 	if (!res)
 		exit_error("Error malloc", 55);
 	tmp = ft_substr(s, 0, i);
-	tmp = ft_strjoin(tmp, ft_itoa(g_error)); //mirar leaks de esta funcion
+	tmp = ft_strjoin(tmp, ft_itoa(g_error));
 	j = -1;
 	while (tmp[++j])
 		res[j] = tmp[j];
@@ -51,7 +74,8 @@ char	*ft_replace_value(char *s)
 	return (s);
 }
 
-int	var_strcmp(char *s1, char *s2) //, t_msh *d) //funcion strcmp modificada para variables de entorno
+//funcion strcmp modificada para variables de entorno
+int	var_strcmp(char *s1, char *s2)
 {
 	size_t	i;
 
@@ -72,25 +96,9 @@ int	var_strcmp(char *s1, char *s2) //, t_msh *d) //funcion strcmp modificada par
 	return (0);
 }
 
-int	ft_isdigit_special(int i) //funcion que checkea si es un numero o caracter especial
-{
-	if (i == '*' || i == '@' || i == 92)
-		return (1);
-	else if (i < 48 || i > 57)
-		return (0);
-	return (1);
-}
-
-int	check_special_char(char c) //funcion para checkear si despues de la variable hay algunos caracter especial ya que cambia la interpretacion de la var
-{
-	if (c == '=' || c == '@' || c == '#' || c == '-' || c == '+' || c == '{'
-		|| c == '}' || c == '[' || c == ']' || c == '!' || c == '~'
-		|| c == '%' || c == '^' || c == '=' || c == '*' || c == '/' || c == '$')
-		return (-1);
-	return (0);
-}
-
-char	*ft_strjoin_special(char *s1, char *s2, size_t i, size_t c) //funcion que concatena la $var y /aaa o lo que le manden despues de una $var siempre y cuando sea caracter especial
+//funcion que concatena la $var y /aaa o lo que
+//le manden despues de una $var siempre y cuando sea caracter especial
+char	*ft_strjoin_special(char *s1, char *s2, size_t i, size_t c)
 {
 	char	*str;
 	size_t	size1;

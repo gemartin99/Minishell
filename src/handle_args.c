@@ -23,11 +23,13 @@ static int	ft_split_args(char *s, char **arg)
 	i = -1;
 	while (s[++i])
 	{
-		if ((s[i] == ' ' || (s[i] >= 9 && s[i] <= 13)) && s[i + 1] && s[i + 1] != ' ')
+		if ((s[i] == ' ' || (s[i] >= 9 && s[i] <= 13))
+			&& s[i + 1] && s[i + 1] != ' ')
 			start = i + 1;
 		if (s[i] == 34 || s[i] == 39)
 			i = get_next_quote(i + 1, s, s[i]);
-		if (s[i] != ' ' && !(s[i] >= 9 && s[i] <= 13) && (s[i + 1] == ' ' || s[i + 1] == '\0'))
+		if (s[i] != ' ' && !(s[i] >= 9 && s[i] <= 13)
+			&& (s[i + 1] == ' ' || s[i + 1] == '\0'))
 		{
 			arg[pos] = ft_substr(s, start, i - start + 1);
 			if (arg[pos] == NULL)
@@ -96,7 +98,7 @@ static t_cmd	*add_cmd(t_msh *msh, char *read_line)
 	return (temp);
 }
 
-static int	tokenize(t_msh *msh, t_cmd **cmd, char *read_line) //
+static int	tokenize(t_msh *msh, t_cmd **cmd, char *read_line)
 {
 	int		i;
 	t_cmd	*temp;

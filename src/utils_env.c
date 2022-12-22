@@ -1,38 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cd.c                                            :+:      :+:    :+:   */
+/*   utils_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smiro <smiro@student.42barcelona>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/10 00:25:44 by smiro             #+#    #+#             */
-/*   Updated: 2022/12/10 00:25:45 by smiro            ###   ########.fr       */
+/*   Created: 2022/12/12 12:55:09 by smiro             #+#    #+#             */
+/*   Updated: 2022/12/12 12:55:13 by smiro            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-//hacer que variable entorno $OLDPWD tenga el valor de la ruta actual 
-//antes de hacer algun CD siempre y cuando el CD no sea hacia $OLDPWD
-int	ft_cd(t_cmd **cmd)
+//funcion para contar todas las variables de entorno que no sean nulas.
+int	ft_count_env(char **arg, int len)
 {
-	int		i;
+	int	i;
+	int	j;
 
 	i = 0;
-	if ((*cmd)->num_arg == 0)
+	j = 0;
+	while (i + j < len)
 	{
-		chdir(getenv("HOME"));
-		return (0);
-	}
-	else
-	{
-		if ((*cmd)->arg[0] && chdir((*cmd)->arg[0]) == -1)
-		{
-			put_error("bash: cd", (*cmd)->arg[0], "No such file or directory");
-			return (1);
-		}
+		if (arg[i + j])
+			i++;
 		else
-			return (0);
+			j++;
 	}
-	return (0);
+	return (i - j);
 }

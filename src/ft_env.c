@@ -19,7 +19,8 @@ int	ft_env(t_cmd *cmd)
 	i = 0;
 	if (cmd->arg)
 	{
-		put_error("env", remove_quotes(cmd->arg[0], ';'), "No such file or directory");
+		put_error("env", remove_quotes
+			(cmd->arg[0], ';'), "No such file or directory");
 		return (127);
 	}
 	while (i < cmd->env->num_env)

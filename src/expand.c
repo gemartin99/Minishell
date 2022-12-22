@@ -34,28 +34,8 @@ int	search_next_char(char *s, char c, int i)
 	return (0);
 }
 
-//funcion para checkear si hay un dolar en la linea que me mandan
-int	check_dolar(char *line)
-{
-	int	i;
-	int	doubles;
-
-	i = 0;
-	doubles = 1;
-	while (line[i])
-	{
-		if (line[i] == 39 && doubles == 1)
-			i = get_next_quote(i + 1, line, line[i]);
-		if (line[i] == 34)
-			doubles *= -1;
-		if (line[i] == '$' && line[i + 1])
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-//funcion para añadir el valor de la variable de entorno a nuestra variable result
+//funcion para añadir el valor de la variable
+//de entorno a nuestra variable result
 static char	*ft_add_var_value(char *s1)
 {
 	int		i;
@@ -99,7 +79,8 @@ char	*ft_craft_result(char *line_final, char *line, char *var, int c)
 	return (line_final);
 }
 
-//funcion que cambia el valor de la linea y sustituye el $var por el valor de la variable si esa variable existe
+//funcion que cambia el valor de la linea y sustituye el $var 
+//por el valor de la variable si esa variable existe
 char	*change_line_value(char *line, char *var)
 {
 	int		i;
@@ -122,14 +103,12 @@ char	*change_line_value(char *line, char *var)
 	return (line_final);
 }
 
-//funcion recursiva para ir quitando todos los digitos y dolares sobrantes. ej: $1aaa $2bb. Quedaria asi aaa bb
-char	*quit_dollar_and_digit(char *s)
+//funcion recursiva para ir quitando todos los digitos y dolares sobrantes. 
+//ej: $1aaa $2bb. Quedaria asi aaa bb
+char	*quit_dollar_and_digit(char *s, int i, int j)
 {
 	char	*res;
-	int		i;
-	int		j;
 
-	i = -1;
 	while (s[++i])
 	{
 		if (s[i] && s[i] == '$' && s[i + 1]
@@ -149,13 +128,14 @@ char	*quit_dollar_and_digit(char *s)
 			}
 			res[j] = '\0';
 			free(s);
-			s = quit_dollar_and_digit(res);
+			s = quit_dollar_and_digit(res, -1, -1);
 		}
 	}
 	return (s);
 }
 
-//funcion para detectar si hay un digito despues de un dolar para posteriormente quitarlo , tanto el dolar como el numero
+//funcion para detectar si hay un digito despues de un dolar 
+//para posteriormente quitarlo, tanto el dolar como el numero
 int	check_dolar_and_digit(char *s)
 {
 	int	i;
@@ -169,7 +149,8 @@ int	check_dolar_and_digit(char *s)
 		return (1);
 }
 
-//funcion que crea una variable con el nombre que tiene el argumento que me manden cn $ para luego comprarlo con las variables de entorno
+//funcion que crea una variable con el nombre que tiene el argumento que me
+//manden cn $ para luego comprarlo con las variables de entorno
 char	*ft_name_var(char *line)
 {
 	int		j;
@@ -194,7 +175,8 @@ char	*ft_name_var(char *line)
 	return (result);
 }
 
-//funcion que retorna el resto de una variable si hay caracteres especiales. Ej: echo "$USER@hola" esta funcion retornara @hola
+//funcion que retorna el resto de una variable si hay caracteres especiales. 
+//Ej: echo "$USER@hola" esta funcion retornara @hola
 char	*ft_split_var(char *line, int i, t_cmd *cmd)
 {
 	int		j;
@@ -218,7 +200,8 @@ char	*ft_split_var(char *line, int i, t_cmd *cmd)
 	return (res);
 }
 
-//funcion para detectar y cambiar el valor a la linea y que si hay un caracter especial despues de $var se concatene. Ej: $USER/aaa 
+//funcion para detectar y cambiar el valor a la linea y que si hay un caracter
+// especial despues de $var se concatene. Ej: $USER/aaa 
 char	*ft_change_var(t_cmd *cmd, char *line, char **var_reminder)
 {
 	char	*name_var;
@@ -261,7 +244,7 @@ char	*change_dolar_x_var(t_cmd *cmd, char *s)
 	char	*var_reminder;
 
 	if (check_dolar_and_digit(s) == 0)
-		s = quit_dollar_and_digit(s);
+		s = quit_dollar_and_digit(s, -1, -1);
 	if (check_dolar(s) == 0)
 		return (s);
 	cmd->flags->dollar_special = 0;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: smiro <smiro@student.42barcelona>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/10 00:25:31 by smiro             #+#    #+#             */
+/*   Updated: 2022/12/10 00:25:33 by smiro            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/minishell.h"
 
 int	ft_atoi_error(int *atoi_error)
@@ -33,13 +45,6 @@ long long	static	ft_special_atoi(const char *str, int *atoi_error)
 	return (nbr * valorfinal);
 }
 
-int	ft_validate_num(char c)
-{
-	if ((c < '0' || c > '9') && c != 34 && c != 39)
-		return (1);
-	return (0);
-}
-
 void	return_value_exit(long long n)
 {
 	while (n > 255)
@@ -48,6 +53,7 @@ void	return_value_exit(long long n)
 		n = n + 256;
 	if (n < 0)
 		n = n + 256;
+	printf("exit\n");
 	exit (n);
 }
 
@@ -70,35 +76,24 @@ int	check_only_num(char *s)
 	return (1);
 }
 
-void	check_only_num_in_args(t_cmd *cmd) //funcion para comprobar que todos los argumentos contengan solo digitos
-{
-	int	i;
-
-	i = 0;
-	while (cmd->arg[i])
-	{
-		check_only_num(cmd->arg[i]);
-		i++;
-	}
-}
-
-//si pones exit &&12345 12345 hace exit sin errores
-//exit 12345 12345 no hace exit
 void	ft_exit(t_cmd *cmd)
 {
 	long long	n;
 	int			atoi_error;
+	int			i;
 
-	//hacer funcion que quite las comillas de los args
+	if (cmd->arg[0])
+		cmd->arg[0] = str_noquotes(cmd->arg[0]);
 	atoi_error = 0;
 	if (cmd->num_arg == 0 || !cmd->arg[0])
-		exit (0); //exit de valor de la variable global
+		exit (g_error);
 	else if (cmd->arg[1] && check_only_num(cmd->arg[0]))
 		return (put_error("exit\nbash", "exit", "too many arguments"));
-	check_only_num_in_args(cmd);
+	i = -1;
+	while (cmd->arg[++i])
+		check_only_num(cmd->arg[i]);
 	n = ft_special_atoi(cmd->arg[0], &atoi_error);
-	//printf("AE %d\n", atoi_error);
-	if ((n > -9223372036854775807 && n < 9223372036854775807) || atoi_error == -1)
+	if (atoi_error == -1)
 	{
 		printf("exit\nbash: exit: %s: numeric argument required\n", cmd->arg[0]);
 		exit (255);

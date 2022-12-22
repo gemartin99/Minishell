@@ -88,9 +88,7 @@ int		ft_check_dquote(char *s, int simple, int doble, t_msh *msh);
 int 	ft_count_args(char *s);
 void	execute_cmd(t_cmd **cmd, t_pipe *pipes);
 void 	expand(t_cmd **cmd);
-int 	ft_skip_space(char *s, int i);
 t_cmd	*ft_last(t_cmd **cmd);
-char	*remove_quotes(char *str, char c);
 void	get_input(t_cmd *cmd, char *stop);
 int		start_line(t_msh **msh, char *read_line, char ***lines);
 void	put_error(char *bash, char *file, char *error);
@@ -125,7 +123,18 @@ int var_strcmp(char *s1, char *s2);
 char	*str_tolower(char *str);
 char	*str_noquotes(char *str);
 char *ft_replace_value(char *s);
+int	check_dolar(char *line);
 
+////////env_utils///////////
+
+int	ft_count_env(char **arg, int len);
+
+////////utils////////////
+
+int		ft_isdigit_special(int i);
+int		check_special_char(char c);
+int		ft_skip_space(char *s, int i);
+char	*remove_quotes(char *str, char c);
 
 ////////builtins️////////
 

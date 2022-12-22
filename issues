@@ -1,4 +1,20 @@
 /////////////////////////
 
+Exit + numero mas grande del long long int 
+
+Minishell: bucle infinito , checkear el atoi error del ft_especial_atoi
+
+Bash: exit
+bash: exit: 309402374092347298479238749823748972398423432: numeric argument required
+
+/////////////////////////
+
+Command: echo $"1"aaa
+
+Minishell🇦🇷 🧉->zsh: segmentation fault  ./minishell
+
+Bash->1aaa
+
+Caso super rebuscado y peta en la function quit dollar and digit
 
 /////////////////////////
