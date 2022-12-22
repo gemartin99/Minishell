@@ -1,20 +1,58 @@
 /////////////////////////
 
-Exit + numero mas grande del long long int 
+Command: echo -"n" hola
 
-Minishell: bucle infinito , checkear el atoi error del ft_especial_atoi
+Minishell🇦🇷 🧉->-n hola$
 
-Bash: exit
-bash: exit: 309402374092347298479238749823748972398423432: numeric argument required
+Bash->hola%
+
+/////////////////////////
+
+
+
 
 /////////////////////////
 
-Command: echo $"1"aaa
 
-Minishell🇦🇷 🧉->zsh: segmentation fault  ./minishell
+Hoja de corrección
 
-Bash->1aaa
-
-Caso super rebuscado y peta en la function quit dollar and digit
-
-/////////////////////////
+Compila
+✅
+Comados simples y la variable global
+✅
+Argumentos e historial
+✅
+Echo
+✅⚠️ Todo ok menos caso rebuscado con -n
+exit
+✅
+Valor de retorno de un proceso
+✅
+Señales
+❌⚠️ Problemas Ctrl + \ y otros casos
+Comillas dobles
+❌⚠️ echo "cat lol.c | cat > lol.c" (probablemente venga de split pipes o count pipes)
+Comillas simples
+❌⚠️ echo 'hola | adios' (no imprime como texto plano)
+env
+✅
+export
+✅
+unset
+✅
+cd
+✅ Aunque cd . Nidea de que hace pero hace lo mismo que el bash
+pwd
+✅
+Rutas relativas
+✅ O con lo que he probado parece estar bien
+La variable de entorno PATH
+✅ El tercer apartado ni idea
+Redirecciones
+✅
+Pipes
+✅
+Vuélvete loco, y el historial
+✅
+Variables de entorno
+✅
