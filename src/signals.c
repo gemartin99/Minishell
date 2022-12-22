@@ -16,11 +16,17 @@ static void	signal_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
-		write(1, "\n", 1);
 		rl_replace_line("", 0);
+		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_redisplay();
 		kill(0, SIGTERM);
+		g_error = 1;
+	}
+	else if (signal == SIGQUIT)
+	{
+		rl_on_new_line();
+		rl_redisplay();
 	}
 	return ;
 }

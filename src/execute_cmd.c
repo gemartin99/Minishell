@@ -61,7 +61,8 @@ static void	wait_exit(t_pipe *pipes, int i)
 		waitpid(-1, &g_error, 0);
 		if (WIFEXITED(g_error))
 			g_error = WEXITSTATUS(g_error);
-		if (g_error != 0 && g_error != 1 && g_error != 127)
+		if (g_error != 0 && g_error != 1 
+				&& g_error != 127 && g_error != 2)
 			perror(NULL);
 	}
 }

@@ -70,7 +70,7 @@ char	*ft_change_var(t_cmd *cmd, char *line, char **var_reminder)
 	int		i;
 
 	if (ft_strnstr(line, "$?", ft_strlen(line)) != 0)
-		line = ft_replace_value(line);
+		return(ft_replace_value(line));
 	name_var = ft_name_var(line);
 	i = search_next_char(line, '$', -1);
 	while (line[++i] && line[i] != ' ')
@@ -87,7 +87,7 @@ char	*ft_change_var(t_cmd *cmd, char *line, char **var_reminder)
 	if (!name_var)
 		return (NULL);
 	if (!name_var[0])
-		return (line);
+		return (ft_strchr(line, '$') + 1);
 	return (cmp_name_var(cmd, line, name_var));
 }
 

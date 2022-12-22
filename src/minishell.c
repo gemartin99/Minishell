@@ -21,7 +21,7 @@ void	recive_arguments(t_msh *msh)
 		read_line = readline(BLUE_T "Mi" WHITE_T "ni" YELLOW_T "s"
 				WHITE_T "he" BLUE_T "ll" "🇦🇷 🧉->" RESET_COLOR);
 		if (!read_line)
-			exit_error("exit", 0);
+			exit_error("exit", g_error);
 		if (read_line[0] == '\0')
 			printf("");
 		else
