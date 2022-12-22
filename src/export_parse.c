@@ -11,18 +11,7 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-static int	wrong_exp(char c)
-{
-	if (c == '?' || c == '!' || c == '.'
-		|| c == '+' || c == '}' || c == '{' || c == '-' || c == 92
-		|| c == '[' || c == ']' || c == '@' || c == '*' || c == '#'
-		|| c == '^' || c == '~')
-	{
-		return (1);
-	}
-	return (0);
-}
+#include "../inc/libft/libft.h"
 
 static char	*ft_quit_last_char(char *s, int i)
 {
@@ -80,7 +69,7 @@ static int	parse_equal(char *s, int i)
 		i++;
 	}
 	if (correct == 0 || i == 1 || i == correct)
-		return (-1);
+		return (-3);
 	return (0);
 }
 
@@ -132,13 +121,13 @@ int	export_parse(t_cmd *cmd, char *array, int j, int control)
 		else if (j == -1)
 		{
 			array[i] = '0';
-			control++;
+			control = -1;
 		}
+		else if (j == -3)
+			array[i] = '0';
 		else
 			array[i] = '1';
 	}
 	array[i] = '\0';
-	if (control != 0)
-		return (-1);
-	return (0);
+	return (control);
 }

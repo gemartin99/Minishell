@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include "../inc/libft/libft.h"
 
 //funcion para detectar si hay un digito despues de un dolar 
 //para posteriormente quitarlo, tanto el dolar como el numero

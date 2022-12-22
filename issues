@@ -1,13 +1,5 @@
 /////////////////////////
 
-Command: echo -"n" hola
-
-Minishell🇦🇷 🧉->-n hola$
-
-Bash->hola%
-
-/////////////////////////
-
 
 
 
@@ -29,7 +21,7 @@ exit
 Valor de retorno de un proceso
 ✅
 Señales
-❌⚠️ Problemas Ctrl + \ y otros casos
+✅
 Comillas dobles
 ✅
 Comillas simples

@@ -26,7 +26,7 @@ int	ft_cd(t_cmd **cmd)
 	}
 	else
 	{
-		if ((*cmd)->arg[0] && chdir((*cmd)->arg[0]) == -1)
+		if ((*cmd)->arg[0] && chdir(str_noquotes((*cmd)->arg[0])) == -1)
 		{
 			put_error("bash: cd", (*cmd)->arg[0], "No such file or directory");
 			return (1);

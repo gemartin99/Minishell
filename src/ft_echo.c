@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include "../inc/libft/libft.h"
 
 static int	is_flag(char *str)
 {

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include "../inc/libft/libft.h"
 
 //segunda parte de funcion que calcula cuantas variables nuevas hay para
 //crear la reserva de memoria debida para luego poder hacer el realloc

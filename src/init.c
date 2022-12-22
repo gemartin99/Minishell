@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include "../inc/libft/libft.h"
 
 // incializar env
 static void	create_env(t_env *env, char **ev)

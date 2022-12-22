@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include "../inc/libft/libft.h"
 
 //funcion para quitar argumentos nulos sin espacios antes y despues
 static char	*quit_null(char *s, int i)

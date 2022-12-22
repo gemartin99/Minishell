@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include "../inc/libft/libft.h"
 
 //funcion para buscar la primera variable de entorno (alfabeticamente)
 char	*search_lowest(char **env2)

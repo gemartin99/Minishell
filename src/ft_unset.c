@@ -11,15 +11,16 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include "../inc/libft/libft.h"
 
 static int	ft_check_wrong_let(char c, char *s)
 {
 	if (c == '=' || c == '?' || c == '!' || c == '.'
 		|| c == '+' || c == '}' || c == '{' || c == '-' || c == 92
 		|| c == '[' || c == ']' || c == '@' || c == '*' || c == '#'
-		|| c == '^')
+		|| c == '^' || c == '~')
 	{
-		put_error("bash: unset", s, "not a valid identifier\n");
+		put_error("bash: unset", s, "not a valid identifier");
 		return (-1);
 	}
 	return (0);
@@ -48,7 +49,7 @@ int	ft_unset_strcmp(char *s, t_env *env)
 		env->path = "./";
 	if (!s[0] || s[0] == '=' || s[0] == '?' || s[0] == '!')
 	{
-		put_error("bash: unset", s, "not a valid identifier\n");
+		put_error("bash: unset", s, "not a valid identifier");
 		return (1);
 	}
 	while (s[++i])

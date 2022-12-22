@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include "../inc/libft/libft.h"
 
 int	ft_count_pipes(char *s)
 {
@@ -23,7 +24,8 @@ int	ft_count_pipes(char *s)
 	{
 		if (s[i] == 34 || s[i] == 39)
 			i = get_next_quote(i + 1, s, s[i]);
-		if (s[i] == '|' && (s[i + 1] == '|' || s[i + 1] == '\0'))
+		if ((s[i] == '|' && (s[i + 1] == '|' || s[i + 1] == '\0'))
+			|| s[0] == '|')
 		{
 			put_error("bash", NULL, "syntax error near unexpected token `|'");
 			g_error = 258;
@@ -96,7 +98,8 @@ int	check_redir(char **arg, int i)
 		j = 0;
 		while (temp[j] && (temp[j] == 32 || isdifoperator(temp[j])))
 			j++;
-		if (redir_type(arg[i]) && !temp[j])
+		if ((redir_type(arg[i]) && !temp[j])
+			|| isdifoperator(temp[ft_strlen(temp) - 1]))
 		{
 			put_error("bash", NULL, "syntax error near unexpected token `>'");
 			return (-1);

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include "../inc/libft/libft.h"
 
 static	int	cmd_type(t_cmd *cmd, char *temp_cmd)
 {
@@ -33,7 +34,7 @@ static	int	cmd_type(t_cmd *cmd, char *temp_cmd)
 	else
 		return (ft_try_to_exec(cmd));
 	free(temp_cmd);
-	return (0);
+	return (1);
 }
 
 static void	cmd_process(t_cmd *cmd, char *temp_cmd)
@@ -64,7 +65,8 @@ static void	wait_exit(t_pipe *pipes, int i)
 		if (g_error == 2 || g_error == 3)
 			g_error = g_error + 128;
 		else if (g_error != 0 && g_error != 1
-			&& g_error != 127 && g_error != 13)
+			&& g_error != 127 && g_error != 13
+			&& g_error != 126)
 			perror(NULL);
 	}
 	wait_signal(1);

@@ -12,6 +12,18 @@
 
 #include "../inc/minishell.h"
 
+int	wrong_exp(char c)
+{
+	if (c == '?' || c == '!' || c == '.'
+		|| c == '+' || c == '}' || c == '{' || c == '-' || c == 92
+		|| c == '[' || c == ']' || c == '@' || c == '*' || c == '#'
+		|| c == '^' || c == '~')
+	{
+		return (1);
+	}
+	return (0);
+}
+
 //funcionar que checkea que en la linea que te llega
 //haya algun caracter que no sea un espacio
 int	check_only_space(char *s)

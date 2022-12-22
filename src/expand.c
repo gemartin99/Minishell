@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include "../inc/libft/libft.h"
 
 //funcion para añadir el valor de la variable
 //de entorno a nuestra variable result

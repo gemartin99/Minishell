@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include "../inc/libft/libft.h"
 
 //funcion que muestra el valor de la variable path pero se 
 //ira acortando cada vez que se intente ejecutar algo en una de las rutas
@@ -103,7 +104,7 @@ int	check_access(char *path, t_cmd *cmd, t_env *env)
 			execve(path, arg_with_command(cmd),
 				convert_to_env(env->env, env->num_env));
 		put_error("bash", cmd->cmd, "Permision denied");
-		return (1);
+		return (126);
 	}
 	return (0);
 }
@@ -134,5 +135,5 @@ int	ft_try_to_exec(t_cmd *cmd)
 		absolute_path = value_dolar_path(cmd->env->path);
 	}
 	put_error("bash", cmd->cmd, "comand not found");
-	return (1);
+	return (127);
 }

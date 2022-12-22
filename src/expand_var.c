@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include "../inc/libft/libft.h"
 //funcion que crea una variable con el nombre que tiene el argumento que me
 //manden cn $ para luego comprarlo con las variables de entorno
 char	*ft_name_var(char *line)

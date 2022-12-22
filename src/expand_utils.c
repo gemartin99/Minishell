@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include "../inc/libft/libft.h"
 
 //funcion para checkear si hay un dolar en la linea que me mandan
 int	check_dolar(char *line)

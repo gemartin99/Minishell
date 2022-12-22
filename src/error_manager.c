@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include	"../inc/minishell.h"
+#include "../inc/libft/libft.h"
 //funcion para ver si hay muchos argumentos
 void	many_args(char **argv)
 {

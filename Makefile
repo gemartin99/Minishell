@@ -49,63 +49,60 @@ WHITE = \033[0;97m
 ### OBJECTS
 ################################################################################
 
-SRC_FILES	=	minishell \
-				init \
-				error_manager \
-				handle_args \
-				utils_args \
-				delete_null_args \
-				execute_cmd \
-				utils \
-				utils2 \
-				expand \
-				expand_utils \
-				expand_var \
-				ft_echo \
-				ft_cd \
-				ft_pwd \
-				ft_env \
-				ft_unset \
-				ft_export \
-				pipes \
-				ft_execve \
-				ft_exit \
-				signals \
-				only_export \
-				export_parse \
-				redir \
-				redir_utils \
-				redir_file \
-				utils_pipes \
-				utils_env
+SRC_FILES	=	minishell.c \
+				init.c \
+				error_manager.c \
+				handle_args.c \
+				utils_args.c \
+				delete_null_args.c \
+				execute_cmd.c \
+				utils.c \
+				utils2.c \
+				expand.c \
+				expand_utils.c \
+				expand_var.c \
+				ft_echo.c \
+				ft_cd.c \
+				ft_pwd.c \
+				ft_env.c \
+				ft_unset.c \
+				ft_export.c \
+				pipes.c \
+				ft_execve.c \
+				ft_exit.c \
+				signals.c \
+				only_export.c \
+				export_parse.c \
+				redir.c \
+				redir_utils.c \
+				redir_file.c \
+				utils_pipes.c \
+				utils_env.c
 
 
-SRC			=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
-OBJ 		=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))
+SRC			=	$(addprefix $(SRC_DIR), $(SRC_FILES))
+OBJ 		=	$(addprefix $(OBJ_DIR), $(SRC:.c=.o))
+DEP			= 	$(addsuffix .d, $(basename $(OBJ)))
 B_OBJ		=	$(OBJ)
-
-OBJF		=	.cache_exists
 
 ################################################################################
 ### RULES
 ################################################################################
 
-
 all:
 		@$(MAKE) -C $(FT)
 		@$(MAKE) $(NAME)
 
-$(OBJF):
-			@mkdir -p $(OBJ_DIR)
-
-
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(INC_HEADERS) $(FT_LIB) Makefile | $(OBJF)
+$(OBJ_DIR)%.o: %.c Makefile
+			@mkdir -p $(dir $@)
 			@echo "$(YELLOW)Compiling: $< $(DEF_COLOR)"
 			@$(CC) $(CFLAGS) $(COMFLAGS) -c $< -o $@
 
 $(NAME):	$(OBJ)
 			@$(CC) $(CFLAGS) $(OBJ) $(FT_LNK) $(LINKFLAGS) -o $(NAME)
 			@echo "$(GREEN)Minishell compiled!$(DEF_COLOR)"
+
+-include $(DEP)
 
 bonus:		$(B_OBJ) $(NAME)
 

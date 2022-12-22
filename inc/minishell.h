@@ -26,7 +26,6 @@
 # include	<sys/stat.h>
 # include	<sys/ioctl.h>
 # include	<sys/param.h>
-# include "libft/libft.h"
 # include	<readline/readline.h>
 # include	<readline/history.h>
 
@@ -92,6 +91,7 @@ void	get_input(t_cmd *cmd, char *stop);
 int		start_line(t_msh **msh, char *read_line, char ***lines);
 void	put_error(char *bash, char *file, char *error);
 int		export_parse(t_cmd *cmd, char *array, int j, int control);
+int		wrong_exp(char c);
 int		tokenize(t_msh *msh, t_cmd **cmd, char *read_line);
 
 ///////////pipes/////////////////
