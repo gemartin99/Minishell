@@ -85,7 +85,7 @@ int		check_null_args(char *s);
 int		get_next_quote(int i, char *str, char c);
 int		ft_check_dquote(char *s, int simple, int doble, t_msh *msh);
 int		ft_count_args(char *s);
-void	execute_cmd(t_cmd **cmd, t_pipe *pipes);
+void	execute_cmd(t_cmd **cmd, t_pipe *pipes, int i);
 void	expand(t_cmd **cmd);
 t_cmd	*ft_last(t_cmd **cmd);
 void	get_input(t_cmd *cmd, char *stop);

@@ -77,13 +77,10 @@ static void	del_exist_variable(char *full_var, t_cmd *cmd, int i)
 {
 	char	*var;
 	int		len;
-	int		j;
 
 	len = 0;
 	if (full_var[0] == '=')
 		return ;
-	while (full_var[len] && full_var[len] != '=')
-		len++;
 	while (i < cmd->env->num_env)
 	{
 		while (cmd->env->env[i] == NULL && i < cmd->env->num_env)
@@ -91,11 +88,8 @@ static void	del_exist_variable(char *full_var, t_cmd *cmd, int i)
 		if (i >= cmd->env->num_env)
 			break ;
 		var = cmd->env->env[i];
-		j = -1;
-		while (++j != len)
-			if (full_var[j] != var[j])
-				break ;
-		if (j == len)
+		len = get_next_quote(0, var, '=');
+		if (!ft_strncmp(full_var, var, len + 1))
 			cmd->env->env[i] = NULL;
 		i++;
 	}

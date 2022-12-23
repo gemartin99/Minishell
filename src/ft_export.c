@@ -42,19 +42,19 @@ int	add_new_vars1(t_cmd *cmd, char *binary_array)
 	i = -1;
 	new_envs = 0;
 	while (binary_array[++i])
-	{
 		if (binary_array[i] == '1')
 			new_envs++;
-	}
 	aux = malloc(sizeof(char *) * (cmd->env->num_env + new_envs));
 	if (!aux)
 		exit_error("Error malloc", 24);
-	i = 0;
-	while (i < cmd->env->num_env)
+	i = -1;
+	while (++i < cmd->env->num_env)
 	{
-		aux[i] = ft_strdup(cmd->env->env[i]);
+		if (!cmd->env->env[i])
+			aux[i] = NULL;
+		else
+			aux[i] = ft_strdup(cmd->env->env[i]);
 		free(cmd->env->env[i]);
-		i++;
 	}
 	free(cmd->env->env);
 	cmd->env->num_env = cmd->env->num_env + new_envs;
@@ -66,6 +66,7 @@ int	ft_export(t_cmd **cmd)
 {
 	int		i;
 	char	*binary_array;
+	char	*temp;
 
 	i = -1;
 	if (!(*cmd)->arg || !(*cmd)->arg[0])
@@ -74,7 +75,11 @@ int	ft_export(t_cmd **cmd)
 		return (0);
 	}
 	while ((*cmd)->arg[++i] && i <= (*cmd)->num_arg)
-		(*cmd)->arg[i] = str_noquotes((*cmd)->arg[i]);
+	{
+		temp = str_noquotes((*cmd)->arg[i]);
+		free((*cmd)->arg[i]);
+		(*cmd)->arg[i] = temp;
+	}
 	binary_array = malloc(sizeof(char) * (*cmd)->num_arg + 1);
 	if (!binary_array)
 		exit_error("Error malloc", 21);

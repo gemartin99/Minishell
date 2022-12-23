@@ -59,12 +59,11 @@ void	clear_lst(t_cmd **cmd)
 {
 	t_cmd	*temp;
 	t_cmd	*temp2;
-	int	i;
+	int		i;
 
 	temp = *cmd;
 	while (cmd && temp)
 	{
-		printf("aa\n");
 		i = -1;
 		temp2 = temp->next;
 		free(temp->cmd);

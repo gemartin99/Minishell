@@ -19,15 +19,11 @@
 void	put_in_file(int type, t_cmd *cmd, char *file)
 {
 	int		fd;
-	char	*temp;
 
-	temp = ft_calloc(sizeof(char), (MAXPATHLEN + 1));
-	getcwd(temp, MAXPATHLEN);
-	temp = ft_strjoin(temp, "/");
 	if (type == 1 || type == 5)
-		fd = open(ft_strjoin(temp, file), O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	else
-		fd = open(ft_strjoin(temp, file), O_CREAT | O_WRONLY | O_APPEND, 0644);
+		fd = open(file, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	if (fd == -1)
 		exit_error("Error open", 44);
 	if (type == 5 || type == 6)
@@ -40,21 +36,16 @@ void	put_in_file(int type, t_cmd *cmd, char *file)
 		if (dup2(fd, cmd->pipes->out) == -1)
 			exit_error("Error dup", 45);
 	}
-	free(temp);
+	free(file);
 	close(fd);
 }
 
 int	get_from_file(t_cmd *cmd, char *file)
 {
 	int		fd;
-	char	*temp;
 	int		pfd[2];
 
-	temp = ft_calloc(sizeof(char), (MAXPATHLEN + 1));
-	getcwd(temp, MAXPATHLEN);
-	temp = ft_strjoin(temp, "/");
-	free(temp);
-	fd = open(ft_strjoin(temp, file), O_RDONLY);
+	fd = open(file, O_RDONLY);
 	if (fd == -1)
 	{
 		put_error("bash", file, "No such file or directory");
@@ -68,6 +59,7 @@ int	get_from_file(t_cmd *cmd, char *file)
 	else if (dup2(fd, cmd->pipes->in) == -1)
 		exit_error("Error dup", 45);
 	close(fd);
+	free(file);
 	return (0);
 }
 

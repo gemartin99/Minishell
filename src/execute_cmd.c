@@ -38,7 +38,6 @@ static	int	cmd_type(t_cmd *cmd, char *temp_cmd)
 		return (0);
 	else
 		return (ft_try_to_exec(cmd));
-	free(temp_cmd);
 	return (1);
 }
 
@@ -57,11 +56,12 @@ static void	cmd_process(t_cmd *cmd, char *temp_cmd)
 	exit(cmd_type(cmd, temp_cmd));
 }
 
-static void	wait_exit(t_pipe *pipes, int i, int pid)
+static void	wait_exit(t_pipe *pipes, int i, int pid, t_cmd **cmd)
 {
 	int	temp_pid;
 	int	temp;
 
+	clear_lst(cmd);
 	if (close(pipes->in) == -1)
 		exit_error("Error close", 51);
 	if (close(pipes->out) == -1)
@@ -109,13 +109,13 @@ void	execute_nonpipe(t_cmd *cmd, char *temp_cmd)
 	return ;
 }
 
-void	execute_cmd(t_cmd **cmd, t_pipe *pipes)
+void	execute_cmd(t_cmd **cmd, t_pipe *pipes, int i)
 {
 	int			pid;
-	int			i;
 	char		*temp_cmd;
+	t_cmd		*temp;
 
-	i = 1;
+	temp = *cmd;
 	wait_signal(0);
 	while ((*cmd))
 	{
@@ -135,6 +135,5 @@ void	execute_cmd(t_cmd **cmd, t_pipe *pipes)
 		(*cmd) = (*cmd)->next;
 		free(temp_cmd);
 	}
-	clear_lst(cmd);
-	wait_exit(pipes, i, pid);
+	wait_exit(pipes, i, pid, &temp);
 }

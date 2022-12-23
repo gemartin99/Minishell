@@ -39,7 +39,7 @@ void	recive_arguments(t_msh *msh)
 				if (check_nonpipables(msh->cmd, str_noquotes(msh->cmd->cmd)))
 					execute_nonpipe(msh->cmd, str_noquotes(msh->cmd->cmd));
 				else
-					execute_cmd(&(msh->cmd), init_pipes());
+					execute_cmd(&(msh->cmd), init_pipes(), 1);
 			}
 		}
 	}

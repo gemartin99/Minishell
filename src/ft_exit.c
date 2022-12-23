@@ -86,10 +86,9 @@ void	ft_exit(t_cmd *cmd)
 	n = ft_special_atoi(cmd->arg[0], &atoi_error);
 	if (atoi_error == -1)
 	{
-		printf("exit\nbash: exit: %s: numeric argument required\n", cmd->arg[0]);
+		put_error("exit\nbash: exit", cmd->arg[0], "numeric argument required");
 		exit (255);
 	}
 	printf("exit\n");
-	ft_free(cmd);
 	exit ((unsigned char)n);
 }
