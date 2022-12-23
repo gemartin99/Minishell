@@ -77,6 +77,31 @@ char	**ft_ord_env(char **res, t_cmd *cmd)
 	return (res);
 }
 
+char	*ft_add_quotes(char *s)
+{
+	int		i;
+	char	*res;
+
+	i = -1;
+	res = malloc(sizeof(char) * ft_strlen(s) + 3);
+	if (!res)
+		exit_error("Error malloc", 51);
+	while (s[++i])
+	{
+		res[i] = s[i];
+		if (s[i] == '=')
+		{
+			res[i + 1] = 34;
+			break ;
+		}
+	}
+	while (s[++i])
+		res[i + 1] = s[i];
+	res[i + 1] = 34;
+	res[i + 2] = '\0';
+	return (res);
+}
+
 void	print_export_var(t_cmd *cmd)
 {
 	int		i;
@@ -90,7 +115,10 @@ void	print_export_var(t_cmd *cmd)
 	while (i < cmd->env->num_env)
 	{
 		if (res[i] != NULL)
+		{
+			res[i] = ft_add_quotes(res[i]);
 			printf("declare -x %s\n", res[i]);
+		}
 		i++;
 	}
 }
