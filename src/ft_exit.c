@@ -28,8 +28,11 @@ long long	static	ft_special_atoi(const char *str, int *atoi_error)
 	nbr = 0;
 	i = 0;
 	valorfinal = 1;
-	if (ft_strncmp("−9223372036854775807", str, 23) < 0
-		|| ft_strncmp("9223372036854775807", str, 22) < 0)
+	if (ft_strlen(str) == 19
+		&& (ft_strncmp("9223372036854775807", str, 20) < 0))
+		return (ft_atoi_error(atoi_error));
+	if ((ft_strlen(str) == 20 && ft_strncmp
+			("-9223372036854775807", str, 21) < 0) || ft_strlen(str) > 20)
 		return (ft_atoi_error(atoi_error));
 	if (str[i] && (str[i] == '-' || str[i] == '+'))
 	{
