@@ -55,7 +55,8 @@ int	main(int ac, char **av, char **ev)
 	return (0);
 }
 
-/*void	recive_arguments2(char *read_line, t_msh *msh)
+/*
+void	recive_arguments2(char *read_line, t_msh *msh)
 {
 	if (!read_line)
 		exit_error("exit", g_error);

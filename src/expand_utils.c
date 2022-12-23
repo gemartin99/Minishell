@@ -14,6 +14,7 @@
 #include "../inc/libft/libft.h"
 
 //funcion para checkear si hay un dolar en la linea que me mandan
+//mirar esta funcion
 int	check_dolar(char *line)
 {
 	int	i;
@@ -27,7 +28,7 @@ int	check_dolar(char *line)
 			i = get_next_quote(i + 1, line, line[i]);
 		if (line[i] == 34)
 			doubles *= -1;
-		if (line[i] == '$' && line[i + 1])
+		if (line[i] == '$' && line[i + 1] && line[i + 1] != ' ')
 			return (1);
 		i++;
 	}

@@ -15,7 +15,12 @@
 
 static	int	cmd_type(t_cmd *cmd, char *temp_cmd)
 {
-	if (!ft_strncmp(temp_cmd, "cd", 3))
+	if (!ft_strncmp(temp_cmd, "~", 2))
+	{
+		printf("bash: %s: is a directory\n", getenv("HOME"));
+		return (126);
+	}
+	else if (!ft_strncmp(temp_cmd, "cd", 3))
 		return (ft_cd(&cmd));
 	else if (!ft_strncmp(temp_cmd, "export", 7))
 		return (ft_export(&cmd));

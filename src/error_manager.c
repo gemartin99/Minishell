@@ -12,6 +12,15 @@
 
 #include	"../inc/minishell.h"
 #include "../inc/libft/libft.h"
+
+//hacer funcion que libere todo lo de la estructuras
+void	ft_free(t_cmd *cmd)
+{
+	if (cmd->arg)
+		;
+	return ;
+}
+
 //funcion para ver si hay muchos argumentos
 void	many_args(char **argv)
 {

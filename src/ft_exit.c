@@ -87,5 +87,6 @@ void	ft_exit(t_cmd *cmd)
 		exit (255);
 	}
 	printf("exit\n");
+	ft_free(cmd);
 	exit ((unsigned char)n);
 }
