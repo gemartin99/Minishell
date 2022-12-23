@@ -92,9 +92,9 @@ char	*ft_change_var(t_cmd *cmd, char *line, char **var_reminder)
 	return (cmp_name_var(cmd, line, name_var));
 }
 
-char	*change_dolar_x_var(t_cmd *cmd, char *s)
+char	*change_dolar_x_var(t_cmd *cmd, char *s, char *var_reminder)
 {
-	char	*var_reminder;
+	char	*temp;
 
 	if (check_dolar_and_digit(s) == 0)
 		s = quit_dollar_and_digit(s, -1, -1);
@@ -103,13 +103,19 @@ char	*change_dolar_x_var(t_cmd *cmd, char *s)
 	cmd->flags->dollar_special = 0;
 	s = ft_change_var(cmd, s, &var_reminder);
 	if (check_dolar(s) == 1)
-		s = change_dolar_x_var(cmd, s);
+		s = change_dolar_x_var(cmd, s, NULL);
 	if (cmd->flags->dollar_special == 1)
 	{
-		s = ft_strjoin_special(s, var_reminder, 0, 0);
+		temp = ft_strjoin_special(s, var_reminder, 0, 0);
+		free(s);
+		s = temp;
+		free(var_reminder);
+		var_reminder = NULL;
 		cmd->flags->dollar_special = 0;
 	}
 	if (check_dolar(s) == 1)
-		s = change_dolar_x_var(cmd, s);
+		return (change_dolar_x_var(cmd, s, NULL));
+	if (var_reminder)
+		free(var_reminder);
 	return (s);
 }

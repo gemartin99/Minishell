@@ -93,15 +93,19 @@ char	*str_noquotes(char *str)
 
 int	check_nonpipables(t_cmd *cmd, char *temp_cmd)
 {
+	int	i;
+
+	i = 0;
 	if (cmd->next)
-		return (0);
-	if (!ft_strncmp(temp_cmd, "export", 7))
-		return (1);
+		i = 0;
+	else if (!ft_strncmp(temp_cmd, "export", 7))
+		i = 1;
 	else if (!ft_strncmp(temp_cmd, "unset", 6))
-		return (1);
+		i = 1;
 	else if (!ft_strncmp(temp_cmd, "exit", 5))
-		return (1);
+		i = 1;
 	else if (!ft_strncmp(temp_cmd, "cd", 3))
-		return (1);
-	return (0);
+		i = 1;
+	free(temp_cmd);
+	return (i);
 }

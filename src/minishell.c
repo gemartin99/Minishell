@@ -58,7 +58,6 @@ int	main(int ac, char **av, char **ev)
 	return (0);
 }
 
-
 // void	recive_arguments2(char *read_line, t_msh *msh)
 // {
 // 	if (!read_line)
@@ -76,7 +75,7 @@ int	main(int ac, char **av, char **ev)
 // 			if (check_nonpipables(msh->cmd, str_noquotes(msh->cmd->cmd)))
 // 				execute_nonpipe(msh->cmd, str_noquotes(msh->cmd->cmd));
 // 			else
-// 				execute_cmd(&(msh->cmd), init_pipes());
+// 				execute_cmd(&(msh->cmd), init_pipes(), 1);
 // 		}
 // 	}
 // }

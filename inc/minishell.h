@@ -94,7 +94,6 @@ void	put_error(char *bash, char *file, char *error);
 int		export_parse(t_cmd *cmd, char *array, int j, int control);
 int		wrong_exp(char c);
 int		tokenize(t_msh *msh, t_cmd **cmd, char *read_line);
-void	ft_free(t_cmd *cmd);
 void	clear_lst(t_cmd **cmd);
 char	*actual_path(int i);
 
@@ -134,7 +133,7 @@ int		check_dolar_and_digit(char *s);
 char	*ft_name_var(char *line);
 char	*ft_split_var(char *line, int i, t_cmd *cmd);
 char	*ft_change_var(t_cmd *cmd, char *line, char **var_reminder);
-char	*change_dolar_x_var(t_cmd *cmd, char *s);
+char	*change_dolar_x_var(t_cmd *cmd, char *s, char *var_reminder);
 char	*ft_add_var_value(char *s1);
 char	*change_line_value(char *line, char *var);
 char	*quit_dollar_and_digit(char *s, int i, int j);

@@ -36,25 +36,31 @@ int	check_dolar(char *line)
 }
 
 //linea 47 mirar leaks
-char	*ft_replace_value2(char *s, int i)
+char	*ft_replace_value2(char *s, int i, int j)
 {
 	char	*res;
-	char	*tmp;
-	int		j;
+	char	*tmp[3];
 
-	j = -1;
-	res = malloc(sizeof(char) * ((ft_strlen(s) - 1) + ft_strlen
-				(ft_itoa(g_error))));
+	tmp[0] = ft_itoa(g_error);
+	res = malloc(sizeof(char) * ((ft_strlen(s) - 1) + ft_strlen(tmp[0])));
 	if (!res)
 		exit_error("Error malloc", 55);
-	tmp = ft_substr(s, 0, i);
-	tmp = ft_strjoin(tmp, ft_itoa(g_error));
+	tmp[1] = ft_substr(s, 0, i);
+	tmp[2] = ft_strdup(tmp[1]);
+	free(tmp[1]);
+	tmp[1] = ft_strjoin(";", tmp[0]);
+	free(tmp[0]);
+	tmp[0] = ft_strjoin(tmp[2], tmp[1]);
 	j = -1;
-	while (tmp[++j])
-		res[j] = tmp[j];
+	while (tmp[0][++j])
+		res[j] = tmp[0][j];
 	while (s[++i] && s[i + 1])
 		res[j++] = s[i + 1];
 	res[j] = '\0';
+	free(tmp[0]);
+	free(tmp[1]);
+	free(tmp[2]);
+	free(s);
 	return (res);
 }
 
@@ -63,11 +69,11 @@ char	*ft_replace_value(char *s)
 	int	i;
 	int	j;
 
-	i = get_next_quote(0, s, '$');
+	i = get_next_quote(0, s, '?') - 1;
 	while (s[i])
 	{
 		if (s[i] == '$' && s[i + 1] && s[i + 1] == '?')
-			s = ft_replace_value2(s, i);
+			s = ft_replace_value2(s, i, -1);
 		j = i;
 		i = get_next_quote(0, s, '$');
 		if (j == i)

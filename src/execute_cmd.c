@@ -15,12 +15,7 @@
 
 static	int	cmd_type(t_cmd *cmd, char *temp_cmd)
 {
-	if (!ft_strncmp(temp_cmd, "~", 2))
-	{
-		printf("bash: %s: is a directory\n", getenv("HOME"));
-		return (126);
-	}
-	else if (!ft_strncmp(temp_cmd, "cd", 3))
+	if (!ft_strncmp(temp_cmd, "cd", 3))
 		return (ft_cd(&cmd));
 	else if (!ft_strncmp(temp_cmd, "export", 7))
 		return (ft_export(&cmd));
@@ -104,6 +99,7 @@ void	execute_nonpipe(t_cmd *cmd, char *temp_cmd)
 	g_error = cmd_type(cmd, temp_cmd);
 	if (dup2(io[0], STDIN_FILENO) == -1 || dup2(io[1], STDOUT_FILENO) == -1)
 		exit_error("Error DUP", 24);
+	free(cmd->pipes);
 	free(temp_cmd);
 	clear_lst(&cmd);
 	return ;

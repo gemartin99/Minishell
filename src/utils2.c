@@ -29,14 +29,17 @@ int	check_dolar_and_digit(char *s)
 }
 
 //funcion para buscar el siguiente caracter que no este entre comillas
-int	search_next_char(char *s, char c, int i)
+int	search_next_char(char *s, char c, int j)
 {
+	int	i;
+
+	i = -1;
 	while (s[++i] && s[i + 1])
 	{
 		if (s[i] == 34)
 		{
 			while (s[++i] != 34)
-				if (s[i] == '$')
+				if (s[i] == '$' && i >= j)
 					return (i);
 		}
 		if (s[i] == 39)
@@ -44,7 +47,7 @@ int	search_next_char(char *s, char c, int i)
 			i++;
 			i = get_next_quote(i, s, 39);
 		}
-		if (s[i] == c)
+		if (s[i] == c && i >= j)
 			return (i);
 	}
 	return (0);
@@ -65,8 +68,9 @@ int	ft_isdigit_special(int i)
 int	check_special_char(char c)
 {
 	if (c == '=' || c == '@' || c == '#' || c == '-' || c == '+' || c == '{'
-		|| c == '}' || c == '[' || c == ']' || c == '!' || c == '~'
-		|| c == '%' || c == '^' || c == '=' || c == '*' || c == '/' || c == '$')
+		|| c == '}' || c == '[' || c == ']' || c == '!' || c == '~' || c == '?'
+		|| c == '%' || c == '^' || c == '=' || c == '*' || c == '/' || c == '$'
+		|| c == ';')
 		return (-1);
 	return (0);
 }

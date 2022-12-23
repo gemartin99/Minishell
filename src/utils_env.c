@@ -18,14 +18,18 @@ char	*replace_prime(char *s)
 	char	*res;
 	int		i;
 	char	*temp;
+	char	*temp2;
 
 	i = 0;
-	++s;
-	temp = ft_strdup(s);
+	temp = ft_strdup(s + 1);
 	res = ft_strdup(getenv("HOME"));
 	if (!res)
 		exit_error("Error malloc", 50);
-	return (ft_strjoin(res, temp));
+	temp2 = ft_strjoin(res, temp);
+	free(res);
+	free(temp);
+	free(s);
+	return (temp2);
 }
 
 int	check_prime(char *s)

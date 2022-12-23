@@ -79,6 +79,8 @@ char	*change_line_value(char *line, char *var)
 	if (!line_final)
 		exit_error("Error malloc", 18);
 	line_final = ft_craft_result(line_final, line, var, j);
+	free(line);
+	free(var);
 	return (line_final);
 }
 
@@ -119,13 +121,15 @@ void	expand(t_cmd **cmd)
 
 	i = -1;
 	if (check_dolar((*cmd)->cmd) == 1)
-		(*cmd)->cmd = change_dolar_x_var((*cmd), (*cmd)->cmd);
+		(*cmd)->cmd = change_dolar_x_var((*cmd), (*cmd)->cmd, NULL);
+	if (check_prime((*cmd)->cmd) == 1)
+		(*cmd)->cmd = replace_prime((*cmd)->cmd);
 	if (!(*cmd)->arg)
 		return ;
 	while ((*cmd)->arg[++i])
 	{
 		if (check_dolar((*cmd)->arg[i]) == 1)
-			(*cmd)->arg[i] = change_dolar_x_var((*cmd), (*cmd)->arg[i]);
+			(*cmd)->arg[i] = change_dolar_x_var((*cmd), (*cmd)->arg[i], NULL);
 		if (check_prime((*cmd)->arg[i]) == 1)
 			(*cmd)->arg[i] = replace_prime((*cmd)->arg[i]);
 	}
