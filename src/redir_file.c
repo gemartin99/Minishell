@@ -13,6 +13,9 @@
 #include "../inc/minishell.h"
 #include "../inc/libft/libft.h"
 
+#include "../inc/minishell.h"
+#include "../inc/libft/libft.h"
+
 void	put_in_file(int type, t_cmd *cmd, char *file)
 {
 	int		fd;

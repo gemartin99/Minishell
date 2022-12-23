@@ -126,5 +126,7 @@ void	expand(t_cmd **cmd)
 	{
 		if (check_dolar((*cmd)->arg[i]) == 1)
 			(*cmd)->arg[i] = change_dolar_x_var((*cmd), (*cmd)->arg[i]);
+		if (check_prime((*cmd)->arg[i]) == 1)
+			(*cmd)->arg[i] = replace_prime((*cmd)->arg[i]);
 	}
 }

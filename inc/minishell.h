@@ -135,6 +135,8 @@ char	*ft_add_var_value(char *s1);
 char	*change_line_value(char *line, char *var);
 char	*quit_dollar_and_digit(char *s, int i, int j);
 char	*cmp_name_var(t_cmd *cmd, char *line, char *name_var);
+int		check_prime(char *s);
+char	*replace_prime(char *s);
 
 ////////env_utils///////////
 

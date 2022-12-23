@@ -6,7 +6,7 @@
 /*   By: smiro <smiro@student.42barcelona>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 02:21:47 by smiro             #+#    #+#             */
-
+/*   Updated: 2022/12/08 02:20:53 by smiro            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ int	main(int ac, char **av, char **ev)
 	else
 	{
 		msh->total_chars = 0;
-
 		//add_history(read_line);
 		if (tokenize(msh, &msh->cmd, read_line) && msh->flags->quote != 0)
 		{
@@ -94,4 +93,4 @@ int	main(int ac, char **av, char **ev)
 	wait_signal(1);
 	recive_arguments(msh);
 	return (0);
-	}*/
+}*/

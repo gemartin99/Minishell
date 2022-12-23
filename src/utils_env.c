@@ -11,6 +11,32 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include "../inc/libft/libft.h"
+
+char	*replace_prime(char *s)
+{
+	char	*res;
+	int		i;
+	char	*temp;
+
+	i = 0;
+	++s;
+	temp = ft_strdup(s);
+	res = ft_strdup(getenv("HOME"));
+	if (!res)
+		exit_error("Error malloc", 50);
+	return (ft_strjoin(res, temp));
+}
+
+int	check_prime(char *s)
+{
+	int	i;
+
+	i = -1;
+	if (s && s[0] == '~' && (!s[1] || s[1] == '/'))
+		return (1);
+	return (0);
+}
 
 int	wrong_exp(char c)
 {
