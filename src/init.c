@@ -52,7 +52,7 @@ t_msh	*init(char **env)
 	if (!msh)
 		exit_error("Error malloc", 1);
 	msh->bash_lvl = 2;
-	msh->env = ft_calloc(sizeof(t_cmd), 1);
+	msh->env = ft_calloc(sizeof(t_env), 1);
 	if (!msh->env)
 		exit_error("Error malloc", 2);
 	create_env(msh->env, env);

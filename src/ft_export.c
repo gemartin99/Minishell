@@ -15,7 +15,7 @@
 
 //segunda parte de funcion que calcula cuantas variables nuevas hay para
 //crear la reserva de memoria debida para luego poder hacer el realloc
-void	add_new_vars2(t_cmd *cmd, char *binary_array, int i, char **aux)
+void	add_new_vars2(t_cmd **cmd, char *binary_array, int i, char **aux)
 {
 	int	j;
 
@@ -24,16 +24,11 @@ void	add_new_vars2(t_cmd *cmd, char *binary_array, int i, char **aux)
 	{
 		if (binary_array[j] == '1')
 		{
-			aux[i] = cmd->arg[j];
+			aux[i] = ft_strdup((*cmd)->arg[j]);
 			i++;
 		}
 	}
-	cmd->env->env = (char **)malloc(sizeof(char *) * cmd->env->num_env);
-	if (cmd->env->env == NULL)
-		exit_error("Error malloc", 23);
-	i = -1;
-	while (++i < cmd->env->num_env)
-		cmd->env->env[i] = aux[i];
+	(*cmd)->env->env = aux;
 }
 
 //primera parte de funcion que calcula cuantas variables nuevas
@@ -57,34 +52,14 @@ int	add_new_vars1(t_cmd *cmd, char *binary_array)
 	i = 0;
 	while (i < cmd->env->num_env)
 	{
-		aux[i] = cmd->env->env[i];
+		aux[i] = ft_strdup(cmd->env->env[i]);
+		free(cmd->env->env[i]);
 		i++;
 	}
 	free(cmd->env->env);
 	cmd->env->num_env = cmd->env->num_env + new_envs;
-	add_new_vars2(cmd, binary_array, i, aux);
+	add_new_vars2(&cmd, binary_array, i, aux);
 	return (0);
-}
-
-//funcion para añadir el valor de la variable
-//de entorno a nuestra variable result
-char	*add_var_value(char *s1)
-{
-	int		i;
-	int		j;
-	char	*result;
-
-	i = 0;
-	j = 0;
-	while (s1[i] != '=')
-		i++;
-	result = malloc(sizeof(char) * ft_strlen(s1) - i);
-	if (!result)
-		exit_error("Error malloc", 25);
-	while (s1[++j])
-		result[j - 1] = s1[i + j];
-	result[j] = '\0';
-	return (result);
 }
 
 int	ft_export(t_cmd **cmd)

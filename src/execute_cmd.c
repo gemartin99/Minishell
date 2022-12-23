@@ -105,7 +105,7 @@ void	execute_nonpipe(t_cmd *cmd, char *temp_cmd)
 	if (dup2(io[0], STDIN_FILENO) == -1 || dup2(io[1], STDOUT_FILENO) == -1)
 		exit_error("Error DUP", 24);
 	free(temp_cmd);
-	// clear_lst(&cmd);
+	clear_lst(&cmd);
 	return ;
 }
 

@@ -109,8 +109,6 @@ int	tokenize(t_msh *msh, t_cmd **cmd, char *read_line)
 	lines = NULL;
 	if (start_line(&msh, read_line, &lines))
 		return (0);
-	if (*cmd)
-		printf("%s\n", (*cmd)->cmd);
 	*cmd = add_cmd(msh, lines[0]);
 	expand(cmd);
 	while (++i <= msh->flags->pipe)

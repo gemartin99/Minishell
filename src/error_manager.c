@@ -58,18 +58,20 @@ void	put_error(char *bash, char *file, char *error)
 void	clear_lst(t_cmd **cmd)
 {
 	t_cmd	*temp;
+	t_cmd	*temp2;
 	int	i;
 
-	while (cmd && *cmd)
+	temp = *cmd;
+	while (cmd && temp)
 	{
 		printf("aa\n");
 		i = -1;
-		temp = *cmd;
-		*cmd = (*cmd)->next;
+		temp2 = temp->next;
 		free(temp->cmd);
 		while (temp->arg && temp->arg[++i])
 			free(temp->arg[i]);
 		free(temp->arg);
 		free(temp);
+		temp = temp2;
 	}
 }
