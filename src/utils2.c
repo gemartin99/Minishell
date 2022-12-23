@@ -31,7 +31,7 @@ int	check_dolar_and_digit(char *s)
 //funcion para buscar el siguiente caracter que no este entre comillas
 int	search_next_char(char *s, char c, int i)
 {
-	while (s[++i])
+	while (s[++i] && s[i + 1])
 	{
 		if (s[i] == 34)
 		{

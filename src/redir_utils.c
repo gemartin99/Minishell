@@ -22,34 +22,28 @@ int	isdifoperator(char c)
 int	redir_type(char *str)
 {
 	int	i;
-	int	error;
 
 	i = -1;
-	error = 0;
 	while (str[++i])
 	{
 		if (str[i] == 34 || str[i] == 39)
 			i = get_next_quote(i + 1, str, str[i]);
-		if (str[i] == '>' && !isdifoperator(str[i + 1]) && !error)
+		if (str[i] == '>' && !isdifoperator(str[i + 1]))
 			return (1);
-		if (str[i] == '>' && str[i + 1] == '>'
-			&& !isdifoperator(str[i + 2]) && !error)
+		if (str[i] == '>' && str[i + 1] == '>' && !isdifoperator(str[i + 2]))
 			return (2);
-		if (str[i] == '<' && !isdifoperator(str[i + 1]) && !error)
+		if (str[i] == '<' && !isdifoperator(str[i + 1]))
 			return (3);
-		if (str[i] == '<' && str[i + 1] == '<'
-			&& !isdifoperator(str[i + 2]) && !error)
+		if (str[i] == '<' && str[i + 1] == '<' && !isdifoperator(str[i + 2]))
 			return (4);
-		if (str[i] == '2' && str[i + 1] == '>'
-			&& !isdifoperator(str[i + 2]) && !error)
+		if (str[i] == '2' && str[i + 1] == '>' && !isdifoperator(str[i + 2]))
 			return (5);
-		if (str[i] == '2' && str[i + 1] == '>'
-			&& str[i + 2] == '>' && !error)
+		if (str[i] == '2' && str[i + 1] == '>' && str[i + 2] == '>')
 			return (6);
 		if (isdifoperator(str[i]))
-			error = -1;
+			return (-1);
 	}
-	return (error);
+	return (0);
 }
 
 int	is_redir(char **arg)

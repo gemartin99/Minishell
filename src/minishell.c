@@ -42,7 +42,7 @@ void	recive_arguments(t_msh *msh)
 	}
 }
 
-int	main(int ac, char **av, char **ev)
+/*int	main(int ac, char **av, char **ev)
 {
 	t_msh	*msh;
 
@@ -53,9 +53,9 @@ int	main(int ac, char **av, char **ev)
 	wait_signal(1);
 	recive_arguments(msh);
 	return (0);
-}
+}*/
 
-/*
+
 void	recive_arguments2(char *read_line, t_msh *msh)
 {
 	if (!read_line)
@@ -94,4 +94,4 @@ int	main(int ac, char **av, char **ev)
 	wait_signal(1);
 	recive_arguments(msh);
 	return (0);
-}*/
+}

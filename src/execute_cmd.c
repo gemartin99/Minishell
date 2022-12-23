@@ -57,8 +57,11 @@ static void	cmd_process(t_cmd *cmd, char *temp_cmd)
 	exit(cmd_type(cmd, temp_cmd));
 }
 
-static void	wait_exit(t_pipe *pipes, int i)
+static void	wait_exit(t_pipe *pipes, int i, int pid)
 {
+	int	temp_pid;
+	int	temp;
+
 	if (close(pipes->in) == -1)
 		exit_error("Error close", 51);
 	if (close(pipes->out) == -1)
@@ -66,16 +69,18 @@ static void	wait_exit(t_pipe *pipes, int i)
 	free(pipes);
 	while (--i)
 	{
-		waitpid(-1, &g_error, 0);
+		temp_pid = waitpid(-1, &g_error, 0);
 		if (WIFEXITED(g_error))
 			g_error = WEXITSTATUS(g_error);
+		if (temp_pid == pid)
+			temp = g_error;
 		if (g_error == 2 || g_error == 3)
 			g_error = g_error + 128;
-		else if (g_error != 0 && g_error != 1
-			&& g_error != 127 && g_error != 13
-			&& g_error != 126)
+		else if (g_error != 0 && g_error != 1 && g_error != 127
+			&& g_error != 13 && g_error != 126)
 			perror(NULL);
 	}
+	g_error = temp;
 	wait_signal(1);
 }
 
@@ -128,5 +133,5 @@ void	execute_cmd(t_cmd **cmd, t_pipe *pipes)
 		(*cmd) = (*cmd)->next;
 		free(temp_cmd);
 	}
-	wait_exit(pipes, i);
+	wait_exit(pipes, i, pid);
 }

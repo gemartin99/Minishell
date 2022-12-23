@@ -56,14 +56,14 @@ char	*change_null_args(char *s, t_cmd *cmd)
 	int	i;
 
 	i = -1;
+	s = ft_strtrim(s, " ");
 	while (s[++i])
 	{
 		if ((s[i] == 34 && s[i + 1] && s[i + 1] != 34)
 			|| (s[i] == 39 && s[i + 1] && s[i + 1] != 39))
 				i = get_next_quote(i + 1, s, s[i]);
-		if (s[i] == ' ' && s[i + 1] && (s[i + 1] == 34 || s[i + 1] == 39)
-			&& s[i + 2] && (s[i + 2] == 34 || s[i + 2] == 39)
-			&& (s[i + 3] == ' ' || s[i + 3] == '\0'))
+		if (s[i] == 32 && (s[i + 1] == 34 || s[i + 1] == 39) && (s[i + 2] == 34
+				|| s[i + 2] == 39) && (s[i + 3] == 32 || !s[i + 3]))
 		{
 			i++;
 			s = quit_null_space(s, i);
