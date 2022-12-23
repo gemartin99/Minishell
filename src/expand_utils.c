@@ -35,7 +35,7 @@ int	check_dolar(char *line)
 	return (0);
 }
 
-//linea 27 mirar leaks
+//linea 47 mirar leaks
 char	*ft_replace_value2(char *s, int i)
 {
 	char	*res;

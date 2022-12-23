@@ -12,6 +12,29 @@
 
 #include "../inc/minishell.h"
 
+char	*actual_path(int i)
+{
+	char	*s;
+	char	*res;
+
+	s = malloc(sizeof(char) * (MAXPATHLEN + 1));
+	if (!s)
+		exit_error("Error malloc", 22);
+	if (!getcwd(s, MAXPATHLEN))
+		exit_error("Error malloc", 22);
+	while (s[i])
+		i++;
+	res = malloc(sizeof(char) * i + 1);
+	if (!res)
+		exit_error("Error malloc", 23);
+	i = -1;
+	while (s[++i])
+		res[i] = s[i];
+	free(s);
+	res[i] = '\0';
+	return (res);
+}
+
 //funcion para saber mi ruta actual
 int	ft_pwd(int i)
 {

@@ -95,6 +95,7 @@ int		export_parse(t_cmd *cmd, char *array, int j, int control);
 int		wrong_exp(char c);
 int		tokenize(t_msh *msh, t_cmd **cmd, char *read_line);
 void	ft_free(t_cmd *cmd);
+char	*actual_path(int i);
 
 ///////////pipes/////////////////
 
