@@ -13,15 +13,21 @@
 #include "../inc/minishell.h"
 #include "../inc/libft/libft.h"
 
-static int	ft_check_wrong_let(char c, char *s)
+static int	ft_check_wrong_let(char *s)
 {
-	if (c == '=' || c == '?' || c == '!' || c == '.'
-		|| c == '+' || c == '}' || c == '{' || c == '-' || c == 92
-		|| c == '[' || c == ']' || c == '@' || c == '*' || c == '#'
-		|| c == '^' || c == '~')
+	int	i;
+
+	i = -1;
+	while (s[++i])
 	{
-		put_error("bash: unset", s, "not a valid identifier");
-		return (-1);
+		if (s[i] == '=' || s[i] == '?' || s[i] == '!' || s[i] == '.'
+			|| s[i] == '+' || s[i] == '}' || s[i] == '{' || s[i] == '-'
+			|| s[i] == 92 || s[i] == '[' || s[i] == ']' || s[i] == '@'
+			|| s[i] == '*' || s[i] == '#' || s[i] == '^' || s[i] == '~')
+		{
+			put_error("bash: unset", s, "not a valid identifier");
+			return (1);
+		}
 	}
 	return (0);
 }
@@ -46,21 +52,17 @@ int	ft_unset_strcmp(char *s, t_env *env)
 
 	i = -1;
 	if (ft_strncmp(s, "PATH", 5) == 0)
+	{
+		free(env->path);
 		env->path = "./";
-	if (!s[0] || s[0] == '=' || s[0] == '?' || s[0] == '!')
-	{
-		put_error("bash: unset", s, "not a valid identifier");
+	}
+	if (ft_check_wrong_let(s))
 		return (1);
-	}
-	while (s[++i])
-	{
-		if (ft_check_wrong_let(s[i], s) == -1)
-			return (1);
-	}
 	while (++i < env->num_env)
 	{
 		if (ft_special_strcmp(s, env->env[i]) == 0)
 		{
+			free(env->env[i]);
 			env->env[i] = NULL;
 			env->num_env--;
 			break ;

@@ -104,6 +104,8 @@ void	execute_nonpipe(t_cmd *cmd, char *temp_cmd)
 	g_error = cmd_type(cmd, temp_cmd);
 	if (dup2(io[0], STDIN_FILENO) == -1 || dup2(io[1], STDOUT_FILENO) == -1)
 		exit_error("Error DUP", 24);
+	free(temp_cmd);
+	// clear_lst(&cmd);
 	return ;
 }
 
@@ -115,7 +117,7 @@ void	execute_cmd(t_cmd **cmd, t_pipe *pipes)
 
 	i = 1;
 	wait_signal(0);
-	while ((*cmd) && i)
+	while ((*cmd))
 	{
 		temp_cmd = str_noquotes((*cmd)->cmd);
 		if (!(*cmd)->next)
@@ -133,5 +135,6 @@ void	execute_cmd(t_cmd **cmd, t_pipe *pipes)
 		(*cmd) = (*cmd)->next;
 		free(temp_cmd);
 	}
+	clear_lst(cmd);
 	wait_exit(pipes, i, pid);
 }

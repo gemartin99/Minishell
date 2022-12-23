@@ -54,3 +54,22 @@ void	put_error(char *bash, char *file, char *error)
 	if (error)
 		ft_putendl_fd(error, 2);
 }
+
+void	clear_lst(t_cmd **cmd)
+{
+	t_cmd	*temp;
+	int	i;
+
+	while (cmd && *cmd)
+	{
+		printf("aa\n");
+		i = -1;
+		temp = *cmd;
+		*cmd = (*cmd)->next;
+		free(temp->cmd);
+		while (temp->arg && temp->arg[++i])
+			free(temp->arg[i]);
+		free(temp->arg);
+		free(temp);
+	}
+}

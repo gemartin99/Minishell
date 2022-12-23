@@ -74,6 +74,7 @@ char	**ft_ord_env(char **res, t_cmd *cmd)
 	i = 0;
 	while (cmd->env->num_env - i)
 		res[i++] = search_lowest(env2);
+	free(env2);
 	return (res);
 }
 
@@ -119,6 +120,8 @@ void	print_export_var(t_cmd *cmd)
 			res[i] = ft_add_quotes(res[i]);
 			printf("declare -x %s\n", res[i]);
 		}
+		free(res[i]);
 		i++;
 	}
+	free(res);
 }
