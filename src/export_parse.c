@@ -18,26 +18,19 @@ static char	*ft_quit_last_char(char *s, int i)
 	char	*res;
 	int		j;
 
-	j = -1;
-	while (s[i])
-	{
-		if (wrong_exp(s[i]) == 0 && s[i + 1]
-			&& s[i + 1] == '+' && s[i + 2] && s[i + 2] == '=')
-			break ;
-		i++;
-	}
-	res = malloc(sizeof(char) * ft_strlen(s));
+	j = 0;
+	res = ft_calloc(sizeof(char) , ft_strlen(s));
 	if (!res)
 		exit_error("Error malloc", 22);
-	while (++j <= i)
-		res[j] = s[j];
-	i++;
-	while (s[++i])
+	while (s[i])
 	{
-		res[j] = s[i];
-		j++;
+		if (wrong_exp(s[i]) == 0 && s[i] != '+' && s[i + 1] != '=')
+		{
+			res[j] = s[i];
+			j++;
+		}
+		i++;
 	}
-	res[j] = '\0';
 	free(s);
 	return (res);
 }
@@ -90,7 +83,10 @@ static void	del_exist_variable(char *full_var, t_cmd *cmd, int i)
 		var = cmd->env->env[i];
 		len = get_next_quote(0, var, '=');
 		if (!ft_strncmp(full_var, var, len + 1))
+		{
+			free(cmd->env->env[i]);
 			cmd->env->env[i] = NULL;
+		}
 		i++;
 	}
 }
@@ -109,8 +105,8 @@ int	export_parse(t_cmd *cmd, char *array, int j, int control)
 		if (j == -2)
 		{
 			cmd->arg[i] = ft_quit_last_char(cmd->arg[i], 0);
-			ft_export(&cmd);
-			return (-2);
+			del_exist_variable(cmd->arg[i], cmd, 0);
+			array[i] = '1';
 		}
 		else if (j == -1)
 		{

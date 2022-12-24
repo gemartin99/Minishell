@@ -28,6 +28,7 @@ void	add_new_vars2(t_cmd **cmd, char *binary_array, int i, char **aux)
 			i++;
 		}
 	}
+	free(binary_array);
 	(*cmd)->env->env = aux;
 }
 
@@ -44,7 +45,7 @@ int	add_new_vars1(t_cmd *cmd, char *binary_array)
 	while (binary_array[++i])
 		if (binary_array[i] == '1')
 			new_envs++;
-	aux = malloc(sizeof(char *) * (cmd->env->num_env + new_envs));
+	aux = ft_calloc(sizeof(char *), (cmd->env->num_env + new_envs));
 	if (!aux)
 		exit_error("Error malloc", 24);
 	i = -1;
