@@ -48,7 +48,7 @@ char	*ft_replace_value2(char *s, int i, int j)
 	tmp[1] = ft_substr(s, 0, i);
 	tmp[2] = ft_strdup(tmp[1]);
 	free(tmp[1]);
-	tmp[1] = ft_strjoin(";", tmp[0]);
+	tmp[1] = ft_strjoin("", tmp[0]);
 	free(tmp[0]);
 	tmp[0] = ft_strjoin(tmp[2], tmp[1]);
 	j = -1;

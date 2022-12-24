@@ -21,6 +21,7 @@ static char	*quit_null(char *s, int i)
 	s[i] = 27;
 	s[i + 1] = 27;
 	res = ft_strdup(s);
+	free(s);
 	return (remove_quotes(res, 27));
 }
 
@@ -45,8 +46,7 @@ static char	*quit_null_space(char *s, int i)
 		j++;
 	}
 	res[j] = '\0';
-	if (s)
-		s = NULL;
+	free(s);
 	return (res);
 }
 

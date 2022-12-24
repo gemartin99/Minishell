@@ -90,7 +90,10 @@ char	*cmp_name_var(t_cmd *cmd, char *line, char *name_var)
 			return (change_line_value(line, result));
 		}
 		else if (i + 1 == cmd->env->num_env)
+		{
+			free(name_var);
 			return (change_line_value(line, ft_strdup("")));
+		}
 	}
 	return (0);
 }

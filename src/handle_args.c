@@ -52,6 +52,7 @@ static char	**ft_get_args(t_msh *msh, char *s, t_cmd *cmd)
 	if (!arg)
 		exit_error("Error malloc", 13);
 	msh->total_chars += ft_split_args(s, arg);
+	//free(s);
 	return (arg);
 }
 

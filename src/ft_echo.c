@@ -35,19 +35,24 @@ static void	special_putstr(char *str, char *next)
 	int	i;
 	int	doubles;
 	int	simples;
+	int control;
 
 	i = 0;
+	control = 0;
 	doubles = 1;
 	simples = 1;
 	while (str[i])
 	{
-		if (str[i] == ';' && next && i++)
+		if (str[i] == ';')
+		{
+			control = 1;
 			printf(" ");
+		}
 		if (str[i] != ';' && ft_isprint(str[i]))
 			printf("%c", str[i]);
 		i++;
 	}
-	if (next)
+	if (next && control == 0)
 		printf(" ");
 	free(str);
 }
