@@ -15,7 +15,7 @@
 
 static char	**get_filename(char **arg, int j, char c, int k);
 
-static char	**remove_one(char **arg, int i)
+char	**remove_one(char **arg, int i)
 {
 	char	**res;
 	int		j;
@@ -121,7 +121,7 @@ void	redir(t_cmd	*cmd)
 		if (redir_type(cmd->arg[i]) == 1 || redir_type(cmd->arg[i]) == 2
 			|| redir_type(cmd->arg[i]) == 5 || redir_type(cmd->arg[i]) == 6)
 			put_in_file(redir_type(cmd->arg[i]), cmd, file);
-		else if (redir_type(cmd->arg[i]) == 3 && get_from_file(cmd, file))
+		else if (redir_type(cmd->arg[i]) == 3 && get_from_file(cmd, file, i))
 			return ;
 		else if (redir_type(cmd->arg[i]) == 4)
 			get_input(cmd, file);

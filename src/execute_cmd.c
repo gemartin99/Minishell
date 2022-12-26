@@ -44,6 +44,11 @@ static void	cmd_process(t_cmd *cmd, char *temp_cmd)
 		exit_error("Error DUP", 23);
 	if (dup2(cmd->pipes->out, STDOUT_FILENO) == -1)
 		exit_error("Error DUP", 24);
+	if (cmd->pipes->last)
+	{
+		cmd->pipes->last = 0;
+		setpipes(cmd->pipes, 0);
+	}
 	if (close(cmd->pipes->in) == -1)
 		exit_error("Error close", 25);
 	if (close(cmd->pipes->out) == -1)

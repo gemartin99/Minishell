@@ -40,7 +40,7 @@ void	put_in_file(int type, t_cmd *cmd, char *file)
 	close(fd);
 }
 
-int	get_from_file(t_cmd *cmd, char *file)
+int	get_from_file(t_cmd *cmd, char *file, int i)
 {
 	int		fd;
 	int		pfd[2];
@@ -54,6 +54,9 @@ int	get_from_file(t_cmd *cmd, char *file)
 			exit_error("Error dup", 50);
 		if (close(pfd[0]) == -1 || close(pfd[1]) == -1)
 			exit_error("Error close", 51);
+		while (cmd->arg[i])
+			cmd->arg = remove_one(cmd->arg, i);
+		free(file);
 		return (1);
 	}
 	else if (dup2(fd, cmd->pipes->in) == -1)
@@ -82,6 +85,7 @@ void	get_input(t_cmd *cmd, char *stop)
 		line = get_next_line(cmd->pipes->in);
 	}
 	free(line);
+	free(stop);
 	if (dup2(fd[0], cmd->pipes->in) == -1)
 		exit_error("Error dup", 48);
 	close(fd[0]);

@@ -55,7 +55,7 @@ char	**convert_to_env(char **arg, int len)
 	j = 0;
 	while (++i < len)
 	{
-		if (arg[i])
+		if (arg[i] && arg[i][0])
 		{
 			res[j] = ft_strdup(arg[i]);
 			if (!res[j])

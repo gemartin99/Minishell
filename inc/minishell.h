@@ -96,6 +96,7 @@ int		wrong_exp(char c);
 int		tokenize(t_msh *msh, t_cmd **cmd, char *read_line);
 void	clear_lst(t_cmd **cmd);
 char	*actual_path(int i);
+char	**remove_one(char **arg, int i);
 
 ///////////pipes/////////////////
 
@@ -114,7 +115,7 @@ char	operator_char(int n);
 void	redir(t_cmd	*cmd);
 int		get_next_diff(int i, char *str);
 void	put_in_file(int type, t_cmd *cmd, char *file);
-int		get_from_file(t_cmd *cmd, char *file);
+int		get_from_file(t_cmd *cmd, char *file, int i);
 int		check_nonpipables(t_cmd *cmd, char *temp_cmd);
 void	execute_nonpipe(t_cmd *cmd, char *temp_cmd);
 
@@ -144,6 +145,7 @@ char	*replace_prime(char *s);
 
 int		ft_count_env(char **arg, int len);
 int		check_only_space(char *s);
+char	**convert_to_env(char **arg, int len);
 
 ////////utils////////////
 

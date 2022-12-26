@@ -20,7 +20,6 @@ char	*search_lowest(char **env2)
 	int		j;
 	char	*res;
 
-	i = -1;
 	j = 0;
 	i = 0;
 	res = env2[0];
@@ -28,7 +27,7 @@ char	*search_lowest(char **env2)
 		env2[0] = NULL;
 	while (env2[i])
 	{
-		if (ft_strncmp(env2[j], env2[i], ft_strlen(res)) > 0)
+		if (ft_strncmp(res, env2[i], ft_strlen(res)) > 0)
 		{
 			res = env2[i];
 			j = i;
@@ -67,14 +66,15 @@ char	**ft_ord_env(char **res, t_cmd *cmd)
 	int		i;
 	char	**env2;
 
-	env2 = malloc(sizeof(char *) * cmd->env->num_env + 1);
-	if (!env2)
-		exit_error("Error malloc", 29);
-	env2 = dup_env(env2, cmd);
+	env2 = convert_to_env(cmd->env->env, cmd->env->num_env);
 	i = 0;
-	while (cmd->env->num_env - i)
+	int z = -1;
+	while (env2[++z])
+		printf("%s\n", env2[z]);
+	while (ft_count_env(cmd->env->env, cmd->env->num_env) - i)
 		res[i++] = search_lowest(env2);
 	free(env2);
+	printf("AAA\n");
 	return (res);
 }
 
@@ -100,6 +100,7 @@ char	*ft_add_quotes(char *s)
 		res[i + 1] = s[i];
 	res[i + 1] = 34;
 	res[i + 2] = '\0';
+	free(s);
 	return (res);
 }
 
@@ -113,7 +114,7 @@ void	print_export_var(t_cmd *cmd)
 	if (!res)
 		exit_error("Error malloc", 28);
 	res = ft_ord_env(res, cmd);
-	while (i < cmd->env->num_env)
+	while (res[i])
 	{
 		if (res[i] != NULL)
 		{
