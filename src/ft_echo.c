@@ -19,7 +19,7 @@ static int	is_flag(char *str)
 	char	*temp;
 
 	i = 0;
-	temp = str_noquotes(ft_strdup(str));
+	temp = str_noquotes(str);
 	if (temp[i++] != '-')
 		return (0);
 	while (temp[i] == 'n')
@@ -35,7 +35,7 @@ static void	special_putstr(char *str, char *next)
 	int	i;
 	int	doubles;
 	int	simples;
-	int control;
+	int	control;
 
 	i = 0;
 	control = 0;
@@ -52,7 +52,7 @@ static void	special_putstr(char *str, char *next)
 			printf("%c", str[i]);
 		i++;
 	}
-	if (next && control == 0)
+	if (next && *next && control == 0)
 		printf(" ");
 	free(str);
 }

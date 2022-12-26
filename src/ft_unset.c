@@ -64,7 +64,6 @@ int	ft_unset_strcmp(char *s, t_env *env)
 		{
 			free(env->env[i]);
 			env->env[i] = NULL;
-			env->num_env--;
 			break ;
 		}
 	}

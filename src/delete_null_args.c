@@ -56,7 +56,6 @@ char	*change_null_args(char *s, t_cmd *cmd)
 	int	i;
 
 	i = -1;
-	s = ft_strtrim(s, " ");
 	while (s[++i])
 	{
 		if ((s[i] == 34 && s[i + 1] && s[i + 1] != 34)
@@ -74,7 +73,7 @@ char	*change_null_args(char *s, t_cmd *cmd)
 		{
 			s = quit_null(s, i);
 			cmd->num_arg--;
-			s = change_null_args(s, cmd);
+			return (change_null_args(s, cmd));
 		}
 	}
 	return (s);

@@ -45,14 +45,17 @@ static int	ft_split_args(char *s, char **arg)
 static char	**ft_get_args(t_msh *msh, char *s, t_cmd *cmd)
 {
 	char	**arg;
+	char	*temp;
 
-	while (check_null_args(s) == -1)
-		s = change_null_args(s, cmd);
+	temp = s;
+	if (check_null_args(temp) == -1)
+		temp = change_null_args(ft_strtrim(temp, " "), cmd);
 	arg = malloc(sizeof(char *) * (cmd->num_arg + 1));
 	if (!arg)
 		exit_error("Error malloc", 13);
 	msh->total_chars += ft_split_args(s, arg);
-	//free(s);
+	if (check_null_args(s) == -1)
+		free(temp);
 	return (arg);
 }
 

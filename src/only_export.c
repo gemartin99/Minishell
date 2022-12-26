@@ -84,7 +84,7 @@ char	*ft_add_quotes(char *s)
 	char	*res;
 
 	i = -1;
-	res = malloc(sizeof(char) * ft_strlen(s) + 3);
+	res = ft_calloc(sizeof(char), ft_strlen(s) + 3);
 	if (!res)
 		exit_error("Error malloc", 51);
 	while (s[++i])
@@ -109,7 +109,7 @@ void	print_export_var(t_cmd *cmd)
 	char	**res;
 
 	i = 0;
-	res = malloc(sizeof(char *) * cmd->env->num_env + 1);
+	res = ft_calloc(sizeof(char *), cmd->env->num_env + 1);
 	if (!res)
 		exit_error("Error malloc", 28);
 	res = ft_ord_env(res, cmd);

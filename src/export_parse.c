@@ -19,7 +19,7 @@ static char	*ft_quit_last_char(char *s, int i)
 	int		j;
 
 	j = 0;
-	res = ft_calloc(sizeof(char) , ft_strlen(s));
+	res = ft_calloc(sizeof(char), ft_strlen(s));
 	if (!res)
 		exit_error("Error malloc", 22);
 	while (s[i])

@@ -121,7 +121,7 @@ int	ft_try_to_exec(t_cmd *cmd)
 	{
 		if (!check_access(cmd->cmd, cmd, cmd->env))
 			put_error("bash", cmd->cmd, "No such file or directory");
-		return (1);
+		return (127);
 	}
 	while (absolute_path && cmd->cmd[0])
 	{

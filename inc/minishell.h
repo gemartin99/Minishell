@@ -97,7 +97,6 @@ int		tokenize(t_msh *msh, t_cmd **cmd, char *read_line);
 void	clear_lst(t_cmd **cmd);
 char	*actual_path(int i);
 
-
 ///////////pipes/////////////////
 
 t_pipe	*init_pipes(void);

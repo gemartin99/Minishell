@@ -26,10 +26,11 @@ void	recive_arguments(t_msh *msh)
 			system("leaks minishell");
 			exit_error("exit", g_error);
 		}
-		if (read_line[0] == '\0')
+		if (check_only_space(read_line) == -1 || read_line[0] == '\0')
+		{
+			free(read_line);
 			printf("");
-		if (check_only_space(read_line) == -1)
-			printf("");
+		}
 		else
 		{
 			msh->total_chars = 0;
