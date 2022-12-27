@@ -81,14 +81,14 @@ int	ft_count_env(char **arg, int len)
 	int	i;
 	int	j;
 
-	i = 0;
 	j = 0;
-	while (i + j < len)
+	i = 0;
+	while (i < len)
 	{
 		if (arg[i + j])
 			i++;
 		else
 			j++;
 	}
-	return (i - j);
+	return (i);
 }

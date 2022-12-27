@@ -39,6 +39,44 @@ char	*search_lowest(char **env2)
 	return (res);
 }
 
+//funcion que retorna una variable que 
+//guarde todas las variables de entorno actuales
+char	**convert_to_env(char **arg, int len)
+{
+	int		i;
+	int		j;
+	char	**res;
+
+	res = malloc(sizeof(char *) * len + 1);
+	if (!res)
+		exit_error("Error malloc", 27);
+	i = 0;
+	j = 0;
+	printf("F\n");
+	while (j + i < len)
+	{
+		printf("i:|%d|    j:|%d|    len:|%d|    total:|%d|\n", i, j, len, j + i);
+		printf("arg %s\n", arg[i + j]);
+		if (arg[j + i] && arg[j + i][0])
+		{
+			printf("1\n");
+			res[j] = ft_strdup(arg[i + j]);
+			if (!res[j])
+				exit_error("Error malloc", 35);
+			j++;
+		}
+		else
+		{
+			printf("2\n");
+			i++;
+		}
+	}
+	printf("E\n");
+	res[j] = NULL;
+	printf("E2\n");
+	return (res);
+}
+
 //funcion que duplica las variables de entorno actuales
 char	**dup_env(char **env2, t_cmd *cmd)
 {
@@ -65,14 +103,16 @@ char	**ft_ord_env(char **res, t_cmd *cmd)
 {
 	int		i;
 	char	**env2;
+	int		num_env;
 
-	env2 = convert_to_env(cmd->env->env, cmd->env->num_env);
+	printf("2.1\n");
+	num_env = ft_count_env(cmd->env->env, cmd->env->num_env);
+	env2 = convert_to_env(cmd->env->env, num_env);
 	i = 0;
-	int z = -1;
-	while (env2[++z])
-		printf("%s\n", env2[z]);
-	while (ft_count_env(cmd->env->env, cmd->env->num_env) - i)
+	printf("2.2\n");
+	while (num_env - i)
 		res[i++] = search_lowest(env2);
+	printf("2.3\n");
 	free(env2);
 	printf("AAA\n");
 	return (res);
@@ -110,10 +150,13 @@ void	print_export_var(t_cmd *cmd)
 	char	**res;
 
 	i = 0;
+	printf("AQUI1\n");
 	res = ft_calloc(sizeof(char *), cmd->env->num_env + 1);
 	if (!res)
 		exit_error("Error malloc", 28);
+	printf("AQUI2\n");
 	res = ft_ord_env(res, cmd);
+	printf("AQUI3\n");
 	while (res[i])
 	{
 		if (res[i] != NULL)

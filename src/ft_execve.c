@@ -40,33 +40,6 @@ char	*value_dolar_path(char *s)
 	return (res);
 }
 
-//funcion que retorna una variable que 
-//guarde todas las variables de entorno actuales
-char	**convert_to_env(char **arg, int len)
-{
-	int		i;
-	int		j;
-	char	**res;
-
-	res = malloc(sizeof(char *) * ft_count_env(arg, len) + 1);
-	if (!res)
-		exit_error("Error malloc", 27);
-	i = -1;
-	j = 0;
-	while (++i < len)
-	{
-		if (arg[i] && arg[i][0])
-		{
-			res[j] = ft_strdup(arg[i]);
-			if (!res[j])
-				exit_error("Error malloc", 35);
-			j++;
-		}
-	}
-	res[j] = NULL;
-	return (res);
-}
-
 char	**arg_with_command(t_cmd *cmd)
 {
 	char	**res;
