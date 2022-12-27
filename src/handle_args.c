@@ -111,6 +111,7 @@ int	tokenize(t_msh *msh, t_cmd **cmd, char *read_line)
 
 	i = 0;
 	lines = NULL;
+	msh->total_chars = 0;
 	if (start_line(&msh, read_line, &lines))
 		return (0);
 	*cmd = add_cmd(msh, lines[0]);
