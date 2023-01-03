@@ -35,6 +35,8 @@ El proyecto minishell se divide en varias partes:
 
 ```./minishell```
 
+![](https://github.com/gemartin99/Minishell/blob/master/minishell.gif)
+
 ## Partner 👨🏻‍💻
 
 Este proyecto ha sido realizado en colaboración con [@sebamiro](https://github.com/sebamiro)
