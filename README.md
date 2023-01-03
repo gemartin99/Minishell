@@ -17,7 +17,25 @@ El proyecto minishell se divide en varias partes:
 
 5️⃣ → Gestión de pipes: se deben implementar los pies | para poder encadenar varios comandos y enviar la salida de un comando como entrada del siguiente.
 
-# Partner 👨🏻‍💻
+## Uso
+
+1- Descargar/clonar el repositorio
+
+```git clone https://github.com/gemartin99/Minishell.git```
+
+2- Acceder al repositorio
+
+```cd Minishell```
+
+3- Compilar
+
+```make```
+
+4- Ya podrás ejecutar el programa
+
+```./minishell```
+
+## Partner 👨🏻‍💻
 
 Este proyecto ha sido realizado en colaboración con [@sebamiro](https://github.com/sebamiro)
 
