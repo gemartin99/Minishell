@@ -39,7 +39,7 @@ El proyecto minishell se divide en varias partes:
 
 ## Partner 👨🏻‍💻
 
-Este proyecto ha sido realizado en colaboración con [@sebamiro](https://github.com/sebamiro)
+Este proyecto ha sido realizado en colaboración con [sebamiro](https://github.com/sebamiro)
 
 Su perfil en la intranet de 42 ↙️
 
